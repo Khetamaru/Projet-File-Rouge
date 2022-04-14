@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Projet_File_Rouge.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Projet_File_Rouge.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Utilisateur"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" Margin="5" SelectedItem="{Binding SelectedItem, Mode=OneWay}" ItemsSource="{Binding UserNameList}"/>
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Mot De Passe"/>
+            <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5"/>
+
+        </Grid>
+
+        <Button Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" Content="Connection" Command="{Binding ConnectionCommand}"/>
+
+    </Grid>
+</UserControl>

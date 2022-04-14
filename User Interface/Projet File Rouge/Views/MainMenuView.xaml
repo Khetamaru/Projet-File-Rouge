@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Projet_File_Rouge.Views.MainMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Projet_File_Rouge.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Espace Global"/>
+        <Button Grid.Row="1" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Espace Personnel"/>
+        <Button Grid.Row="2" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Nouveau Dossier"/>
+        <Button Grid.Row="3" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Espace Disponible"/>
+        <Button Grid.Row="4" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Espace Commande"/>
+        <Button Grid.Row="5" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Ancien Dossier"/>
+        <Button Grid.Row="6" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Paramètres"/>
+
+    </Grid>
+</UserControl>

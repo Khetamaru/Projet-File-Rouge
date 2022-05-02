@@ -3,7 +3,6 @@ using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Text;
-using Project_Inventory.Tools;
 
 namespace Projet_File_Rouge.Tools
 {
@@ -30,9 +29,10 @@ namespace Projet_File_Rouge.Tools
             httpMethod = HttpVerb.GET;
         }
 
-        private string MakeRequest(string json)
+        private (string, HttpStatusCode) MakeRequest(string json)
         {
             string strResponseValue = string.Empty;
+            HttpStatusCode statusCode = 0;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http + port + endPoint);
             request.KeepAlive = false;
@@ -55,23 +55,24 @@ namespace Projet_File_Rouge.Tools
 
                 // grab the response and print it out to the console along with the status code
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                string result;
+                statusCode = response.StatusCode;
                 using (StreamReader rdr = new StreamReader(response.GetResponseStream()))
                 {
-                    result = rdr.ReadToEnd();
+                    strResponseValue = rdr.ReadToEnd();
                 }
             }
             catch (Exception e)
             {
-                CatchError(e, json);
+                // CatchError(e, json);
             }
 
-            return strResponseValue;
+            return (strResponseValue, statusCode);
         }
 
-        private string MakeRequest()
+        private (string, HttpStatusCode) MakeRequest()
         {
             string result = string.Empty;
+            HttpStatusCode statusCode = 0;
 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http + port + endPoint);
             request.KeepAlive = false;
@@ -86,6 +87,7 @@ namespace Projet_File_Rouge.Tools
             {
                 // grab the response and print it out to the console along with the status code
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                statusCode = response.StatusCode;
                 using (StreamReader rdr = new StreamReader(response.GetResponseStream()))
                 {
                     result = rdr.ReadToEnd();
@@ -93,13 +95,13 @@ namespace Projet_File_Rouge.Tools
             }
             catch (Exception e)
             {
-                CatchError(e);
+                // CatchError(e);
             }
 
-            return result;
+            return (result, statusCode);
         }
 
-        public string GetRequest(string requestString)
+        public (string, HttpStatusCode) GetRequest(string requestString)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.GET;
@@ -107,7 +109,7 @@ namespace Projet_File_Rouge.Tools
             return MakeRequest();
         }
 
-        public string PostRequest(string requestString, string json)
+        public (string, HttpStatusCode) PostRequest(string requestString, string json)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.POST;
@@ -115,7 +117,7 @@ namespace Projet_File_Rouge.Tools
             return MakeRequest(json);
         }
 
-        public string PutRequest(string requestString, string json)
+        public (string, HttpStatusCode) PutRequest(string requestString, string json)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.PUT;
@@ -123,7 +125,7 @@ namespace Projet_File_Rouge.Tools
             return MakeRequest(json);
         }
 
-        public string DeleteRequest(string requestString)
+        public (string, HttpStatusCode) DeleteRequest(string requestString)
         {
             endPoint = requestString;
             httpMethod = HttpVerb.DELETE;

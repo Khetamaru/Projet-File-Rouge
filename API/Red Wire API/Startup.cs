@@ -27,7 +27,7 @@ namespace Red_Wire_API
         public void ConfigureServices(IServiceCollection services)
         {
             redWireConnectionString = new DataBaseString("localhost", "root", "root", true, "redwiredb");
-            ebpConnectionString = new DataBaseString("", "", "", true, "");
+            ebpConnectionString = new DataBaseString(/*"PC-BOUTIQUE\\EBP"*/"192.168.1.195", "sa", "", true, "DO53_0895452f-b7c1-4c00-a316-c6a6d0ea4bf4");
 
             services.AddDbContext<RedWireContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
@@ -35,13 +35,7 @@ namespace Red_Wire_API
             services.AddDbContext<DocumentListContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
 
-            services.AddDbContext<EquipmentContext>(opt =>
-                opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-
-            services.AddDbContext<EventContext>(opt =>
-                opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-
-            services.AddDbContext<EventListContext>(opt =>
+            services.AddDbContext<EvenementContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
 
             services.AddDbContext<UserContext>(opt =>
@@ -49,6 +43,12 @@ namespace Red_Wire_API
 
             services.AddDbContext<UserHistoryListContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
+
+            services.AddDbContext<SaleDocumentContext>(opt =>
+                opt.UseSqlServer(ebpConnectionString.GetConnectionString() + ";Encrypt=true;TrustServerCertificate=true;", providerOptions => providerOptions.EnableRetryOnFailure()));
+
+            services.AddDbContext<SaleDocumentLineContext>(opt =>
+                opt.UseSqlServer(ebpConnectionString.GetConnectionString() + ";Encrypt=true;TrustServerCertificate=true;", providerOptions => providerOptions.EnableRetryOnFailure()));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

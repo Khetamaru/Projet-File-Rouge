@@ -37,6 +37,30 @@ namespace Local_API_Server.Controllers
             return User;
         }
 
+        // GET: api/User/Name/didier
+        [HttpGet("Name/{name}")]
+        public async Task<ActionResult<User>> GetUser(string name)
+        {
+            var User = await _context.User.Where(r => r.name == name).ToListAsync();
+            if (User.Count <= 0)
+            {
+                return NotFound();
+            }
+            return User[0];
+        }
+
+        [HttpPost("SignIn")]
+        public async Task<IActionResult> SignInRequest(User user)
+        {
+            var _user = await _context.User.Where(r => r.name == user.name && r.password == user.password).ToListAsync();
+
+            if (_user.Count <= 0)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+
         // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

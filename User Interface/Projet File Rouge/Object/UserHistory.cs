@@ -28,16 +28,16 @@ namespace Projet_File_Rouge.Object
         {
             return "{" +
                    "\"" + UserHistoryEnum.id + "\" : " + Id + "," +
-                   "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"" +
-                   "\"" + UserHistoryEnum.user + "\" : \"" + User.Id + "\"" +
+                   "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
+                   "\"" + UserHistoryEnum.user + "\" : " + User.Id +
                    "}";
         }
 
         public string Jsonify()
         {
             return "{" +
-                   "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"" +
-                   "\"" + UserHistoryEnum.user + "\" : \"" + User.Id + "\"" +
+                   "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
+                   "\"" + UserHistoryEnum.user + "\" : " + User.Id +
                    "}";
         }
     }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Projet_File_Rouge.EBPObject;
 using Projet_File_Rouge.Object;
 
 namespace Projet_File_Rouge.Tools
@@ -11,13 +9,25 @@ namespace Projet_File_Rouge.Tools
     {
         const string empty = "[]";
 
-        public static Client ClientUnjsoning(string json)
+        public static SaleDocument SaleDocumentUnjsoning(string json)
         {
-            int id = 42;
-            string name = string.Empty;
-            string email = string.Empty;
-            string phoneNumber = string.Empty;
-            string address = string.Empty;
+            Guid Id = new Guid();
+            DateTime sysCreatedDate = new DateTime();
+            DateTime sysModifiedDate = new DateTime();
+            string DocumentNumber = string.Empty;
+            string NumberPrefix = string.Empty;
+            Decimal NumberSuffix = 0;
+            string InvoicingAddress_ThirdName = string.Empty;
+            string InvoicingContact_Phone = string.Empty;
+            string InvoicingContact_CellPhone = string.Empty;
+            string InvoicingContact_Email = string.Empty;
+            string DeliveryAddress_Address1 = string.Empty;
+            string DeliveryAddress_ZipCode = string.Empty;
+            string DeliveryAddress_City = string.Empty;
+            string DeliveryAddress_State = string.Empty;
+            string InvoicingAddress_CountryIsoCode = string.Empty;
+            Decimal CommitmentsBalanceDue = 0;
+            Decimal TotalDueAmount = 0;
 
             string temp;
 
@@ -27,132 +37,124 @@ namespace Projet_File_Rouge.Tools
 
             foreach (string split in splitTab)
             {
-                if (split == ClientEnum.id.ToString())
+                if (split == SaleDocumentEnum.id.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
-
-                    id = Int32.Parse(temp);
+                    Id = GetGuid(splitTab[i + 2]);
                 }
-                else if (split == ClientEnum.name.ToString())
+                else if (split == SaleDocumentEnum.sysCreatedDate.ToString())
                 {
-                    name = splitTab[i + 2];
+                    sysCreatedDate = GetDate(splitTab[i + 2]);
                 }
-                else if (split == ClientEnum.email.ToString())
+                else if (split == SaleDocumentEnum.sysModifiedDate.ToString())
                 {
-                    email = splitTab[i + 2];
+                    sysModifiedDate = GetDate(splitTab[i + 2]);
                 }
-                else if (split == ClientEnum.phoneNumber.ToString())
+                else if (split == SaleDocumentEnum.documentNumber.ToString())
                 {
-                    phoneNumber = splitTab[i + 2];
+                    DocumentNumber = splitTab[i + 2];
                 }
-                else if (split == ClientEnum.address.ToString())
+                else if (split == SaleDocumentEnum.numberPrefix.ToString())
                 {
-                    address = splitTab[i + 2];
+                    NumberPrefix = splitTab[i + 2];
                 }
-                i++;
-            }
-            Client client = new Client(id, name, email, phoneNumber, address);
-
-            return client;
-        }
-
-        public static List<Client> ClientsUnjsoning(string json)
-        {
-            if (json == empty) { return new List<Client>(); }
-
-            string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
-            List<Client> clients = new List<Client>();
-
-            foreach(string jsonStr in objectTab)
-            {
-                clients.Add(ClientUnjsoning(jsonStr));
-            }
-
-            return clients;
-        }
-
-        public static Document DocumentUnjsoning(string json)
-        {
-            int id = 42;
-            Document.DocType docType = Document.DocType.Devis;
-            DateTime date = DateTime.Now;
-            User author = null;
-            Client client = null;
-
-            string temp;
-
-            int i = 0;
-
-            string[] splitTab = json.Split(new string[] { "\"" }, StringSplitOptions.None);
-
-            foreach (string split in splitTab)
-            {
-                if (split == DocumentEnum.id.ToString())
+                else if (split == SaleDocumentEnum.numberSuffix.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
+                    temp = GetShort(splitTab[i + 1]);
 
-                    id = Int32.Parse(temp);
+                    NumberSuffix = decimal.Parse(temp.Replace('.', ','));
                 }
-                else if (split == DocumentEnum.documentType.ToString())
+                else if (split == SaleDocumentEnum.invoicingAddress_ThirdName.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
+                    if (splitTab[i + 1] != ":null,") { InvoicingAddress_ThirdName = splitTab[i + 2]; }
+                }
+                else if (split == SaleDocumentEnum.invoicingContact_Phone.ToString())
+                {
+                    if (splitTab[i + 1] != ":null,") { InvoicingContact_Phone = splitTab[i + 2]; }
+                }
+                else if (split == SaleDocumentEnum.invoicingContact_CellPhone.ToString())
+                {
+                    if (splitTab[i + 1] != ":null,") { InvoicingContact_CellPhone = splitTab[i + 2]; }
+                }
+                else if (split == SaleDocumentEnum.invoicingContact_Email.ToString())
+                {
+                    if (splitTab[i + 1] != ":null,") { InvoicingContact_Email = splitTab[i + 2]; }
+                }
+                else if (split == SaleDocumentEnum.deliveryAddress_Address1.ToString())
+                {
+                    if (splitTab[i + 1] != ":null,") { DeliveryAddress_Address1 = splitTab[i + 2]; }
+                }
+                else if (split == SaleDocumentEnum.deliveryAddress_ZipCode.ToString())
+                {
+                    if (splitTab[i + 1] != ":null,") { DeliveryAddress_ZipCode = splitTab[i + 2]; }
+                }
+                else if (split == SaleDocumentEnum.deliveryAddress_City.ToString())
+                {
+                    if (splitTab[i + 1] != ":null,") { DeliveryAddress_City = splitTab[i + 2]; }
+                }
+                else if (split == SaleDocumentEnum.deliveryAddress_State.ToString())
+                {
+                    if (splitTab[i + 1] != ":null,") { DeliveryAddress_State = splitTab[i + 2]; }
+                }
+                else if (split == SaleDocumentEnum.invoicingAddress_CountryIsoCode.ToString())
+                {
+                    if (splitTab[i + 1] != ":null,") { InvoicingAddress_CountryIsoCode = splitTab[i + 2]; }
+                }
+                else if (split == SaleDocumentEnum.commitmentsBalanceDue.ToString()) 
+                {
+                    temp = GetShort(splitTab[i + 1]);
 
-                    docType = (Document.DocType)Int32.Parse(temp);
+                    CommitmentsBalanceDue = decimal.Parse(temp.Replace('.', ','));
                 }
-                else if (split == DocumentEnum.date.ToString())
+                else if (split == SaleDocumentEnum.totalDueAmount.ToString())
                 {
-                    date = Convert.ToDateTime(splitTab[i + 2]);
-                }
-                else if (split == DocumentEnum.author.ToString())
-                {
-                    author = UserUnjsoning(splitTab[i + 2]);
-                }
-                else if (split == DocumentEnum.client.ToString())
-                {
-                    client = ClientUnjsoning(splitTab[i + 2]);
+                    temp = GetShort(splitTab[i + 1]);
+
+                    TotalDueAmount = decimal.Parse(temp.Replace('.', ','));
                 }
                 i++;
             }
 
-            Document document = new Document(id, docType, date, author, client);
+            SaleDocument saleDocument = new SaleDocument(Id, 
+                                                         sysCreatedDate, 
+                                                         sysModifiedDate, 
+                                                         DocumentNumber, 
+                                                         NumberPrefix, 
+                                                         NumberSuffix, 
+                                                         InvoicingAddress_ThirdName, 
+                                                         InvoicingContact_Phone, 
+                                                         InvoicingContact_CellPhone, 
+                                                         InvoicingContact_Email, 
+                                                         DeliveryAddress_Address1,
+                                                         DeliveryAddress_ZipCode, 
+                                                         DeliveryAddress_City, 
+                                                         DeliveryAddress_State,
+                                                         InvoicingAddress_CountryIsoCode,
+                                                         CommitmentsBalanceDue, 
+                                                         TotalDueAmount);
 
-            return document;
+            return saleDocument;
         }
 
-        public static List<Document> DocumentsUnjsoning(string json)
+        public static List<SaleDocument> SaleDocumentsUnjsoning(string json)
         {
-            if (json == empty) { return new List<Document>(); }
+            if (json == empty) { return new List<SaleDocument>(); }
 
             string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
-            List<Document> documents = new List<Document>();
+            List<SaleDocument> saleDocuments = new List<SaleDocument>();
 
             foreach (string jsonStr in objectTab)
             {
-                documents.Add(DocumentUnjsoning(jsonStr));
+                saleDocuments.Add(SaleDocumentUnjsoning(jsonStr));
             }
 
-            return documents;
+            return saleDocuments;
         }
 
-        public static Equipment EquipmentUnjsoning(string json)
+        public static SaleDocumentLine SaleDocumentLineUnjsoning(string json)
         {
-            int id = 42;
-            Equipment.EquipmentType equipmentType = Equipment.EquipmentType.Autre;
-            string model = string.Empty;
-            string description = string.Empty;
-            bool warranty = false;
-            bool problemReproduced = false;
-            bool bag = false;
-            bool charger = false;
-            bool mouse = false;
-            bool battery = false;
-            bool other = false;
+            Guid documentId = new Guid();
+            int LineOrder = 0;
+            string DescriptionClear = string.Empty;
 
             string temp;
 
@@ -162,83 +164,47 @@ namespace Projet_File_Rouge.Tools
 
             foreach (string split in splitTab)
             {
-                if (split == EquipmentEnum.id.ToString())
+                if (split == SaleDocumentLineEnum.documentId.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
-
-                    id = Int32.Parse(temp);
+                    documentId = GetGuid(splitTab[i + 2]);
                 }
-                if (split == EquipmentEnum.type.ToString())
+                else if (split == SaleDocumentLineEnum.lineOrder.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
-
-                    equipmentType = (Equipment.EquipmentType)Int32.Parse(temp);
+                    LineOrder = GetInt(splitTab[i + 1]);
                 }
-                if (split == EquipmentEnum.model.ToString())
+                else if (split == SaleDocumentLineEnum.descriptionClear.ToString())
                 {
-                    model = splitTab[i + 2];
+                    DescriptionClear = splitTab[i + 2];
                 }
-                if (split == EquipmentEnum.description.ToString())
-                {
-                    description = splitTab[i + 2];
-                }
-                if (split == EquipmentEnum.warranty.ToString())
-                {
-                    warranty = Convert.ToBoolean(splitTab[i + 2]);
-                }
-                if (split == EquipmentEnum.problemReproduced.ToString())
-                {
-                    problemReproduced = Convert.ToBoolean(splitTab[i + 2]);
-                }
-                if (split == EquipmentEnum.bag.ToString())
-                {
-                    bag = Convert.ToBoolean(splitTab[i + 2]);
-                }
-                if (split == EquipmentEnum.charger.ToString())
-                {
-                    charger = Convert.ToBoolean(splitTab[i + 2]);
-                }
-                if (split == EquipmentEnum.mouse.ToString())
-                {
-                    mouse = Convert.ToBoolean(splitTab[i + 2]);
-                }
-                if (split == EquipmentEnum.battery.ToString())
-                {
-                    battery = Convert.ToBoolean(splitTab[i + 2]);
-                }
-                if (split == EquipmentEnum.other.ToString())
-                {
-                    other = Convert.ToBoolean(splitTab[i + 2]);
-                }
+                i++;
             }
 
-            Equipment equipment = new Equipment(id, equipmentType, model, description, warranty, problemReproduced, bag, charger, mouse, battery, other);
+            SaleDocumentLine saleDocumentLine = new SaleDocumentLine(documentId, LineOrder/100, DescriptionClear);
 
-            return equipment;
+            return saleDocumentLine;
         }
 
-        public static List<Equipment> EquipmentsUnjsoning(string json)
+        public static List<SaleDocumentLine> SaleDocumentLinesUnjsoning(string json)
         {
-            if (json == empty) { return new List<Equipment>(); }
+            if (json == empty) { return new List<SaleDocumentLine>(); }
 
             string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
-            List<Equipment> equipments = new List<Equipment>();
+            List<SaleDocumentLine> saleDocuments = new List<SaleDocumentLine>();
 
             foreach (string jsonStr in objectTab)
             {
-                equipments.Add(EquipmentUnjsoning(jsonStr));
+                saleDocuments.Add(SaleDocumentLineUnjsoning(jsonStr));
             }
 
-            return equipments;
+            return saleDocuments;
         }
 
-        public static Event EventUnjsoning(string json)
+        public static Evenement EventUnjsoning(string json)
         {
             int id = 42;
+            RedWire redWire = null;
+            Evenement.EventType type = Evenement.EventType.simpleText;
+            string log = string.Empty;
 
             string temp;
 
@@ -248,27 +214,37 @@ namespace Projet_File_Rouge.Tools
 
             foreach (string split in splitTab)
             {
-                if (split == EquipmentEnum.id.ToString())
+                if (split == EventEnum.id.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
+                    id = GetInt(splitTab[i + 1]);
+                }
+                if (split == EventEnum.redWire.ToString())
+                {
+                    temp = GetShort(splitTab[i + 1]);
 
-                    id = Int32.Parse(temp);
+                    redWire = RequestCenter.GetRedWire(Int32.Parse(temp));
+                }
+                if (split == EventEnum.type.ToString())
+                {
+                    type = (Evenement.EventType)GetInt(splitTab[i + 1]);
+                }
+                if (split == EventEnum.log.ToString())
+                {
+                    log = splitTab[i + 2];
                 }
             }
 
-            Event evenement = new Event(id);
+            Evenement evenement = new Evenement(id, redWire, type, log);
 
             return evenement;
         }
 
-        public static List<Event> EventsUnjsoning(string json)
+        public static List<Evenement> EventsUnjsoning(string json)
         {
-            if (json == empty) { return new List<Event>(); }
+            if (json == empty) { return new List<Evenement>(); }
 
             string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
-            List<Event> events = new List<Event>();
+            List<Evenement> events = new List<Evenement>();
 
             foreach (string jsonStr in objectTab)
             {
@@ -284,13 +260,20 @@ namespace Projet_File_Rouge.Tools
             DateTime inChargeDate = new DateTime();
             DateTime repairStartDate = new DateTime();
             DateTime repairEndDate = new DateTime();
-            Client client = null;
-            Equipment equipmentToRepair = null;
-            List<Document> documentLibrary = null;
+            string client = null;
             User recorder = null;
-            List<UserHistory> repairmenHistory = null;
+            User actualRepairMan = null;
             RedWire.state actualState = RedWire.state.attente;
-            List<Event> eventList = null;
+            RedWire.EquipmentType equipmentType = RedWire.EquipmentType.Autre;
+            string model = string.Empty;
+            string equipmentState = string.Empty;
+            bool warranty = false;
+            bool problemReproduced = false;
+            bool bag = false;
+            bool alimentation = false;
+            bool mouse = false;
+            bool battery = false;
+            bool other = false;
 
             string temp;
 
@@ -302,59 +285,85 @@ namespace Projet_File_Rouge.Tools
             {
                 if (split == RedWireEnum.id.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
-
-                    id = Int32.Parse(temp);
+                    id = GetInt(splitTab[i + 1]);
                 }
                 if (split == RedWireEnum.inChargeDate.ToString())
                 {
-                    inChargeDate = Convert.ToDateTime(splitTab[i + 2]);
+                    inChargeDate = GetDate(splitTab[i + 2]);
                 }
                 if (split == RedWireEnum.repairStartDate.ToString())
                 {
-                    repairStartDate = Convert.ToDateTime(splitTab[i + 2]);
+                    repairStartDate = GetDate(splitTab[i + 2]);
                 }
                 if (split == RedWireEnum.repairEndDate.ToString())
                 {
-                    repairEndDate = Convert.ToDateTime(splitTab[i + 2]);
+                    repairEndDate = GetDate(splitTab[i + 2]);
                 }
                 if (split == RedWireEnum.client.ToString())
                 {
-                    client = ClientUnjsoning(splitTab[i + 2]);
-                }
-                if (split == RedWireEnum.equipmentToRepair.ToString())
-                {
-                    equipmentToRepair = EquipmentUnjsoning(splitTab[i + 2]);
-                }
-                if (split == RedWireEnum.documentLibrary.ToString())
-                {
-                    documentLibrary = DocumentsUnjsoning(splitTab[i + 2]);
+                    client = splitTab[i + 2];
                 }
                 if (split == RedWireEnum.recorder.ToString())
                 {
-                    recorder = UserUnjsoning(splitTab[i + 2]);
+                    recorder = RequestCenter.GetUser(GetInt(splitTab[i + 1]));
                 }
-                if (split == RedWireEnum.repairmenHistory.ToString())
+                if (split == RedWireEnum.actualRepairMan.ToString())
                 {
-                    repairmenHistory = UserHistorysUnjsoning(splitTab[i + 2]);
+                    int? tempInt = GetIntNullable(splitTab[i + 1]);
+                    actualRepairMan = tempInt == null ? null : RequestCenter.GetUser((int)tempInt);
                 }
                 if (split == RedWireEnum.actualState.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
-
-                    actualState = (RedWire.state)Int32.Parse(temp);
+                    actualState = (RedWire.state)GetInt(splitTab[i + 1]);
                 }
-                if (split == RedWireEnum.eventList.ToString())
+                if (split == RedWireEnum.id.ToString())
                 {
-                    eventList = EventsUnjsoning(splitTab[i + 2]);
+                    id = GetInt(splitTab[i + 1]);
                 }
+                if (split == RedWireEnum.type.ToString())
+                {
+                    equipmentType = (RedWire.EquipmentType)GetInt(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.model.ToString())
+                {
+                    model = splitTab[i + 2];
+                }
+                if (split == RedWireEnum.equipmentState.ToString())
+                {
+                    equipmentState = splitTab[i + 2];
+                }
+                if (split == RedWireEnum.warranty.ToString())
+                {
+                    warranty = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.problemReproduced.ToString())
+                {
+                    problemReproduced = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.bag.ToString())
+                {
+                    bag = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.alimentation.ToString())
+                {
+                    alimentation = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.mouse.ToString())
+                {
+                    mouse = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.battery.ToString())
+                {
+                    battery = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.other.ToString())
+                {
+                    other = GetBool(splitTab[i + 1]);
+                }
+                i++;
             }
 
-            RedWire redWire = new RedWire(id, inChargeDate, repairStartDate, repairEndDate, client, equipmentToRepair, documentLibrary, recorder, repairmenHistory, actualState, eventList);
+            RedWire redWire = new RedWire(id, inChargeDate, repairStartDate, repairEndDate, client, recorder, actualRepairMan, actualState, equipmentType, model, equipmentState, warranty, problemReproduced, bag, alimentation, mouse, battery, other);
 
             return redWire;
         }
@@ -391,11 +400,7 @@ namespace Projet_File_Rouge.Tools
             {
                 if (split == UserEnum.id.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
-
-                    id = Int32.Parse(temp);
+                    id = GetInt(splitTab[i + 1]);
                 }
                 if (split == UserEnum.name.ToString())
                 {
@@ -407,16 +412,12 @@ namespace Projet_File_Rouge.Tools
                 }
                 if (split == UserEnum.accessLevel.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
-
-                    accessLevel = (User.AccessLevel)Int32.Parse(temp);
+                    accessLevel = (User.AccessLevel)GetInt(splitTab[i + 1]);
                 }
                 i++;
             }
 
-            User user = new User(id, name, accessLevel);
+            User user = new User(id, name, password, accessLevel);
 
             return user;
         }
@@ -455,19 +456,15 @@ namespace Projet_File_Rouge.Tools
             {
                 if (split == UserHistoryEnum.id.ToString())
                 {
-                    temp = splitTab[i + 1];
-                    temp = temp.Remove(0, 1);
-                    temp = temp.Remove(temp.Length - 1, 1);
-
-                    id = Int32.Parse(temp);
+                    id = GetInt(splitTab[i + 1]);
                 }
                 if (split == UserHistoryEnum.time.ToString())
                 {
-                    time = Convert.ToDateTime(splitTab[i + 2]);
+                    time = GetDate(splitTab[i + 2]);
                 }
                 if (split == UserHistoryEnum.user.ToString())
                 {
-                    user = UserUnjsoning(splitTab[i + 2]);
+                    user = RequestCenter.GetUser(GetInt(splitTab[i + 1]));
                 }
             }
 
@@ -489,6 +486,45 @@ namespace Projet_File_Rouge.Tools
             }
 
             return userHistories;
+        }
+
+        public static int GetInt(string json)
+        {
+            json = GetShort(json);
+
+            return Int32.Parse(json);
+        }
+
+        public static int? GetIntNullable(string json)
+        {
+            json = GetShort(json);
+
+            return json == "null" ? null : Int32.Parse(json);
+        }
+
+        public static bool GetBool(string json)
+        {
+            json = GetShort(json);
+
+            return Convert.ToBoolean(json);
+        }
+
+        public static DateTime GetDate(string json)
+        {
+            return Convert.ToDateTime(json);
+        }
+
+        public static Guid GetGuid(string json)
+        {
+            return Guid.Parse(json);
+        }
+
+        public static string GetShort(string json)
+        {
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
+            return json;
         }
     }
 }

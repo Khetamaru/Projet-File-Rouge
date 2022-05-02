@@ -24,5 +24,10 @@ namespace Projet_File_Rouge.Views
         {
             InitializeComponent();
         }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext != null) { ((dynamic)DataContext).PasswordField = ((PasswordBox)sender).Password; }
+        }
     }
 }

@@ -32,10 +32,17 @@ namespace Projet_File_Rouge.Stores
 
             caches.Add(cacheKey, cacheValue);
         }
+
+        public void CleanCache(CacheStoreEnum cacheKey)
+        {
+            caches.Remove(cacheKey);
+        }
     }
 }
 
 public enum CacheStoreEnum
 {
-    UserDetail
+    ActualUser,
+    UserDetail,
+    RedWireDetail
 }

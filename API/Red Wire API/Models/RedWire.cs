@@ -11,9 +11,20 @@ namespace Projet_File_Rouge.Object
         public DateTime repairStartDate { get; set; }
         public DateTime repairEndDate { get; set; }
 
-        public int clientId { get; set; }
-        public virtual Equipment equipmentId { get; set; }
-        public virtual User recorderId { get; set; }
+        public string client { get; set; }
+        public int recorder { get; set; }
+        public int? actualRepairMan { get; set; }
         public int actualState { get; set; }
+
+        public int type { get; set; }
+        public string model { get; set; }
+        public bool bag { get; set; }
+        public bool alimentation { get; set; }
+        public bool mouse { get; set; }
+        public bool battery { get; set; }
+        public bool other { get; set; }
+        public bool warranty { get; set; }
+        public bool problemReproduced { get; set; }
+        public string equipmentState { get; set; }
     }
 }

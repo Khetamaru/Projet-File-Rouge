@@ -1,5 +1,7 @@
 ﻿
 
+using Projet_File_Rouge.Tools;
+
 namespace Projet_File_Rouge.Object
 {
     public class User : BDDObject
@@ -18,12 +20,13 @@ namespace Projet_File_Rouge.Object
             Intern
         }
 
-        public User(string _name, AccessLevel _accessLevel) : this(null, _name, _accessLevel) { }
+        public User(string _name, string _password, AccessLevel _accessLevel) : this(null, _name, _password, _accessLevel) { }
 
-        public User(int? _id, string _name, AccessLevel _accessLevel)
+        public User(int? _id, string _name, string _password, AccessLevel _accessLevel)
         {
             id = _id;
             name = _name;
+            password = _password;
             accessLevel = _accessLevel;
         }
 
@@ -37,8 +40,8 @@ namespace Projet_File_Rouge.Object
             return "{" +
                    "\"" + UserEnum.id + "\" : " + Id + "," +
                    "\"" + UserEnum.name + "\" : \"" + Name + "\"," +
-                   "\"" + UserEnum.password + "\" : \"" + Password + "\"," +
-                   "\"" + UserEnum.accessLevel + "\" : \"" + UserLevel + "\"" +
+                   "\"" + UserEnum.password + "\" : \"" + SHA256Cypher.Cyphing(Password) + "\"," +
+                   "\"" + UserEnum.accessLevel + "\" : \"" + (int)UserLevel + "\"" +
                    "}";
         }
 
@@ -46,8 +49,8 @@ namespace Projet_File_Rouge.Object
         {
             return "{" +
                    "\"" + UserEnum.name + "\" : \"" + Name + "\"," +
-                   "\"" + UserEnum.password + "\" : \"" + Password + "\"," +
-                   "\"" + UserEnum.accessLevel + "\" : \"" + UserLevel + "\"" +
+                   "\"" + UserEnum.password + "\" : \"" + SHA256Cypher.Cyphing(Password) + "\"," +
+                   "\"" + UserEnum.accessLevel + "\" : \"" + (int)UserLevel + "\"" +
                    "}";
         }
     }

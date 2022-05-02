@@ -7,7 +7,7 @@ namespace Projet_File_Rouge.Object
     {
         public int id { get; set; }
 
-        public int documentId { get; set; }
-        public virtual RedWire redWireId { get; set; }
+        public string document { get; set; }
+        public int redWire { get; set; }
     }
 }

@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Projet_File_Rouge.Views"
+             xmlns:local="clr-namespace:Projet_File_Rouge.Views" 
+             xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:MainMenuViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -16,15 +18,28 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Espace Global"/>
-        <Button Grid.Row="1" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Espace Personnel"/>
-        <Button Grid.Row="2" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Nouveau Dossier"/>
-        <Button Grid.Row="3" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Espace Disponible"/>
-        <Button Grid.Row="4" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Espace Commande"/>
-        <Button Grid.Row="5" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Ancien Dossier"/>
-        <Button Grid.Row="6" Margin="12" VerticalAlignment="Center" FontSize="20" Content="Paramètres"/>
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Margin="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="{Binding UserName, Mode=OneWay}"/>
+            <Button Grid.Column="1" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Déconnection" Command="{Binding LogOutCommand}"/>
+
+        </Grid>
+
+        <Button Grid.Row="1" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Espace Global" Command="{Binding NavigateGlobalCenterCommand}"/>
+        <Button Grid.Row="2" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Espace Personnel"/>
+        <Button Grid.Row="3" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Nouveau Dossier" Command="{Binding NavigateNewFileCommand}"/>
+        <Button Grid.Row="4" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Espace Disponible"/>
+        <Button Grid.Row="5" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Espace Commande"/>
+        <Button Grid.Row="6" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Ancien Dossier"/>
+        <Button Grid.Row="7" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Paramètres"/>
 
     </Grid>
 </UserControl>

@@ -25,6 +25,17 @@ namespace Local_API_Server.Controllers
             return await _context.RedWire.ToListAsync();
         }
 
+        // GET: api/RedWire/page/0
+        [HttpGet("page/{pageNumber}")]
+        public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWirePage(int pageNumber)
+        {
+            return await _context.RedWire.Skip(pageNumber * 10).Take(10).ToListAsync();
+        }
+
+        // GET: api/RedWire/total
+        [HttpGet("total")]
+        public ActionResult<int> GetRedWireNumber() { return _context.RedWire.Count(); }
+
         // GET: api/RedWire/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RedWire>> GetRedWire(int id)

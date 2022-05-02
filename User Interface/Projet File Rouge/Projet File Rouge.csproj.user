@@ -7,7 +7,7 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Views\Detail.xaml.cs">
+    <Compile Update="Views\GlobalCenterView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\LoginView.xaml.cs">
@@ -16,15 +16,18 @@
     <Compile Update="Views\MainMenuView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\UsersView.xaml.cs">
+    <Compile Update="Views\NewFileView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\RedWireView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="Views\Detail.xaml">
+    <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MainWindow.xaml">
+    <Page Update="Views\GlobalCenterView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\LoginView.xaml">
@@ -33,7 +36,10 @@
     <Page Update="Views\MainMenuView.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\UsersView.xaml">
+    <Page Update="Views\NewFileView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\RedWireView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -15,16 +15,20 @@
                 <views:LoginView/>
             </DataTemplate>
 
-            <DataTemplate DataType="{x:Type viewmodels:UsersViewModel}">
-                <views:UsersView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewmodels:DetailViewModel}">
-                <views:Detail/>
-            </DataTemplate>
-
             <DataTemplate DataType="{x:Type viewmodels:MainMenuViewModel}">
                 <views:MainMenuView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:NewFileViewModel}">
+                <views:NewFileView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:GlobalCenterViewModel}">
+                <views:GlobalCenterView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:RedWireViewModel}">
+                <views:RedWireView/>
             </DataTemplate>
 
         </ContentControl.Resources>

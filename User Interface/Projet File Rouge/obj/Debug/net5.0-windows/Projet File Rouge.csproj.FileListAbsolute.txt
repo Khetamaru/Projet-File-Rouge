@@ -20,10 +20,7 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\Projet File Rouge
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\Projet File Rouge\obj\Debug\net5.0-windows\ref\Projet File Rouge.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.pdb
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.genruntimeconfig.cache
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\Detail.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\MainWindow.g.cs
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\Detail.g.cs
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\UsersView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\App.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\GeneratedInternalTypeHelper.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge_MarkupCompile.cache
@@ -41,7 +38,6 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net5.0-
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net5.0-windows\Microsoft.Toolkit.Mvvm.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net5.0-windows\System.Runtime.CompilerServices.Unsafe.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\MainWindow.baml
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\UsersView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.g.resources
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.GeneratedMSBuildEditorConfig.editorconfig
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.AssemblyInfoInputs.cache
@@ -52,8 +48,14 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\ref\Projet File Rouge.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.pdb
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.genruntimeconfig.cache
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.csproj.AssemblyReference.cache
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\MainMenuView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\MainMenuView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\LoginView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\LoginView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\NewFileView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\NewFileView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\GlobalCenterView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\GlobalCenterView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\RedWireView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\RedWireView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.csproj.AssemblyReference.cache

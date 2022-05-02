@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Project_Inventory.Tools
+namespace Projet_File_Rouge.Tools
 {
     public static class PopUpCenter
     {

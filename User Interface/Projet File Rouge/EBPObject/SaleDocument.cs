@@ -1,0 +1,114 @@
+﻿using System;
+
+namespace Projet_File_Rouge.EBPObject
+{
+    public class SaleDocument
+    {
+        public Guid Id { get; set; }
+
+        public DateTime sysCreatedDate { get; set; }
+        public DateTime sysModifiedDate { get; set; }
+
+        public string DocumentNumber { get; set; }
+        public string NumberPrefix { get; set; }
+        public Decimal NumberSuffix { get; set; }
+
+        public string InvoicingAddress_ThirdName { get; set; }
+        public string InvoicingContact_Phone { get; set; }
+        public string InvoicingContact_CellPhone { get; set; }
+        public string InvoicingContact_Email { get; set; }
+        public string DeliveryAddress_Address1 { get; set; }
+        public string DeliveryAddress_ZipCode { get; set; }
+        public string DeliveryAddress_City { get; set; }
+        public string DeliveryAddress_State { get; set; }
+        public string InvoicingAddress_CountryIsoCode { get; set; }
+
+        public Decimal CommitmentsBalanceDue { get; set; }
+        public Decimal TotalDueAmount { get; set; }
+
+        public SaleDocument(Guid Id,
+                            DateTime sysCreatedDate,
+                            DateTime sysModifiedDate,
+                            string DocumentNumber,
+                            string NumberPrefix,
+                            Decimal NumberSuffix,
+                            string InvoicingAddress_ThirdName,
+                            string InvoicingContact_Phone,
+                            string InvoicingContact_CellPhone,
+                            string InvoicingContact_Email,
+                            string DeliveryAddress_Address1,
+                            string DeliveryAddress_ZipCode,
+                            string DeliveryAddress_City,
+                            string DeliveryAddress_State,
+                            string InvoicingAddress_CountryIsoCode,
+                            Decimal CommitmentsBalanceDue,
+                            Decimal TotalDueAmount)
+        {
+            this.Id = Id;
+            this.sysCreatedDate = sysCreatedDate;
+            this.sysModifiedDate = sysModifiedDate;
+            this.DocumentNumber = DocumentNumber;
+            this.NumberPrefix = NumberPrefix;
+            this.NumberSuffix = NumberSuffix;
+            this.InvoicingAddress_ThirdName = InvoicingAddress_ThirdName;
+            this.InvoicingContact_Phone = InvoicingContact_Phone;
+            this.InvoicingContact_CellPhone = InvoicingContact_CellPhone;
+            this.InvoicingContact_Email = InvoicingContact_Email;
+            this.DeliveryAddress_Address1 = DeliveryAddress_Address1;
+            this.DeliveryAddress_ZipCode = DeliveryAddress_ZipCode;
+            this.DeliveryAddress_City = DeliveryAddress_City;
+            this.DeliveryAddress_State = DeliveryAddress_State;
+            this.InvoicingAddress_CountryIsoCode = InvoicingAddress_CountryIsoCode;
+            this.CommitmentsBalanceDue = CommitmentsBalanceDue;
+            this.TotalDueAmount = TotalDueAmount;
+        }
+
+        public static bool IsValidPrefix(string prefixToTest)
+        {
+            foreach (PrefixEnum prefixEnum in Enum.GetValues<PrefixEnum>())
+            {
+                if (prefixToTest == prefixEnum.ToString()) { return true; }
+            }
+
+            return false;
+        }
+
+        public static bool IsValidPrefix(string prefixToTest, string[] strTab)
+        {
+            foreach (string str in strTab)
+            {
+                if (prefixToTest == str) { return true; }
+            }
+
+            return false;
+        }
+    }
+
+    public enum SaleDocumentEnum
+    {
+        id,
+        sysCreatedDate,
+        sysModifiedDate,
+        documentNumber,
+        numberPrefix,
+        numberSuffix,
+        invoicingAddress_ThirdName,
+        invoicingContact_Phone,
+        invoicingContact_CellPhone,
+        invoicingContact_Email,
+        deliveryAddress_Address1,
+        deliveryAddress_ZipCode,
+        deliveryAddress_City,
+        deliveryAddress_State,
+        invoicingAddress_CountryIsoCode,
+        commitmentsBalanceDue,
+        totalDueAmount
+    }
+
+    public enum PrefixEnum
+    {
+        FA,
+        CM,
+        DE
+    }
+}

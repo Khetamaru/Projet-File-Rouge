@@ -1,6 +1,7 @@
 ﻿using Projet_File_Rouge.Commands;
 using Projet_File_Rouge.Object;
 using Projet_File_Rouge.Stores;
+using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
@@ -14,7 +15,7 @@ namespace Projet_File_Rouge.ViewModel
             NavigateGlobalCenterCommand = new NavigateGlobalCenterCommand(navigationStore, cacheStore);
             NavigateNewFileCommand = new NavigateNewFileCommand(navigationStore, cacheStore);
 
-            userName = (cacheStore.GetCache(CacheStoreEnum.ActualUser) as User).Name;
+            userName = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)).Name;
         }
 
         public string UserName

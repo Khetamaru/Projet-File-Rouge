@@ -32,12 +32,12 @@ namespace Projet_File_Rouge.Commands
             if (RequestCenter.SignInRequest(UserNameField, PasswordField))
             {
                 LoginCacheFile.Write(UserNameField);
-                cacheStore.SetCache(CacheStoreEnum.ActualUser, RequestCenter.GetUserByName(UserNameField));
+                cacheStore.SetObjectCache(ObjectCacheStoreEnum.ActualUser, RequestCenter.GetUserByName(UserNameField).Id);
                 navigationStore.CurrentViewModel = new MainMenuViewModel(navigationStore, cacheStore);
             }
             else
             {
-                // ERROR MESSAGE
+                PopUpCenter.MessagePopup("Mot de passe invalide");
             }
         }
     }

@@ -139,6 +139,9 @@ namespace Projet_File_Rouge.Tools
         {
             if (json == empty) { return new List<SaleDocument>(); }
 
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
             string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
             List<SaleDocument> saleDocuments = new List<SaleDocument>();
 
@@ -155,8 +158,6 @@ namespace Projet_File_Rouge.Tools
             Guid documentId = new Guid();
             int LineOrder = 0;
             string DescriptionClear = string.Empty;
-
-            string temp;
 
             int i = 0;
 
@@ -188,6 +189,9 @@ namespace Projet_File_Rouge.Tools
         {
             if (json == empty) { return new List<SaleDocumentLine>(); }
 
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
             string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
             List<SaleDocumentLine> saleDocuments = new List<SaleDocumentLine>();
 
@@ -202,11 +206,10 @@ namespace Projet_File_Rouge.Tools
         public static Evenement EventUnjsoning(string json)
         {
             int id = 42;
-            RedWire redWire = null;
+            int redWire = 42;
+            DateTime date = new DateTime();
             Evenement.EventType type = Evenement.EventType.simpleText;
             string log = string.Empty;
-
-            string temp;
 
             int i = 0;
 
@@ -218,11 +221,13 @@ namespace Projet_File_Rouge.Tools
                 {
                     id = GetInt(splitTab[i + 1]);
                 }
+                if (split == EventEnum.date.ToString())
+                {
+                    date = GetDate(splitTab[i + 2]);
+                }
                 if (split == EventEnum.redWire.ToString())
                 {
-                    temp = GetShort(splitTab[i + 1]);
-
-                    redWire = RequestCenter.GetRedWire(Int32.Parse(temp));
+                    redWire = GetInt(splitTab[i + 1]);
                 }
                 if (split == EventEnum.type.ToString())
                 {
@@ -232,9 +237,10 @@ namespace Projet_File_Rouge.Tools
                 {
                     log = splitTab[i + 2];
                 }
+                i++;
             }
 
-            Evenement evenement = new Evenement(id, redWire, type, log);
+            Evenement evenement = new Evenement(id, date, redWire, type, log);
 
             return evenement;
         }
@@ -242,6 +248,9 @@ namespace Projet_File_Rouge.Tools
         public static List<Evenement> EventsUnjsoning(string json)
         {
             if (json == empty) { return new List<Evenement>(); }
+
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
 
             string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
             List<Evenement> events = new List<Evenement>();
@@ -263,7 +272,8 @@ namespace Projet_File_Rouge.Tools
             string client = null;
             User recorder = null;
             User actualRepairMan = null;
-            RedWire.state actualState = RedWire.state.attente;
+            User transfertTarget = null;
+            RedWire.state actualState = RedWire.state.libre;
             RedWire.EquipmentType equipmentType = RedWire.EquipmentType.Autre;
             string model = string.Empty;
             string equipmentState = string.Empty;
@@ -274,8 +284,6 @@ namespace Projet_File_Rouge.Tools
             bool mouse = false;
             bool battery = false;
             bool other = false;
-
-            string temp;
 
             int i = 0;
 
@@ -311,6 +319,11 @@ namespace Projet_File_Rouge.Tools
                 {
                     int? tempInt = GetIntNullable(splitTab[i + 1]);
                     actualRepairMan = tempInt == null ? null : RequestCenter.GetUser((int)tempInt);
+                }
+                if (split == RedWireEnum.transfertTarget.ToString())
+                {
+                    int? tempInt = GetIntNullable(splitTab[i + 1]);
+                    transfertTarget = tempInt == null ? null : RequestCenter.GetUser((int)tempInt);
                 }
                 if (split == RedWireEnum.actualState.ToString())
                 {
@@ -363,7 +376,125 @@ namespace Projet_File_Rouge.Tools
                 i++;
             }
 
-            RedWire redWire = new RedWire(id, inChargeDate, repairStartDate, repairEndDate, client, recorder, actualRepairMan, actualState, equipmentType, model, equipmentState, warranty, problemReproduced, bag, alimentation, mouse, battery, other);
+            RedWire redWire = new RedWire(id, inChargeDate, repairStartDate, repairEndDate, client, recorder, actualRepairMan, transfertTarget, actualState, equipmentType, model, equipmentState, warranty, problemReproduced, bag, alimentation, mouse, battery, other);
+
+            return redWire;
+        }
+
+        public static RedWire RedWireUnjsoning(string json, List<User> users)
+        {
+            int id = 42;
+            DateTime inChargeDate = new DateTime();
+            DateTime repairStartDate = new DateTime();
+            DateTime repairEndDate = new DateTime();
+            string client = null;
+            User recorder = null;
+            User actualRepairMan = null;
+            User transfertTarget = null;
+            RedWire.state actualState = RedWire.state.libre;
+            RedWire.EquipmentType equipmentType = RedWire.EquipmentType.Autre;
+            string model = string.Empty;
+            string equipmentState = string.Empty;
+            bool warranty = false;
+            bool problemReproduced = false;
+            bool bag = false;
+            bool alimentation = false;
+            bool mouse = false;
+            bool battery = false;
+            bool other = false;
+
+            int i = 0;
+
+            string[] splitTab = json.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == RedWireEnum.id.ToString())
+                {
+                    id = GetInt(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.inChargeDate.ToString())
+                {
+                    inChargeDate = GetDate(splitTab[i + 2]);
+                }
+                if (split == RedWireEnum.repairStartDate.ToString())
+                {
+                    repairStartDate = GetDate(splitTab[i + 2]);
+                }
+                if (split == RedWireEnum.repairEndDate.ToString())
+                {
+                    repairEndDate = GetDate(splitTab[i + 2]);
+                }
+                if (split == RedWireEnum.client.ToString())
+                {
+                    client = splitTab[i + 2];
+                }
+                if (split == RedWireEnum.recorder.ToString())
+                {
+                    recorder = GetUserInUserList(GetInt(splitTab[i + 1]), users);
+                }
+                if (split == RedWireEnum.actualRepairMan.ToString())
+                {
+                    int? tempInt = GetIntNullable(splitTab[i + 1]);
+                    actualRepairMan = tempInt == null ? null : GetUserInUserList((int)tempInt, users);
+                }
+                if (split == RedWireEnum.transfertTarget.ToString())
+                {
+                    int? tempInt = GetIntNullable(splitTab[i + 1]);
+                    transfertTarget = tempInt == null ? null : GetUserInUserList((int)tempInt, users);
+                }
+                if (split == RedWireEnum.actualState.ToString())
+                {
+                    actualState = (RedWire.state)GetInt(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.id.ToString())
+                {
+                    id = GetInt(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.type.ToString())
+                {
+                    equipmentType = (RedWire.EquipmentType)GetInt(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.model.ToString())
+                {
+                    model = splitTab[i + 2];
+                }
+                if (split == RedWireEnum.equipmentState.ToString())
+                {
+                    equipmentState = splitTab[i + 2];
+                }
+                if (split == RedWireEnum.warranty.ToString())
+                {
+                    warranty = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.problemReproduced.ToString())
+                {
+                    problemReproduced = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.bag.ToString())
+                {
+                    bag = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.alimentation.ToString())
+                {
+                    alimentation = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.mouse.ToString())
+                {
+                    mouse = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.battery.ToString())
+                {
+                    battery = GetBool(splitTab[i + 1]);
+                }
+                if (split == RedWireEnum.other.ToString())
+                {
+                    other = GetBool(splitTab[i + 1]);
+                }
+                i++;
+            }
+
+            RedWire redWire = new RedWire(id, inChargeDate, repairStartDate, repairEndDate, client, recorder, actualRepairMan, transfertTarget, actualState, equipmentType, model, equipmentState, warranty, problemReproduced, bag, alimentation, mouse, battery, other);
 
             return redWire;
         }
@@ -372,12 +503,18 @@ namespace Projet_File_Rouge.Tools
         {
             if (json == empty) { return new List<RedWire>(); }
 
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
             string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
+
+            List<User> users = RequestCenter.GetUsers();
+
             List<RedWire> redWires = new List<RedWire>();
 
             foreach (string jsonStr in objectTab)
             {
-                redWires.Add(RedWireUnjsoning(jsonStr));
+                redWires.Add(RedWireUnjsoning(jsonStr, users));
             }
 
             return redWires;
@@ -445,8 +582,7 @@ namespace Projet_File_Rouge.Tools
             int id = 42;
             DateTime time = new DateTime();
             User user = null;
-
-            string temp;
+            RedWire redWire = null;
 
             int i = 0;
 
@@ -466,9 +602,14 @@ namespace Projet_File_Rouge.Tools
                 {
                     user = RequestCenter.GetUser(GetInt(splitTab[i + 1]));
                 }
+                if (split == UserHistoryEnum.redWire.ToString())
+                {
+                    redWire = RequestCenter.GetRedWire(GetInt(splitTab[i + 1]));
+                }
+                i++;
             }
 
-            UserHistory userHistory = new UserHistory(id, time, user);
+            UserHistory userHistory = new UserHistory(id, time, user, redWire);
 
             return userHistory;
         }
@@ -476,6 +617,9 @@ namespace Projet_File_Rouge.Tools
         public static List<UserHistory> UserHistorysUnjsoning(string json)
         {
             if (json == empty) { return new List<UserHistory>(); }
+
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
 
             string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
             List<UserHistory> userHistories = new List<UserHistory>();
@@ -486,6 +630,56 @@ namespace Projet_File_Rouge.Tools
             }
 
             return userHistories;
+        }
+
+        public static DocumentList DocumentListUnjsoning(string json)
+        {
+            int id = 42;
+            string document = string.Empty;
+            RedWire redWire = null;
+
+            int i = 0;
+
+            string[] splitTab = json.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == DocumentListEnum.id.ToString())
+                {
+                    id = GetInt(splitTab[i + 1]);
+                }
+                if (split == DocumentListEnum.document.ToString())
+                {
+                    document = splitTab[i + 2];
+                }
+                if (split == DocumentListEnum.redWire.ToString())
+                {
+                    redWire = RequestCenter.GetRedWire(GetInt(splitTab[i + 1]));
+                }
+                i++;
+            }
+
+            DocumentList documentList = new DocumentList(id, document, redWire);
+
+            return documentList;
+        }
+
+        public static List<DocumentList> DocumentListsUnjsoning(string json)
+        {
+            if (json == empty) { return new List<DocumentList>(); }
+
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
+            string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
+            List<DocumentList> documentList = new List<DocumentList>();
+
+            foreach (string jsonStr in objectTab)
+            {
+                documentList.Add(DocumentListUnjsoning(jsonStr));
+            }
+
+            return documentList;
         }
 
         public static int GetInt(string json)
@@ -525,6 +719,15 @@ namespace Projet_File_Rouge.Tools
             json = json.Remove(json.Length - 1, 1);
 
             return json;
+        }
+
+        public static User GetUserInUserList(int id, List<User> users)
+        {
+            foreach(User user in users)
+            {
+                if (user.Id == id) { return user; }
+            }
+            return null;
         }
     }
 }

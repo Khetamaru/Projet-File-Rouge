@@ -22,6 +22,9 @@ namespace Projet_File_Rouge
             {
                 DataContext = new MainViewModel(navigationStore)
             };
+
+            MainWindow.WindowState = WindowState.Maximized;
+
             MainWindow.Show();
 
             base.OnStartup(e);

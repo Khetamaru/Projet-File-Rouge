@@ -14,6 +14,7 @@ namespace Projet_File_Rouge.Object
         public string client { get; set; }
         public int recorder { get; set; }
         public int? actualRepairMan { get; set; }
+        public int? transfertTarget { get; set; }
         public int actualState { get; set; }
 
         public int type { get; set; }

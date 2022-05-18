@@ -8,7 +8,7 @@ using Projet_File_Rouge.ViewModel;
 
 namespace Projet_File_Rouge.Commands
 {
-    class NavigateMainMenuCommand : CommandBase
+    public class NavigateMainMenuCommand : CommandBase
     {
         private readonly NavigationStore navigationStore;
         public CacheStore cacheStore;

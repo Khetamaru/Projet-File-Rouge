@@ -15,7 +15,8 @@ namespace Projet_File_Rouge.Object
         private readonly string client;
 
         private readonly User recorder;
-        private readonly User actualRepairMan;
+        private User actualRepairMan;
+        private User transfertTarget;
 
         private state actualState;
 
@@ -35,9 +36,20 @@ namespace Projet_File_Rouge.Object
 
         public enum state
         {
-            attente,
-            réparation,
-            fini
+            libre,
+            start,
+            start_diag,
+            start_response,
+            en_cours,
+            attente_commande,
+            attente_client,
+            transit,
+            fin_facture,
+            fin_appel,
+            fin_payé,
+            fin,
+            NR_appel,
+            NR_rendu
         }
 
         public enum EquipmentType
@@ -70,10 +82,10 @@ namespace Projet_File_Rouge.Object
             other = _other;
 
             inChargeDate = DateTime.Now;
-            actualState = state.attente;
+            actualState = state.libre;
         }
 
-        public RedWire(int? _id, DateTime _inChargeDate, DateTime _repairStartDate, DateTime _repairEndDate, string _client, User _recorder, User _actualRepairMan, RedWire.state _actualState, EquipmentType _type, string _model, string _equipmentState, bool _warranty, bool _problemReproduced, bool _bag, bool _alimentation, bool _mouse, bool _battery, bool _other) 
+        public RedWire(int? _id, DateTime _inChargeDate, DateTime _repairStartDate, DateTime _repairEndDate, string _client, User _recorder, User _actualRepairMan, User _transfertTarget, RedWire.state _actualState, EquipmentType _type, string _model, string _equipmentState, bool _warranty, bool _problemReproduced, bool _bag, bool _alimentation, bool _mouse, bool _battery, bool _other) 
             : this(_id, _recorder, _client, _type, _model, _equipmentState, _warranty, _problemReproduced, _bag, _alimentation, _mouse, _battery, _other)
         {
             inChargeDate = _inChargeDate;
@@ -81,15 +93,19 @@ namespace Projet_File_Rouge.Object
             repairEndDate = _repairEndDate;
             actualState = _actualState;
             actualRepairMan = _actualRepairMan;
+            transfertTarget = _transfertTarget;
         }
 
         public int Id { get => id == null ? -1 : (int)id; }
         public DateTime InChargeDate { get => inChargeDate; }
+        public string InChargeDateFormated { get => inChargeDate.ToString("dd'/'MM'/'yy' 'HH':'mm"); }
         public DateTime RepairStartDate { get => repairStartDate; set => repairStartDate = value; }
         public DateTime RepairEndDate { get => repairEndDate; set => repairEndDate = value; }
         public string Client { get => client; }
+        public string ClientName { get => RequestCenter.GetSaleDocument(Client).InvoicingAddress_ThirdName; }
         public User Recorder { get => recorder; }
-        public User ActualRepairMan { get => actualRepairMan; }
+        public User ActualRepairMan { get => actualRepairMan; set => actualRepairMan = value; }
+        public User TransfertTarget { get => transfertTarget; set => transfertTarget = value; }
 
         public string ActualRepairManId {
             get {
@@ -98,6 +114,16 @@ namespace Projet_File_Rouge.Object
                     return "null"; 
                 }
                 return ActualRepairMan.Id.ToString();
+            }
+        }
+        public string TransfertTargetId
+        {
+            get {
+                if (TransfertTarget == null)
+                {
+                    return "null";
+                }
+                return TransfertTarget.Id.ToString();
             }
         }
         public state ActualState { get => actualState; set => actualState = value; }
@@ -122,6 +148,7 @@ namespace Projet_File_Rouge.Object
                    "\"" + RedWireEnum.client + "\" : \"" + Client + "\"," +
                    "\"" + RedWireEnum.recorder + "\" : " + Recorder.Id + "," +
                    "\"" + RedWireEnum.actualRepairMan + "\" : " + ActualRepairManId + "," +
+                   "\"" + RedWireEnum.transfertTarget + "\" : " + TransfertTargetId + "," +
                    "\"" + RedWireEnum.actualState + "\" : " + ((int)ActualState) + "," +
                    "\"" + RedWireEnum.type + "\" : " + ((int)Type) + "," +
                    "\"" + RedWireEnum.model + "\" : \"" + Model + "\"," +
@@ -145,6 +172,7 @@ namespace Projet_File_Rouge.Object
                    "\"" + RedWireEnum.client + "\" : \"" + Client + "\"," +
                    "\"" + RedWireEnum.recorder + "\" : " + Recorder.Id + "," +
                    "\"" + RedWireEnum.actualRepairMan + "\" : " + ActualRepairManId + "," +
+                   "\"" + RedWireEnum.transfertTarget + "\" : " + TransfertTargetId + "," +
                    "\"" + RedWireEnum.actualState + "\" : " + ((int)ActualState) + "," +
                    "\"" + RedWireEnum.type + "\" : " + ((int)Type) + "," +
                    "\"" + RedWireEnum.model + "\" : \"" + Model + "\"," +
@@ -169,6 +197,7 @@ namespace Projet_File_Rouge.Object
         client,
         recorder,
         actualRepairMan,
+        transfertTarget,
         actualState,
         type,
         model,

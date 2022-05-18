@@ -43,49 +43,13 @@ namespace Projet_File_Rouge.ViewModel
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
         }
 
-        public bool FormatVerification(string strEBP, string[] strTab)
-        {
-            if (strEBP == null) 
-            {
-                PopUpCenter.MessagePopup("Veuillez rentrer un numéro EBP avant d'importer les informations.");
-                return false;
-            }
-
-            if (strEBP.Length != 10)
-            {
-                PopUpCenter.MessagePopup("Taille du numéro EBP incorrecte (exemple de numéro EBP : \"FA00001123\").");
-                return false;
-            }
-
-            string prefix = strEBP.Substring(0, 2);
-            string suffix = strEBP.Substring(2, 8);
-
-            if (!SaleDocument.IsValidPrefix(prefix, strTab))
-            {
-                PopUpCenter.MessagePopup("Prefix de numéro EBP invalide et/ou non autorisé (exemple de numéro EBP : \"FA00001123\").");
-                return false;
-            }
-            if (!suffix.All(char.IsDigit))
-            {
-                PopUpCenter.MessagePopup("Suffix de numéro EBP invalide (exemple de numéro EBP : \"FA00001123\").");
-                return false;
-            }
-
-            return true;
-        }
-
         public void ChargeSaleDocument(object sender, RoutedEventArgs e, string[] strTab)
         {
-            if (FormatVerification(inChargeNumber, strTab))
+            (bool result, SaleDocument temp) = SaleDocument.FormatVerification(inChargeNumber, strTab);
+            if (result)
             {
-                SaleDocument temp = RequestCenter.GetSaleDocument(InChargeNumber);
-
-                if (temp != null)
-                { 
-                    SaleDocument = temp;
-                    PopUpCenter.MessagePopup("Informations importées.");
-                }
-                else { PopUpCenter.MessagePopup("Ce numéro EBP n'existe pas."); }
+                SaleDocument = temp;
+                PopUpCenter.MessagePopup("Informations importées.");
             }
         }
 
@@ -190,10 +154,11 @@ namespace Projet_File_Rouge.ViewModel
 
         public void RedWireCreation()
         {
-            if (FieldsVerification())
+            (bool result, List<string> stringList) = FieldsVerification();
+            if (result)
             {
                 RedWire redWire = new RedWire(null,
-                                              NavigateMainMenuCommand.cacheStore.GetCache(CacheStoreEnum.ActualUser) as User,
+                                              RequestCenter.GetUser(NavigateMainMenuCommand.cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)),
                                               SaleDocument.DocumentNumber,
                                               (RedWire.EquipmentType)SupportType,
                                               SupportModel,
@@ -210,59 +175,83 @@ namespace Projet_File_Rouge.ViewModel
 
                 List<SaleDocumentLine> saleLines = RequestCenter.GetSaleLines(SaleDocument.Id);
 
-                linesEdition(redWire, saleLines);
+                BoolAttributeStringify(stringList);
+
+                linesEdition(redWire, saleLines, stringList);
+
+                if (OptionEBP != null)
+                {
+                    RequestCenter.PostDocument(new DocumentList(OptionEBP, redWire).Jsonify());
+                }
 
                 NavigateMainMenuCommand.Execute(new object());
             }
         }
 
-        public bool FieldsVerification()
+        private void BoolAttributeStringify(List<string> stringList)
         {
+            if (Bag) { stringList.Add("Matériel supplémentaire pris en charge : Sacoche"); }
+            if (Alimentation) { stringList.Add("Matériel supplémentaire pris en charge : Alimentation"); }
+            if (Mouse) { stringList.Add("Matériel supplémentaire pris en charge : Souris"); }
+            if (Battery) { stringList.Add("Matériel supplémentaire pris en charge : Batterie"); }
+            if (Other) { stringList.Add("Matériel supplémentaire pris en charge : Autre"); }
+            if (Warranty) { stringList.Add("ATTENTION : Matériel sous garantie"); }
+            else { stringList.Add("Matériel non garantie"); }
+            if (ProblemReproduced) { stringList.Add("Problème reproduit avec le client lors de la prise en charge"); }
+            else { stringList.Add("ATTENTION : Problème non reproduit avec le client lors de la prise en charge"); }
+            if (SupportModel != null) { stringList.Add("Model de l'appareil : " + SupportModel); }
+        }
+
+        public (bool, List<string>) FieldsVerification()
+        {
+            List<string> stringList = new();
+
             if (SaleDocument == null)
             {
                 PopUpCenter.MessagePopup("Erreur : Aucune Prise en charge importée.");
-                return false;
+                return (false, null);
             }
 
             if (OptionEBP != null)
             {
                 string[] strTab = { "FA", "DE" };
-                if (!FormatVerification(OptionEBP, strTab))
+                (bool result, SaleDocument temp) = SaleDocument.FormatVerification(OptionEBP, strTab);
+                if (!result)
                 {
-                    return false;
+                    return (false, null);
                 }
-                else
-                {
-                    SaleDocument temp = RequestCenter.GetSaleDocument(OptionEBP);
+                else { OptionDocument = temp; }
 
-                    if (temp == null)
-                    {
-                        return false;
-                    }
-                    else { OptionDocument = temp; }
-                }
+                stringList.Add("Facture de diag : " + OptionEBP);
             }
 
             if (supportType == null)
             {
                 PopUpCenter.MessagePopup("Erreur : Selectionnez le type de matériel pris en charge.");
-                return false;
+                return (false, null);
             }
 
             if (supportState == null)
             {
                 PopUpCenter.MessagePopup("Erreur : Décrivez l'état du matériel pris en charge.");
-                return false;
+                return (false, null);
             }
+            else { stringList.Add("État du matériel Client : " + supportState); }
 
-            return true;
+            return (true, stringList);
         }
 
-        public void linesEdition(RedWire redWire, List<SaleDocumentLine> saleLines)
+        public void linesEdition(RedWire redWire, List<SaleDocumentLine> saleLines, List<string> stringList)
         {
             foreach (SaleDocumentLine line in saleLines)
             {
-                Evenement temp = new Evenement(redWire, Evenement.EventType.simpleText, line.DescriptionClear);
+                Evenement temp = new Evenement(redWire.Id, Evenement.EventType.simpleText, line.DescriptionClear);
+
+                RequestCenter.PostEvent(temp.Jsonify());
+            }
+            foreach (string line in stringList)
+            {
+                Evenement temp = new Evenement(redWire.Id, Evenement.EventType.simpleText, line);
 
                 RequestCenter.PostEvent(temp.Jsonify());
             }

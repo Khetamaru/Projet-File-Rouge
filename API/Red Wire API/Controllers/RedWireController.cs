@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Local_API_Server.Models;
 using Projet_File_Rouge.Object;
+using System;
 
 namespace Local_API_Server.Controllers
 {
@@ -29,12 +30,48 @@ namespace Local_API_Server.Controllers
         [HttpGet("page/{pageNumber}")]
         public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWirePage(int pageNumber)
         {
-            return await _context.RedWire.Skip(pageNumber * 10).Take(10).ToListAsync();
+            return await _context.RedWire.OrderByDescending(r => r.inChargeDate).Skip(pageNumber * 10).Take(10).ToListAsync();
+        }
+
+        // GET: api/RedWire/page/0/0001-01-01T00:00:00/-1/-1/CM
+        [HttpGet("page/{pageNumber}/{date}/{step}/{userId}/{clientName}")]
+        public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWireSpecial(int pageNumber, DateTime date, int step, int userId, string clientName)
+        {
+            IQueryable<RedWire> result = _context.RedWire.OrderByDescending(r => r.inChargeDate);
+
+            if (date != new DateTime()) { result = result.Where(r => r.inChargeDate.Day == date.Day); }
+
+            if (step >= 0) { result = result.Where(r => r.actualState == step); }
+
+            if (userId >= 0) { result = result.Where(r => r.actualRepairMan == userId); }
+
+            if (clientName != null && clientName != string.Empty) { result = result.Where(r => r.client.Contains(clientName)); }
+
+            result = result.Skip(pageNumber * 10).Take(10);
+
+            return await result.ToListAsync();
         }
 
         // GET: api/RedWire/total
         [HttpGet("total")]
         public ActionResult<int> GetRedWireNumber() { return _context.RedWire.Count(); }
+
+        // GET: api/RedWire/total/0001-01-01T00:00:00/-1/-1/CM
+        [HttpGet("total/{date}/{step}/{userId}/{clientName}")]
+        public ActionResult<int> GetRedWireNumber(DateTime date, int step, int userId, string clientName)
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+
+            if (date != new DateTime()) { result = result.Where(r => r.inChargeDate.Day == date.Day); }
+
+            if (step >= 0) { result = result.Where(r => r.actualState == step); }
+
+            if (userId >= 0) { result = result.Where(r => r.actualRepairMan == userId); }
+
+            if (clientName != null && clientName != string.Empty) { result = result.Where(r => r.client.Contains(clientName)); }
+
+            return result.Count();
+        }
 
         // GET: api/RedWire/5
         [HttpGet("{id}")]

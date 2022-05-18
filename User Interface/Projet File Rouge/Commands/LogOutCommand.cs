@@ -16,7 +16,7 @@ namespace Projet_File_Rouge.Commands
 
         public override void Execute(object parameter)
         {
-            cacheStore.CleanCache(CacheStoreEnum.ActualUser);
+            cacheStore.CleanObjectCache(ObjectCacheStoreEnum.ActualUser);
             navigationStore.CurrentViewModel = new LoginViewModel(navigationStore, cacheStore);
         }
     }

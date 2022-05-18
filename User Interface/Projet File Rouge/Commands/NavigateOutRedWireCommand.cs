@@ -5,16 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Projet_File_Rouge.Object;
 using Projet_File_Rouge.Stores;
+using Projet_File_Rouge.Tools;
 using Projet_File_Rouge.ViewModel;
 
 namespace Projet_File_Rouge.Commands
 {
-    class NavigateRedWireCommand : CommandBase
+    public class NavigateOutRedWireCommand : CommandBase
     {
         private readonly NavigationStore navigationStore;
         public CacheStore cacheStore;
 
-        public NavigateRedWireCommand(NavigationStore navigationStore, CacheStore cacheStore)
+        public NavigateOutRedWireCommand(NavigationStore navigationStore, CacheStore cacheStore)
         {
             this.navigationStore = navigationStore;
             this.cacheStore = cacheStore;
@@ -29,7 +30,17 @@ namespace Projet_File_Rouge.Commands
 
         public override void Execute(object parameter)
         {
-            navigationStore.CurrentViewModel = new RedWireViewModel(navigationStore, cacheStore);
+            string value = cacheStore.GetInfoCache(InfoCacheStoreEnum.PreviousPageRedWire);
+
+            if (value == PageNameEnum.GlobalCenter.ToString()) { navigationStore.CurrentViewModel = new GlobalCenterViewModel(navigationStore, cacheStore); }
+
+            else if (value == PageNameEnum.FreeFolder.ToString()) { /* LATER */ }
+
+            else if(value == PageNameEnum.PersonalCenter.ToString()) { /* LATER */ }
+
+            else if(value == PageNameEnum.ElderFolder.ToString()) { /* LATER */ }
+
+            else { PopUpCenter.MessagePopup("Le codeur sait pas coder"); }
         }
     }
 }

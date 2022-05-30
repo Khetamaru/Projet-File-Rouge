@@ -9,7 +9,8 @@ namespace Projet_File_Rouge.Object
     public class Evenement : BDDObject
     {
         private readonly int id;
-        public readonly RedWire redWire;
+        public readonly DateTime date;
+        public readonly int redWireId;
         public readonly EventType type;
         public readonly string log;
 
@@ -18,21 +19,24 @@ namespace Projet_File_Rouge.Object
             simpleText
         }
 
-        public Evenement(int _id, RedWire _redWire, EventType _type, string _log)
-            : this(_redWire, _type, _log)
+        public Evenement(int _id, DateTime _date, int _redWireId, EventType _type, string _log)
+            : this(_redWireId, _type, _log)
         {
             id = _id;
+            date = _date;
         }
 
-        public Evenement(RedWire _redWire, EventType _type, string _log)
+        public Evenement(int _redWire, EventType _type, string _log)
         {
-            redWire = _redWire;
+            date = DateTime.Now;
+            redWireId = _redWire;
             type = _type;
             log = _log;
         }
 
         public int Id { get => id; }
-        public RedWire RedWire { get => redWire; }
+        public DateTime Date { get => date; }
+        public int RedWireId { get => redWireId; }
         public EventType Type { get => type; }
         public string Log { get => log; }
 
@@ -40,7 +44,8 @@ namespace Projet_File_Rouge.Object
         {
             return "{" +
                    "\"" + EventEnum.id + "\" : " + Id + "," +
-                   "\"" + EventEnum.redWire + "\" : " + RedWire.Id + "," +
+                   "\"" + EventEnum.date + "\" : \"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
+                   "\"" + EventEnum.redWire + "\" : " + RedWireId + "," +
                    "\"" + EventEnum.type + "\" : " + (int)Type + "," +
                    "\"" + EventEnum.log + "\" : \"" + Log + "\"" +
                    "}";
@@ -49,7 +54,8 @@ namespace Projet_File_Rouge.Object
         public string Jsonify()
         {
             return "{" +
-                   "\"" + EventEnum.redWire + "\" : " + RedWire.Id + "," +
+                   "\"" + EventEnum.date + "\" : \"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
+                   "\"" + EventEnum.redWire + "\" : " + RedWireId + "," +
                    "\"" + EventEnum.type + "\" : " + (int)Type + "," +
                    "\"" + EventEnum.log + "\" : \"" + Log + "\"" +
                    "}";
@@ -59,6 +65,7 @@ namespace Projet_File_Rouge.Object
     public enum EventEnum
     {
         id,
+        date,
         redWire,
         type,
         log

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.EBPObject
 {
@@ -63,6 +65,18 @@ namespace Projet_File_Rouge.EBPObject
             this.TotalDueAmount = TotalDueAmount;
         }
 
+        public string DetailInfos()
+        {
+            return "Date de prise en charge : " + sysCreatedDate + "\n" +
+                   "Numéro de Prise en charge : " + DocumentNumber + "\n" +
+                   "Nom du client : " + InvoicingAddress_ThirdName + "\n" +
+                   "Téléphone : " + InvoicingContact_Phone + "\n" +
+                   "Portable : " + InvoicingContact_CellPhone + "\n" +
+                   "Mail : " + InvoicingContact_Email + "\n" +
+                   "Addresse : " + DeliveryAddress_Address1 + "\n" +
+                   DeliveryAddress_City + " - " + DeliveryAddress_ZipCode + " - " + DeliveryAddress_State;
+        }
+
         public static bool IsValidPrefix(string prefixToTest)
         {
             foreach (PrefixEnum prefixEnum in Enum.GetValues<PrefixEnum>())
@@ -81,6 +95,44 @@ namespace Projet_File_Rouge.EBPObject
             }
 
             return false;
+        }
+
+        public static (bool, SaleDocument) FormatVerification(string strEBP, string[] strTab)
+        {
+            if (strEBP == null)
+            {
+                PopUpCenter.MessagePopup("Veuillez rentrer un numéro EBP avant d'importer les informations.");
+                return (false, null);
+            }
+
+            if (strEBP.Length != 10)
+            {
+                PopUpCenter.MessagePopup("Taille du numéro EBP incorrecte (exemple de numéro EBP : \"FA00001123\").");
+                return (false, null);
+            }
+
+            string prefix = strEBP.Substring(0, 2);
+            string suffix = strEBP.Substring(2, 8);
+
+            if (!SaleDocument.IsValidPrefix(prefix, strTab))
+            {
+                PopUpCenter.MessagePopup("Prefix de numéro EBP invalide et/ou non autorisé (exemple de numéro EBP : \"FA00001123\").");
+                return (false, null);
+            }
+            if (!suffix.All(char.IsDigit))
+            {
+                PopUpCenter.MessagePopup("Suffix de numéro EBP invalide (exemple de numéro EBP : \"FA00001123\").");
+                return (false, null);
+            }
+
+            SaleDocument temp = RequestCenter.GetSaleDocument(strEBP);
+            if (temp == null)
+            {
+                PopUpCenter.MessagePopup("Ce numéro EBP n'existe pas.");
+                return (false, null);
+            }
+
+            return (true, temp);
         }
     }
 

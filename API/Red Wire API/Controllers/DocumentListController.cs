@@ -37,6 +37,13 @@ namespace Local_API_Server.Controllers
             return DocumentList;
         }
 
+        // GET: api/Event/redwire/5
+        [HttpGet("redwire/{id}")]
+        public async Task<ActionResult<IEnumerable<DocumentList>>> GetDocumentListByRedWire(int id)
+        {
+            return await _context.DocumentList.Where(d => d.redWire == id).OrderBy(d => d.id).ToListAsync();
+        }
+
         // POST: api/DocumentList
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

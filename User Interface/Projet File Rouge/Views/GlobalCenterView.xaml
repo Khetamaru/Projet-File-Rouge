@@ -19,9 +19,10 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0"  Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Command="{Binding NavigateMainMenuCommand}"/>
+        <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Command="{Binding NavigateMainMenuCommand}"/>
 
         <Grid Grid.Row="1" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
@@ -37,15 +38,111 @@
             <Button Grid.Column="2" Width="40" Height="40" Content="{StaticResource right}" Background="Transparent" BorderBrush="Transparent" Click="ArrowRight"/>
 
         </Grid>
+        
+        <Grid Grid.Row="2" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-        <DataGrid Grid.Row="2" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="False" IsReadOnly="True" ItemsSource="{Binding RedWireList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
+            <Grid Grid.Column="0" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" Text="Date"/>
+                <DatePicker Grid.Row="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+
+            <Grid Grid.Column="1" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" Text="Statut"/>
+                <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Margin="12" Padding="5" FontSize="20" Text="Aucune Selection">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding StepListNullVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <ComboBox Grid.Column="1" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding StepList}" SelectedIndex="{Binding Step, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Column="2" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" Text="Technicien"/>
+                <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Margin="12" Padding="5" FontSize="20" Text="Aucune Selection">
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding UserListNullVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <ComboBox Grid.Column="1" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding UserList}" SelectedIndex="{Binding UserId, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Column="3" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" Text="Nom Client"/>
+                <TextBox Grid.Row="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Stretch" Text="{Binding ClientName, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+
+            <Button Grid.Column="4" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Filtrer" Click="Filter"/>
+
+            <Button Grid.Column="5" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Annuler Filtre" Click="AntiFilter"/>
+        </Grid>
+
+        <DataGrid Grid.Row="3" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="False" IsReadOnly="True" ItemsSource="{Binding RedWireList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="*" Header="Date de Création" Binding="{Binding InChargeDate}"/>
+                <DataGridTextColumn Width="*" Header="Prise en charge" Binding="{Binding InChargeDateFormated}"/>
+                <DataGridTextColumn Width="*" Header="Début réparation" Binding="{Binding RepairStartDateFormated}"/>
+                <DataGridTextColumn Width="*" Header="Fin réparation" Binding="{Binding RepairEndDateFormated}"/>
                 <DataGridTextColumn Width="*" Header="Numéro Prise en Charge" Binding="{Binding Client}"/>
                 <DataGridTextColumn Width="*" Header="Type de Support" Binding="{Binding Type}"/>
                 <DataGridTextColumn Width="*" Header="Model du Support" Binding="{Binding Model}"/>
                 <DataGridTextColumn Width="*" Header="Statut" Binding="{Binding ActualState}"/>
                 <DataGridTextColumn Width="*" Header="Réparateur" Binding="{Binding ActualRepairMan.Name}"/>
+                <DataGridTextColumn Width="*" Header="Nom Client" Binding="{Binding ClientName}"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

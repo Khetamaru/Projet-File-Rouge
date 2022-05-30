@@ -19,12 +19,27 @@
     <Compile Update="Views\NewFileView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PersoSpaceView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\RedWireView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\FreeFolderView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\CommandCenterView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\NotificationPageView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\OldFolderView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\GlobalCenterView.xaml">
@@ -37,6 +52,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\NewFileView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PersoSpaceView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\CommandView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\RedWireView.xaml">

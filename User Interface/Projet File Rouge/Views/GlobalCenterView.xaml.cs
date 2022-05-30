@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Projet_File_Rouge.Object;
-using Projet_File_Rouge.Tools;
 using Projet_File_Rouge.ViewModel;
 
 namespace Projet_File_Rouge.Views
@@ -33,7 +21,7 @@ namespace Projet_File_Rouge.Views
             RedWire redWire = (sender as DataGrid).SelectedItem as RedWire;
             if (DataContext != null && redWire != null)
             {
-                ((dynamic)DataContext as GlobalCenterViewModel).NavigateRedWireCommand.LoadRedWire(redWire);
+                ((dynamic)DataContext as GlobalCenterViewModel).NavigateRedWireCommand.LoadRedWire(redWire, PageNameEnum.GlobalCenter);
             }
         }
 
@@ -51,6 +39,16 @@ namespace Projet_File_Rouge.Views
             {
                 ((dynamic)DataContext as GlobalCenterViewModel).RightArrow();
             }
+        }
+
+        private void Filter(object sender, RoutedEventArgs e)
+        {
+            ((dynamic)DataContext as GlobalCenterViewModel).Filter();
+        }
+
+        private void AntiFilter(object sender, RoutedEventArgs e)
+        {
+            ((dynamic)DataContext as GlobalCenterViewModel).AntiFilter();
         }
     }
 }

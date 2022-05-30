@@ -1,4 +1,6 @@
-﻿using Projet_File_Rouge.ExternalInfoFile;
+﻿using System.Collections.Generic;
+using Projet_File_Rouge.ExternalInfoFile;
+using Projet_File_Rouge.Object;
 using Projet_File_Rouge.Stores;
 using Projet_File_Rouge.Tools;
 using Projet_File_Rouge.ViewModel;
@@ -32,13 +34,25 @@ namespace Projet_File_Rouge.Commands
             if (RequestCenter.SignInRequest(UserNameField, PasswordField))
             {
                 LoginCacheFile.Write(UserNameField);
-                cacheStore.SetCache(CacheStoreEnum.ActualUser, RequestCenter.GetUserByName(UserNameField));
+                cacheStore.SetObjectCache(ObjectCacheStoreEnum.ActualUser, RequestCenter.GetUserByName(UserNameField).Id);
+                OutDatedNotif(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
                 navigationStore.CurrentViewModel = new MainMenuViewModel(navigationStore, cacheStore);
             }
             else
             {
-                // ERROR MESSAGE
+                PopUpCenter.MessagePopup("Mot de passe invalide");
             }
+        }
+
+        private void OutDatedNotif(int userId)
+        {
+            int redWiresNotifNumber = RequestCenter.GetRedWireNotifNumber(userId);
+            User user = RequestCenter.GetUser(userId);
+
+            int Count = redWiresNotifNumber;
+            if ((int)user.UserLevel >= (int)User.AccessLevel.SuperUser) { Count += RequestCenter.GetCommandListNotifNumber(); }
+
+            cacheStore.SetObjectCache(ObjectCacheStoreEnum.notifNumber, Count);
         }
     }
 }

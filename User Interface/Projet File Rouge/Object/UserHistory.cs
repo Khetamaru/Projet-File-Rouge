@@ -11,18 +11,22 @@ namespace Projet_File_Rouge.Object
 
         private readonly User user;
 
-        public UserHistory(DateTime _time, User _user) : this(null, _time, _user) { }
+        private readonly RedWire redWire;
 
-        public UserHistory(int? _id, DateTime _time, User _user) {
+        public UserHistory(DateTime _time, User _user, RedWire _redWire) : this(null, _time, _user, _redWire) { }
+
+        public UserHistory(int? _id, DateTime _time, User _user, RedWire _redWire) {
 
             id = _id;
             time = _time;
             user = _user;
+            redWire = _redWire;
         }
 
         public int Id { get => id != null ? (int)id : -1; }
         public DateTime Time { get => time; }
         public User User { get => user; }
+        public RedWire RedWire { get => redWire; }
 
         public string JsonifyId()
         {
@@ -30,6 +34,7 @@ namespace Projet_File_Rouge.Object
                    "\"" + UserHistoryEnum.id + "\" : " + Id + "," +
                    "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
                    "\"" + UserHistoryEnum.user + "\" : " + User.Id +
+                   "\"" + UserHistoryEnum.redWire + "\" : " + RedWire.Id +
                    "}";
         }
 
@@ -38,6 +43,7 @@ namespace Projet_File_Rouge.Object
             return "{" +
                    "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
                    "\"" + UserHistoryEnum.user + "\" : " + User.Id +
+                   "\"" + UserHistoryEnum.redWire + "\" : " + RedWire.Id +
                    "}";
         }
     }
@@ -46,6 +52,7 @@ namespace Projet_File_Rouge.Object
     {
         id,
         time,
-        user
+        user,
+        redWire
     }
 }

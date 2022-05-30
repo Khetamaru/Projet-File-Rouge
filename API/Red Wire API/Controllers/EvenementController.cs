@@ -37,6 +37,13 @@ namespace Local_API_Server.Controllers
             return Event;
         }
 
+        // GET: api/Event/redwire/5
+        [HttpGet("redwire/{id}")]
+        public async Task<ActionResult<IEnumerable<Evenement>>> GetEventByRedWire(int id)
+        {
+            return await _context.Evenement.Where(e => e.redWire == id).OrderByDescending(e => e.id).ToListAsync();
+        }
+
         // POST: api/Event
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

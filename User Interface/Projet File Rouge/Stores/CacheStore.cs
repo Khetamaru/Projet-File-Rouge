@@ -1,48 +1,63 @@
 ﻿using System.Collections.Generic;
-using Projet_File_Rouge.Object;
 
 namespace Projet_File_Rouge.Stores
 {
     public class CacheStore
     {
-        private Dictionary<CacheStoreEnum, BDDObject> caches;
+        private Dictionary<ObjectCacheStoreEnum, int> objectCache;
+        private Dictionary<InfoCacheStoreEnum, string> infoCache;
 
         public CacheStore()
         {
-            caches = new Dictionary<CacheStoreEnum, BDDObject>();
+            objectCache = new Dictionary<ObjectCacheStoreEnum, int>();
+            infoCache = new Dictionary<InfoCacheStoreEnum, string>();
         }
 
-        public BDDObject GetCache(CacheStoreEnum cacheKey)
-        {
-            BDDObject cacheValue = caches.GetValueOrDefault(cacheKey);
+        public int GetObjectCache(ObjectCacheStoreEnum cacheKey) { return objectCache.GetValueOrDefault(cacheKey); }
+        public string GetInfoCache(InfoCacheStoreEnum cacheKey) { return infoCache.GetValueOrDefault(cacheKey); }
 
-            return cacheValue != null ? cacheValue : null;
+        public bool DoesObjectCacheExist(ObjectCacheStoreEnum cacheKey) { return objectCache.TryGetValue(cacheKey, out _); }
+        public bool DoesInfoCacheExist(InfoCacheStoreEnum cacheKey) { return infoCache.TryGetValue(cacheKey, out _); }
+
+        public void SetObjectCache(ObjectCacheStoreEnum cacheKey, int cacheValue)
+        {
+            if (DoesObjectCacheExist(cacheKey)) { objectCache.Remove(cacheKey); }
+            objectCache.Add(cacheKey, cacheValue);
+        }
+        public void SetInfoCache(InfoCacheStoreEnum cacheKey, string cacheValue)
+        {
+            if (DoesInfoCacheExist(cacheKey)) { infoCache.Remove(cacheKey); }
+            infoCache.Add(cacheKey, cacheValue);
         }
 
-        public bool DoesCacheExist(CacheStoreEnum cacheKey)
+        public void CleanObjectCache(ObjectCacheStoreEnum cacheKey)
         {
-            BDDObject cacheValue = caches.GetValueOrDefault(cacheKey);
-
-            return cacheValue != null ? true : false;
+            objectCache.Remove(cacheKey);
         }
-
-        public void SetCache(CacheStoreEnum cacheKey, BDDObject cacheValue)
+        public void CleanInfoCache(InfoCacheStoreEnum cacheKey)
         {
-            if (caches.GetValueOrDefault(cacheKey) != null) { caches.Remove(cacheKey); }
-
-            caches.Add(cacheKey, cacheValue);
-        }
-
-        public void CleanCache(CacheStoreEnum cacheKey)
-        {
-            caches.Remove(cacheKey);
+            infoCache.Remove(cacheKey);
         }
     }
 }
 
-public enum CacheStoreEnum
+public enum ObjectCacheStoreEnum
 {
     ActualUser,
     UserDetail,
-    RedWireDetail
+    RedWireDetail,
+    notifNumber,
+    CommandListDetail
+}
+public enum InfoCacheStoreEnum
+{
+    PreviousPageRedWire
+}
+public enum PageNameEnum
+{
+    GlobalCenter,
+    FreeFolder,
+    PersoSpace,
+    OldFolder,
+    CommandView
 }

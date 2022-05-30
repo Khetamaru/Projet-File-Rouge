@@ -20,9 +20,10 @@ namespace Projet_File_Rouge.Commands
             this.cacheStore = cacheStore;
         }
 
-        public void LoadRedWire(RedWire redWire)
+        public void LoadRedWire(RedWire redWire, PageNameEnum pageName)
         {
-            cacheStore.SetCache(CacheStoreEnum.RedWireDetail, redWire);
+            cacheStore.SetObjectCache(ObjectCacheStoreEnum.RedWireDetail, redWire.Id);
+            cacheStore.SetInfoCache(InfoCacheStoreEnum.PreviousPageRedWire, pageName.ToString());
             Execute(new object());
         }
 

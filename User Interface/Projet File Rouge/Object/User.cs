@@ -14,10 +14,10 @@ namespace Projet_File_Rouge.Object
 
         public enum AccessLevel
         {
-            Admin,
-            SuperUser,
+            Intern,
             User,
-            Intern
+            SuperUser,
+            Admin
         }
 
         public User(string _name, string _password, AccessLevel _accessLevel) : this(null, _name, _password, _accessLevel) { }
@@ -40,12 +40,21 @@ namespace Projet_File_Rouge.Object
             return "{" +
                    "\"" + UserEnum.id + "\" : " + Id + "," +
                    "\"" + UserEnum.name + "\" : \"" + Name + "\"," +
-                   "\"" + UserEnum.password + "\" : \"" + SHA256Cypher.Cyphing(Password) + "\"," +
+                   "\"" + UserEnum.password + "\" : \"" + Password + "\"," +
                    "\"" + UserEnum.accessLevel + "\" : \"" + (int)UserLevel + "\"" +
                    "}";
         }
 
         public string Jsonify()
+        {
+            return "{" +
+                   "\"" + UserEnum.name + "\" : \"" + Name + "\"," +
+                   "\"" + UserEnum.password + "\" : \"" + Password + "\"," +
+                   "\"" + UserEnum.accessLevel + "\" : \"" + (int)UserLevel + "\"" +
+                   "}";
+        }
+
+        public string JsonifyLogIn()
         {
             return "{" +
                    "\"" + UserEnum.name + "\" : \"" + Name + "\"," +

@@ -59,3 +59,15 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\RedWireView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\RedWireView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Projet File Rouge.csproj.AssemblyReference.cache
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\PersoSpaceView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\PersoSpaceView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\OldFolderView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\OldFolderView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\FreeFolderView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\FreeFolderView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\NotificationPageView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\NotificationPageView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\CommandCenterView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\CommandCenterView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\CommandView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\CommandView.baml

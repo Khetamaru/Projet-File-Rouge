@@ -7,13 +7,16 @@ namespace Projet_File_Rouge.Object
     {
         public int id { get; set; }
 
+        public DateTime lastUpdate { get; set; }
         public DateTime inChargeDate { get; set; }
         public DateTime repairStartDate { get; set; }
         public DateTime repairEndDate { get; set; }
 
         public string client { get; set; }
+        public string clientName { get; set; }
         public int recorder { get; set; }
         public int? actualRepairMan { get; set; }
+        public int? transfertTarget { get; set; }
         public int actualState { get; set; }
 
         public int type { get; set; }

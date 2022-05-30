@@ -9,8 +9,8 @@ namespace Projet_File_Rouge.Object
     public class DocumentList : BDDObject
     {
         private readonly int id;
-        public readonly string document;
-        public readonly RedWire redWire;
+        private readonly string document;
+        private readonly RedWire redWire;
 
         public DocumentList(string _document, RedWire _redWire)
         {

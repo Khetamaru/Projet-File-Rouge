@@ -160,6 +160,7 @@ namespace Projet_File_Rouge.ViewModel
                 RedWire redWire = new RedWire(null,
                                               RequestCenter.GetUser(NavigateMainMenuCommand.cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)),
                                               SaleDocument.DocumentNumber,
+                                              SaleDocument.InvoicingAddress_ThirdName,
                                               (RedWire.EquipmentType)SupportType,
                                               SupportModel,
                                               SupportState,

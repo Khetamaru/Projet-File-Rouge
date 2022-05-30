@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Projet_File_Rouge.Commands;
 using Projet_File_Rouge.Object;
 using Projet_File_Rouge.Stores;
@@ -20,7 +17,7 @@ namespace Projet_File_Rouge.ViewModel
         private DateTime date;
         private int step;
         internal int userId;
-        private string clientCM;
+        private string clientName;
         private List<string> stepList;
         private List<string> userList;
         private List<User> users;
@@ -51,16 +48,16 @@ namespace Projet_File_Rouge.ViewModel
             Date = new DateTime();
             Step = -1;
             userId = -1;
-            ClientCM = string.Empty;
+            clientName = string.Empty;
         }
 
         private void PageInit()
         {
-            int redWireTotal = RequestCenter.GetRedWireNumber(date, step, userId, clientCM);
+            int redWireTotal = RequestCenter.GetRedWireNumber(date, step, userId, clientName);
 
             CalculPageNumber(redWireTotal);
 
-            redWireList = RequestCenter.GetRedWirePage(0, date, step, userId, clientCM);
+            redWireList = RequestCenter.GetRedWirePage(0, date, step, userId, clientName);
             actualPage = 1;
         }
 
@@ -98,33 +95,43 @@ namespace Projet_File_Rouge.ViewModel
 
         public DateTime Date
         {
-            get { return date; }
-            set { date = value; }
+            get => date;
+            set => date = value;
         }
         public int Step
         {
-            get { return step; }
-            set { step = value; }
+            get => step;
+            set
+            {
+                step = value;
+                OnPropertyChanged(nameof(StepListNullVisibility));
+            }
         }
         public List<string> StepList
         {
             get => stepList;
             set => stepList = value;
         }
+        public bool StepListNullVisibility { get => Step != -1; }
         public int UserId
         {
-            get { return userId; }
-            set { userId = users[value].Id; }
+            get => userId;
+            set
+            {
+                userId = users[value].Id;
+                OnPropertyChanged(nameof(UserListNullVisibility));
+            }
         }
         public List<string> UserList
         {
             get => userList;
             set => userList = value;
         }
-        public string ClientCM
+        public bool UserListNullVisibility { get => UserId != -1; }
+        public string ClientName
         {
-            get { return clientCM; }
-            set { clientCM = value; }
+            get => clientName;
+            set => clientName = value;
         }
 
         public void LeftArrow()
@@ -132,7 +139,7 @@ namespace Projet_File_Rouge.ViewModel
             if (actualPage > 1)
             {
                 actualPage--;
-                RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientCM);
+                RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientName);
                 OnPropertyChanged(nameof(Pagination));
             }
         }
@@ -142,15 +149,15 @@ namespace Projet_File_Rouge.ViewModel
             if (actualPage < pageNumber)
             {
                 actualPage++;
-                RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientCM);
+                RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientName);
                 OnPropertyChanged(nameof(Pagination));
             }
         }
 
         public void Filter()
         {
-            RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientCM);
-            CalculPageNumber(RequestCenter.GetRedWireNumber(date, step, userId, clientCM));
+            RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientName);
+            CalculPageNumber(RequestCenter.GetRedWireNumber(date, step, userId, clientName));
             actualPage = 1;
             OnPropertyChanged(nameof(Pagination));
         }
@@ -158,14 +165,16 @@ namespace Projet_File_Rouge.ViewModel
         public void AntiFilter()
         {
             FilterInit();
-            RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientCM);
-            CalculPageNumber(RequestCenter.GetRedWireNumber(date, step, userId, clientCM));
+            RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientName);
+            CalculPageNumber(RequestCenter.GetRedWireNumber(date, step, userId, clientName));
             actualPage = 1;
             OnPropertyChanged(nameof(Pagination));
             OnPropertyChanged(nameof(Date));
             OnPropertyChanged(nameof(Step));
             OnPropertyChanged(nameof(UserId));
-            OnPropertyChanged(nameof(ClientCM));
+            OnPropertyChanged(nameof(clientName));
+            OnPropertyChanged(nameof(StepListNullVisibility));
+            OnPropertyChanged(nameof(UserListNullVisibility));
         }
 
         public string Pagination 

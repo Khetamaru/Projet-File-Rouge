@@ -34,11 +34,11 @@ namespace Projet_File_Rouge.Commands
 
             if (value == PageNameEnum.GlobalCenter.ToString()) { navigationStore.CurrentViewModel = new GlobalCenterViewModel(navigationStore, cacheStore); }
 
-            else if (value == PageNameEnum.FreeFolder.ToString()) { /* LATER */ }
+            else if (value == PageNameEnum.FreeFolder.ToString()) { navigationStore.CurrentViewModel = new FreeFolderViewModel(navigationStore, cacheStore); }
 
-            else if(value == PageNameEnum.PersonalCenter.ToString()) { /* LATER */ }
+            else if (value == PageNameEnum.PersoSpace.ToString()) { navigationStore.CurrentViewModel = new PersoSpaceViewModel(navigationStore, cacheStore); }
 
-            else if(value == PageNameEnum.ElderFolder.ToString()) { /* LATER */ }
+            else if (value == PageNameEnum.OldFolder.ToString()) { navigationStore.CurrentViewModel = new OldFolderViewModel(navigationStore, cacheStore); }
 
             else { PopUpCenter.MessagePopup("Le codeur sait pas coder"); }
         }

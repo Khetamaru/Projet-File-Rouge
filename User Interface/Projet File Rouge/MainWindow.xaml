@@ -15,6 +15,10 @@
                 <views:LoginView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodels:NotificationPageViewModel}">
+                <views:NotificationPageView/>
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewmodels:MainMenuViewModel}">
                 <views:MainMenuView/>
             </DataTemplate>
@@ -27,8 +31,28 @@
                 <views:GlobalCenterView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodels:PersoSpaceViewModel}">
+                <views:PersoSpaceView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:OldFolderViewModel}">
+                <views:OldFolderView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:FreeFolderViewModel}">
+                <views:FreeFolderView/>
+            </DataTemplate>
+
             <DataTemplate DataType="{x:Type viewmodels:RedWireViewModel}">
                 <views:RedWireView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:CommandViewModel}">
+                <views:CommandView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:CommandCenterViewModel}">
+                <views:CommandCenterView/>
             </DataTemplate>
 
         </ContentControl.Resources>

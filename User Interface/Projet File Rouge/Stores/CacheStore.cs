@@ -45,7 +45,9 @@ public enum ObjectCacheStoreEnum
 {
     ActualUser,
     UserDetail,
-    RedWireDetail
+    RedWireDetail,
+    notifNumber,
+    CommandListDetail
 }
 public enum InfoCacheStoreEnum
 {
@@ -55,6 +57,7 @@ public enum PageNameEnum
 {
     GlobalCenter,
     FreeFolder,
-    PersonalCenter,
-    ElderFolder
+    PersoSpace,
+    OldFolder,
+    CommandView
 }

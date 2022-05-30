@@ -6,40 +6,73 @@
              xmlns:local="clr-namespace:Projet_File_Rouge.Views" 
              xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" 
              d:DataContext="{d:DesignInstance Type=viewmodel:MainMenuViewModel}"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Storyboard x:Key="FlashButton" RepeatBehavior="Forever">
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="button">
+                <EasingColorKeyFrame KeyTime="0:0:1" Value="Red"/>
+                <EasingColorKeyFrame KeyTime="0:0:2" Value="White"/>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
 
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Column="0" Margin="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="{Binding UserName, Mode=OneWay}"/>
-            <Button Grid.Column="1" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Déconnection" Command="{Binding LogOutCommand}"/>
-
+            <Button Grid.Column="0" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Notifications" Command="{Binding NavigateNotificationPageCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding NotificationVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Triggers>
+                    <EventTrigger RoutedEvent="Button.Loaded">
+                        <EventTrigger.Actions>
+                            <BeginStoryboard>
+                                <Storyboard BeginTime="00:00:00" 
+                                RepeatBehavior="Forever"
+                                Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
+                                    <ColorAnimation From="{DynamicResource {x:Static SystemColors.ControlBrush}}" To="PaleVioletRed" BeginTime="0:0:0" Duration="0:0:0.5"/>
+                                    <ColorAnimation From="PaleVioletRed" To="{DynamicResource {x:Static SystemColors.ControlBrush}}" BeginTime="0:0:0.5" Duration="0:0:0.5"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger.Actions>
+                    </EventTrigger>
+                </Button.Triggers>
+            </Button>
+            <TextBlock Grid.Column="1" Margin="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="{Binding UserName, Mode=OneWay}"/>
+            <Button Grid.Column="2" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Déconnection" Command="{Binding LogOutCommand}"/>
         </Grid>
 
-        <Button Grid.Row="1" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Espace Global" Command="{Binding NavigateGlobalCenterCommand}"/>
-        <Button Grid.Row="2" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Espace Personnel"/>
-        <Button Grid.Row="3" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Nouveau Dossier" Command="{Binding NavigateNewFileCommand}"/>
-        <Button Grid.Row="4" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Espace Disponible"/>
-        <Button Grid.Row="5" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Espace Commande"/>
-        <Button Grid.Row="6" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Ancien Dossier"/>
-        <Button Grid.Row="7" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Paramètres"/>
+        <Button Grid.Row="1" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Global" Command="{Binding NavigateGlobalCenterCommand}"/>
+        <Button Grid.Row="2" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Personnel" Command="{Binding NavigatePersoSpaceCommand}"/>
+        <Button Grid.Row="3" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Nouveau Dossier" Command="{Binding NavigateNewFileCommand}"/>
+        <Button Grid.Row="4" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Disponible" Command="{Binding NavigateFreeFolderCommand}"/>
+        <Button Grid.Row="5" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Commande" Command="{Binding NavigateCommandCenterCommand}"/>
+        <Button Grid.Row="6" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Ancien Dossier" Command="{Binding NavigateOldFolderCommand}"/>
+        <Button Grid.Row="7" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Paramètres"/>
 
     </Grid>
 </UserControl>

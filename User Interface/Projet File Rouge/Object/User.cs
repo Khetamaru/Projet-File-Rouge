@@ -14,10 +14,10 @@ namespace Projet_File_Rouge.Object
 
         public enum AccessLevel
         {
-            Admin,
-            SuperUser,
+            Intern,
             User,
-            Intern
+            SuperUser,
+            Admin
         }
 
         public User(string _name, string _password, AccessLevel _accessLevel) : this(null, _name, _password, _accessLevel) { }

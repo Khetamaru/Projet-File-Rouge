@@ -137,7 +137,7 @@ namespace Projet_File_Rouge.Tools
 
         public static List<SaleDocument> SaleDocumentsUnjsoning(string json)
         {
-            if (json == empty) { return new List<SaleDocument>(); }
+            if (IsEmpty(json)) { return new List<SaleDocument>(); }
 
             json = json.Remove(0, 1);
             json = json.Remove(json.Length - 1, 1);
@@ -187,7 +187,7 @@ namespace Projet_File_Rouge.Tools
 
         public static List<SaleDocumentLine> SaleDocumentLinesUnjsoning(string json)
         {
-            if (json == empty) { return new List<SaleDocumentLine>(); }
+            if (IsEmpty(json)) { return new List<SaleDocumentLine>(); }
 
             json = json.Remove(0, 1);
             json = json.Remove(json.Length - 1, 1);
@@ -247,7 +247,7 @@ namespace Projet_File_Rouge.Tools
 
         public static List<Evenement> EventsUnjsoning(string json)
         {
-            if (json == empty) { return new List<Evenement>(); }
+            if (IsEmpty(json)) { return new List<Evenement>(); }
 
             json = json.Remove(0, 1);
             json = json.Remove(json.Length - 1, 1);
@@ -266,10 +266,12 @@ namespace Projet_File_Rouge.Tools
         public static RedWire RedWireUnjsoning(string json)
         {
             int id = 42;
+            DateTime lastUpdate = new DateTime();
             DateTime inChargeDate = new DateTime();
             DateTime repairStartDate = new DateTime();
             DateTime repairEndDate = new DateTime();
             string client = null;
+            string clientName = null;
             User recorder = null;
             User actualRepairMan = null;
             User transfertTarget = null;
@@ -295,6 +297,10 @@ namespace Projet_File_Rouge.Tools
                 {
                     id = GetInt(splitTab[i + 1]);
                 }
+                if (split == RedWireEnum.lastUpdate.ToString())
+                {
+                    lastUpdate = GetDate(splitTab[i + 2]);
+                }
                 if (split == RedWireEnum.inChargeDate.ToString())
                 {
                     inChargeDate = GetDate(splitTab[i + 2]);
@@ -310,6 +316,10 @@ namespace Projet_File_Rouge.Tools
                 if (split == RedWireEnum.client.ToString())
                 {
                     client = splitTab[i + 2];
+                }
+                if (split == RedWireEnum.clientName.ToString())
+                {
+                    clientName = splitTab[i + 2];
                 }
                 if (split == RedWireEnum.recorder.ToString())
                 {
@@ -376,7 +386,7 @@ namespace Projet_File_Rouge.Tools
                 i++;
             }
 
-            RedWire redWire = new RedWire(id, inChargeDate, repairStartDate, repairEndDate, client, recorder, actualRepairMan, transfertTarget, actualState, equipmentType, model, equipmentState, warranty, problemReproduced, bag, alimentation, mouse, battery, other);
+            RedWire redWire = new RedWire(id, lastUpdate, inChargeDate, repairStartDate, repairEndDate, client, clientName, recorder, actualRepairMan, transfertTarget, actualState, equipmentType, model, equipmentState, warranty, problemReproduced, bag, alimentation, mouse, battery, other);
 
             return redWire;
         }
@@ -384,10 +394,12 @@ namespace Projet_File_Rouge.Tools
         public static RedWire RedWireUnjsoning(string json, List<User> users)
         {
             int id = 42;
+            DateTime lastUpdate = new DateTime();
             DateTime inChargeDate = new DateTime();
             DateTime repairStartDate = new DateTime();
             DateTime repairEndDate = new DateTime();
             string client = null;
+            string clientName = null;
             User recorder = null;
             User actualRepairMan = null;
             User transfertTarget = null;
@@ -413,6 +425,10 @@ namespace Projet_File_Rouge.Tools
                 {
                     id = GetInt(splitTab[i + 1]);
                 }
+                if (split == RedWireEnum.lastUpdate.ToString())
+                {
+                    lastUpdate = GetDate(splitTab[i + 2]);
+                }
                 if (split == RedWireEnum.inChargeDate.ToString())
                 {
                     inChargeDate = GetDate(splitTab[i + 2]);
@@ -428,6 +444,10 @@ namespace Projet_File_Rouge.Tools
                 if (split == RedWireEnum.client.ToString())
                 {
                     client = splitTab[i + 2];
+                }
+                if (split == RedWireEnum.clientName.ToString())
+                {
+                    clientName = splitTab[i + 2];
                 }
                 if (split == RedWireEnum.recorder.ToString())
                 {
@@ -494,14 +514,14 @@ namespace Projet_File_Rouge.Tools
                 i++;
             }
 
-            RedWire redWire = new RedWire(id, inChargeDate, repairStartDate, repairEndDate, client, recorder, actualRepairMan, transfertTarget, actualState, equipmentType, model, equipmentState, warranty, problemReproduced, bag, alimentation, mouse, battery, other);
+            RedWire redWire = new RedWire(id, lastUpdate, inChargeDate, repairStartDate, repairEndDate, client, clientName, recorder, actualRepairMan, transfertTarget, actualState, equipmentType, model, equipmentState, warranty, problemReproduced, bag, alimentation, mouse, battery, other);
 
             return redWire;
         }
 
         public static List<RedWire> RedWiresUnjsoning(string json)
         {
-            if (json == empty) { return new List<RedWire>(); }
+            if (IsEmpty(json)) { return new List<RedWire>(); }
 
             json = json.Remove(0, 1);
             json = json.Remove(json.Length - 1, 1);
@@ -561,7 +581,7 @@ namespace Projet_File_Rouge.Tools
 
         public static List<User> UsersUnjsoning(string json)
         {
-            if (json == empty) { return new List<User>(); }
+            if (IsEmpty(json)) { return new List<User>(); }
 
             json = json.Remove(0, 1);
             json = json.Remove(json.Length - 1, 1);
@@ -616,7 +636,7 @@ namespace Projet_File_Rouge.Tools
 
         public static List<UserHistory> UserHistorysUnjsoning(string json)
         {
-            if (json == empty) { return new List<UserHistory>(); }
+            if (IsEmpty(json)) { return new List<UserHistory>(); }
 
             json = json.Remove(0, 1);
             json = json.Remove(json.Length - 1, 1);
@@ -666,7 +686,7 @@ namespace Projet_File_Rouge.Tools
 
         public static List<DocumentList> DocumentListsUnjsoning(string json)
         {
-            if (json == empty) { return new List<DocumentList>(); }
+            if (IsEmpty(json)) { return new List<DocumentList>(); }
 
             json = json.Remove(0, 1);
             json = json.Remove(json.Length - 1, 1);
@@ -680,6 +700,71 @@ namespace Projet_File_Rouge.Tools
             }
 
             return documentList;
+        }
+
+        public static CommandList CommandListUnjsoning(string json)
+        {
+            int id = 42;
+            RedWire redWire = null;
+            CommandList.CommandStatusEnum state = CommandList.CommandStatusEnum.commande_en_attente;
+            DateTime deliveryDate = new();
+            string name = string.Empty;
+            string url = string.Empty;
+
+            int i = 0;
+
+            string[] splitTab = json.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == CommandListEnum.id.ToString())
+                {
+                    id = GetInt(splitTab[i + 1]);
+                }
+                if (split == CommandListEnum.redWire.ToString())
+                {
+                    redWire = RequestCenter.GetRedWire(GetInt(splitTab[i + 1]));
+                }
+                if (split == CommandListEnum.state.ToString())
+                {
+                    state = (CommandList.CommandStatusEnum)GetInt(splitTab[i + 1]);
+                }
+                if (split == CommandListEnum.deliveryDate.ToString())
+                {
+                    deliveryDate = GetDate(splitTab[i + 2]);
+                }
+                if (split == CommandListEnum.name.ToString())
+                {
+                    name = splitTab[i + 2];
+                }
+                if (split == CommandListEnum.url.ToString())
+                {
+                    url = splitTab[i + 2];
+                }
+                i++;
+            }
+
+            CommandList commandList = new CommandList(id, state, redWire, deliveryDate, name, url);
+
+            return commandList;
+        }
+
+        public static List<CommandList> CommandListsUnjsoning(string json)
+        {
+            if (IsEmpty(json)) { return new List<CommandList>(); }
+
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
+            string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
+            List<CommandList> commandList = new List<CommandList>();
+
+            foreach (string jsonStr in objectTab)
+            {
+                commandList.Add(CommandListUnjsoning(jsonStr));
+            }
+
+            return commandList;
         }
 
         public static int GetInt(string json)
@@ -729,5 +814,7 @@ namespace Projet_File_Rouge.Tools
             }
             return null;
         }
+
+        public static bool IsEmpty(string json) { return json == empty || json == string.Empty; }
     }
 }

@@ -19,9 +19,27 @@ namespace Projet_File_Rouge.Tools
 
         internal static List<RedWire> GetRedWirePage(int pageNumber, DateTime date, int step, int userId, string clientName)
         {
-            if (clientName == string.Empty) { clientName = "CM"; }
+            if (clientName == string.Empty) { clientName = "*"; }
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/page/" + pageNumber + "/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + step + "/" + userId + "/" + clientName);
             return Unjsonify.RedWiresUnjsoning(result);
+        }
+
+        internal static CommandList GetCommandList(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/" + id);
+            return Unjsonify.CommandListUnjsoning(result);
+        }
+
+        internal static int GetCommandListNumber()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/number");
+            return result == "" ? 0 : Int32.Parse(result);
+        }
+
+        internal static List<CommandList> GetCommandListPage(int pageNumber)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/page/" + pageNumber);
+            return Unjsonify.CommandListsUnjsoning(result);
         }
 
         internal static List<Evenement> GetEvents(int id)
@@ -30,16 +48,40 @@ namespace Projet_File_Rouge.Tools
             return Unjsonify.EventsUnjsoning(result);
         }
 
+        internal static List<RedWire> GetRedWireNotif(int userId)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/notif/" + userId);
+            return Unjsonify.RedWiresUnjsoning(result);
+        }
+
         internal static List<DocumentList> GetDocumentList(int id)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.documentList.ToString() + "/redwire/" + id);
             return Unjsonify.DocumentListsUnjsoning(result);
         }
 
+        internal static List<CommandList> GetCommandNotif()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/notif");
+            return Unjsonify.CommandListsUnjsoning(result);
+        }
+
         internal static int GetRedWireNumber(DateTime date, int step, int userId, string clientName)
         {
-            if (clientName == string.Empty) { clientName = "CM"; }
+            if (clientName == string.Empty) { clientName = "*"; }
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/total" + "/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + step + "/" + userId + "/" + clientName);
+            return result == "" ? 0 : Int32.Parse(result);
+        }
+
+        internal static int GetRedWireNotifNumber(int userId)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/notifNumber" + "/" + userId);
+            return result == "" ? 0 : Int32.Parse(result);
+        }
+
+        internal static int GetCommandListNotifNumber()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/notifNumber");
             return result == "" ? 0 : Int32.Parse(result);
         }
 
@@ -135,6 +177,7 @@ namespace Projet_File_Rouge.Tools
         redWire,
         evenement,
         documentList,
+        commandList,
 
         saleDocument,
         saleDocumentLine

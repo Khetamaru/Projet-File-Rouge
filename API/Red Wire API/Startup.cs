@@ -27,7 +27,7 @@ namespace Red_Wire_API
         public void ConfigureServices(IServiceCollection services)
         {
             redWireConnectionString = new DataBaseString("localhost", "root", "root", true, "redwiredb");
-            ebpConnectionString = new DataBaseString(/*"PC-BOUTIQUE\\EBP"*/"192.168.1.195", "sa", "", true, "DO53_0895452f-b7c1-4c00-a316-c6a6d0ea4bf4");
+            ebpConnectionString = new DataBaseString("192.168.1.195", "sa", "", true, "DO53_0895452f-b7c1-4c00-a316-c6a6d0ea4bf4");
 
             services.AddDbContext<RedWireContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
@@ -42,6 +42,9 @@ namespace Red_Wire_API
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
 
             services.AddDbContext<UserHistoryListContext>(opt =>
+                opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
+
+            services.AddDbContext<CommandListContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
 
             services.AddDbContext<SaleDocumentContext>(opt =>

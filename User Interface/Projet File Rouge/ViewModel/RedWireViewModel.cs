@@ -60,7 +60,11 @@ namespace Projet_File_Rouge.ViewModel
 
         private void ReloadEvents() { RedWireEvents = RequestCenter.GetEvents(redWire.Id); }
 
-        private void RedWireMaj() { RequestCenter.PutRedWire(RedWire.Id, RedWire.JsonifyId()); }
+        private void RedWireMaj()
+        {
+            RedWire.RedWireUpdate();
+            RequestCenter.PutRedWire(RedWire.Id, RedWire.JsonifyId());
+        }
 
         private void AddEvent(Evenement evenement)
         {
@@ -154,6 +158,7 @@ namespace Projet_File_Rouge.ViewModel
         {
             RedWire.ActualState = RedWire.state.start_diag;
             RedWire.ActualRepairMan = ActualUser;
+            RedWire.RepairStartDate = DateTime.Now;
             RequestCenter.PostUserHistory(new UserHistory(DateTime.Now, ActualUser, RedWire).Jsonify());
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier pris en charge par " + ActualUser.Name));
@@ -459,6 +464,7 @@ namespace Projet_File_Rouge.ViewModel
         public void FinPayementYesButton()
         {
             RedWire.ActualState = RedWire.state.fin;
+            RedWire.RepairEndDate = DateTime.Now;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Facture payée et matériel rendu"));
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier cloturé"));
@@ -565,6 +571,7 @@ namespace Projet_File_Rouge.ViewModel
         public void NonReparableRenduYesButton()
         {
             RedWire.ActualState = RedWire.state.fin;
+            RedWire.RepairEndDate = DateTime.Now;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel rendu"));
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier cloturé"));

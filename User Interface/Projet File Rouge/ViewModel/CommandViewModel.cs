@@ -19,22 +19,50 @@ namespace Projet_File_Rouge.ViewModel
         public CommandViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
             NavigateCommandCenterCommand = new NavigateCommandCenterCommand(navigationStore, cacheStore);
+            NavigateRedWireCommand = new NavigateRedWireCommand(navigationStore, cacheStore);
 
             command = RequestCenter.GetCommandList(cacheStore.GetObjectCache(ObjectCacheStoreEnum.CommandListDetail));
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+            NavigateRedWireCommand.LoadRedWire(Command.RedWire, PageNameEnum.CommandView);
         }
 
         private void CommandMaj()
         {
-            RequestCenter.PutRedWire(Command.Id, Command.JsonifyId());
+            RequestCenter.PutCommand(Command.Id, Command.JsonifyId());
+        }
+
+        private void RedWireMaj()
+        {
+            if (Command.State == CommandList.CommandStatusEnum.annulé)
+            {
+                RequestCenter.PostEvent(new Evenement(Command.RedWire.Id, Evenement.EventType.simpleText, Command.Name + " : La commande n'a pas aboutie.").Jsonify());
+            }
+            else if (Command.State == CommandList.CommandStatusEnum.livré)
+            {
+                RequestCenter.PostEvent(new Evenement(Command.RedWire.Id, Evenement.EventType.simpleText, Command.Name + " : La commande a été livrée.").Jsonify());
+            }
+            else if (Command.State == CommandList.CommandStatusEnum.commande_en_attente)
+            {
+                RequestCenter.PostEvent(new Evenement(Command.RedWire.Id, Evenement.EventType.simpleText, Command.Name + " : La commande a été effectuée. Date de livraison prévue : " + Command.DeliveryDateFormated).Jsonify());
+            }
+            else if (Command.State == CommandList.CommandStatusEnum.livraison_en_cours)
+            {
+                RequestCenter.PostEvent(new Evenement(Command.RedWire.Id, Evenement.EventType.simpleText, Command.Name + " : Date de livraison prévue passée à " + Command.DeliveryDateFormated).Jsonify());
+            }
+            if (RequestCenter.GetCommandListRedWireNumber(Command.RedWire.Id))
+            {
+                Command.RedWire.ActualState = RedWire.state.en_cours;
+                RequestCenter.PutRedWire(Command.RedWire.Id, Command.RedWire.JsonifyId());
+            }
         }
 
         private void UIUpdate()
         {
             OnPropertyChanged(nameof(CancelCommandButtonVisibility));
-            OnPropertyChanged(nameof(CommandDonePopUpIsOpen));
-            OnPropertyChanged(nameof(CommandArrivedPopUpIsOpen));
+            OnPropertyChanged(nameof(CommandDoneButtonVisibility));
+            OnPropertyChanged(nameof(CommandArrivedButtonVisibility));
             OnPropertyChanged(nameof(DeliveryDateUpdateButtonVisibility));
+            OnPropertyChanged(nameof(Command));
         }
 
         public CommandList Command
@@ -60,6 +88,7 @@ namespace Projet_File_Rouge.ViewModel
         {
             Command.State = CommandList.CommandStatusEnum.annulé;
             CommandMaj();
+            RedWireMaj();
             UIUpdate();
             CloseCancelCommandPopUp();
         }
@@ -86,8 +115,9 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (CommandDoneDateField != new DateTime())
             {
-                Command.State = CommandList.CommandStatusEnum.livraison_en_cours;
                 Command.DeliveryDate = CommandDoneDateField;
+                RedWireMaj();
+                Command.State = CommandList.CommandStatusEnum.livraison_en_cours;
                 CommandMaj();
                 UIUpdate();
             }
@@ -114,6 +144,7 @@ namespace Projet_File_Rouge.ViewModel
         {
             Command.State = CommandList.CommandStatusEnum.livré;
             CommandMaj();
+            RedWireMaj();
             UIUpdate();
             CloseCommandArrivedPopUp();
         }
@@ -142,6 +173,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 Command.DeliveryDate = DeliveryDateUpdateField;
                 CommandMaj();
+                RedWireMaj();
                 UIUpdate();
             }
             CloseDeliveryDateUpdatePopUp();
@@ -152,5 +184,6 @@ namespace Projet_File_Rouge.ViewModel
         }
 
         public NavigateCommandCenterCommand NavigateCommandCenterCommand { get; }
+        public NavigateRedWireCommand NavigateRedWireCommand { get; }
     }
 }

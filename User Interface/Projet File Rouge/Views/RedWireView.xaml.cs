@@ -1,24 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Projet_File_Rouge.ViewModel;
 
 namespace Projet_File_Rouge.Views
 {
-    /// <summary>
-    /// Interaction logic for RedWireView.xaml
-    /// </summary>
     public partial class RedWireView : UserControl
     {
         public RedWireView()
@@ -93,5 +79,9 @@ namespace Projet_File_Rouge.Views
         private void OpenNonReparableRenduPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenNonReparableRenduPopUp(); }
         private void NonReparableRenduYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).NonReparableRenduYesButton(); }
         private void NonReparableRenduNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).NonReparableRenduNoButton(); }
+
+        private void OpenCommandePiecePopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenCommandePiecePopUp(); }
+        private void CommandePieceYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).CommandePieceYesButton(); }
+        private void CommandePieceNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).CommandePieceNoButton(); }
     }
 }

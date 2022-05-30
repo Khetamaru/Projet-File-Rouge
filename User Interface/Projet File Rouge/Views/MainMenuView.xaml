@@ -72,7 +72,7 @@
         <Button Grid.Row="4" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Disponible" Command="{Binding NavigateFreeFolderCommand}"/>
         <Button Grid.Row="5" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Commande" Command="{Binding NavigateCommandCenterCommand}"/>
         <Button Grid.Row="6" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Ancien Dossier" Command="{Binding NavigateOldFolderCommand}"/>
-        <Button Grid.Row="7" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Paramètres"/>
+        <Button Grid.Row="7" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Paramètres" Command="{Binding NavigateParameterMenuCommand}"/>
 
     </Grid>
 </UserControl>

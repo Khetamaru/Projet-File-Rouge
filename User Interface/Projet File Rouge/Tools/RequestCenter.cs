@@ -24,6 +24,18 @@ namespace Projet_File_Rouge.Tools
             return Unjsonify.RedWiresUnjsoning(result);
         }
 
+        internal static void PutCommand(int id, string json)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().PutRequest(BDDTabName.commandList.ToString() + "/" + id, json);
+        }
+
+        internal static bool GetCommandListRedWireNumber(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/redWireNumber/" + id);
+
+            return Convert.ToBoolean(result);
+        }
+
         internal static CommandList GetCommandList(int id)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/" + id);
@@ -167,6 +179,11 @@ namespace Projet_File_Rouge.Tools
         internal static void PostDocument(string json)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.documentList.ToString(), json);
+        }
+
+        internal static void PostCommand(string json)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.commandList.ToString(), json);
         }
     }
 

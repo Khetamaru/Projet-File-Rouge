@@ -55,6 +55,14 @@
                 <views:CommandCenterView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodels:ParameterMenuViewModel}">
+                <views:ParameterMenuView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:UserCreationViewModel}">
+                <views:UserCreationView/>
+            </DataTemplate>
+
         </ContentControl.Resources>
     </ContentControl>
 

@@ -70,8 +70,8 @@ namespace Projet_File_Rouge.Object
                    "\"" + CommandListEnum.redWire + "\" : " + RedWire.Id + "," +
                    "\"" + CommandListEnum.state + "\" : " + (int)State + "," +
                    "\"" + CommandListEnum.deliveryDate + "\" : \"" + DeliveryDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + CommandListEnum.name + "\" : " + Name + "," +
-                   "\"" + CommandListEnum.url + "\" : " + Url + "," +
+                   "\"" + CommandListEnum.name + "\" : \"" + Name + "\"," +
+                   "\"" + CommandListEnum.url + "\" : \"" + Url + "\"" +
                    "}";
         }
         public string Jsonify()
@@ -81,7 +81,7 @@ namespace Projet_File_Rouge.Object
                    "\"" + CommandListEnum.state + "\" : " + (int)State + "," +
                    "\"" + CommandListEnum.deliveryDate + "\" : \"" + DeliveryDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
                    "\"" + CommandListEnum.name + "\" : \"" + Name + "\"," +
-                   "\"" + CommandListEnum.url + "\" : \"" + Url + "\"," +
+                   "\"" + CommandListEnum.url + "\" : \"" + Url + "\"" +
                    "}";
         }
     }

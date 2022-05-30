@@ -31,6 +31,7 @@ namespace Projet_File_Rouge.ViewModel
         private bool nonReparablePopUpIsOpen;
         private bool nonReparableAppelPopUpIsOpen;
         private bool nonReparableRenduPopUpIsOpen;
+        private bool commandePiecePopUpIsOpen;
 
         public RedWireViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
@@ -236,7 +237,55 @@ namespace Projet_File_Rouge.ViewModel
             ClosePECClientResponsePopUp();
         }
 
-        public bool CommandePieceButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool CommandePieceButtonVisibility { get => (RedWire.ActualState != RedWire.state.en_cours && RedWire.ActualState != RedWire.state.attente_commande) || !AccessAuthorization(); }
+        public bool CommandePiecePopUpIsOpen
+        {
+            get => commandePiecePopUpIsOpen;
+            set
+            {
+                commandePiecePopUpIsOpen = value;
+                OnPropertyChanged(nameof(CommandePiecePopUpIsOpen));
+            }
+        }
+        private string commandePieceNameField;
+        public string CommandePieceNameField
+        {
+            get => commandePieceNameField;
+            set
+            {
+                commandePieceNameField = value;
+                OnPropertyChanged(nameof(CommandePieceNameField));
+            }
+        }
+        private string commandePieceUrlField;
+        public string CommandePieceUrlField
+        {
+            get => commandePieceUrlField;
+            set
+            {
+                commandePieceUrlField = value;
+                OnPropertyChanged(nameof(CommandePieceUrlField));
+            }
+        }
+        public void OpenCommandePiecePopUp() => CommandePiecePopUpIsOpen = true;
+        public void CloseCommandePiecePopUp() => CommandePiecePopUpIsOpen = false;
+        public void CommandePieceYesButton()
+        {
+            if (CommandePieceNameField != string.Empty && CommandePieceNameField != null && CommandePieceUrlField != string.Empty && CommandePieceUrlField != null)
+            {
+                CommandList command = new CommandList(RedWire, new DateTime(), CommandePieceNameField, CommandePieceUrlField);
+                RequestCenter.PostCommand(command.Jsonify());
+                RedWire.ActualState = RedWire.state.attente_commande;
+                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, command.Name + " : Commande envoyée au centre de commande."));
+            }
+            RedWireMaj();
+            UIUpdate();
+            CloseCommandePiecePopUp();
+        }
+        public void CommandePieceNoButton()
+        {
+            CloseCommandePiecePopUp();
+        }
 
         public bool ProblemeQuestionButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
         public bool ProblemeQuestionPopUpIsOpen

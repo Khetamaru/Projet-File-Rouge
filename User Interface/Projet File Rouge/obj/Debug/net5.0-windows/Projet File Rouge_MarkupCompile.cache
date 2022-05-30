@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET5_0;NETCOREAPP
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\App.xaml
-12891152540
+13105732056
 
-582024471638
+61-1931767104
 1961157752208
-MainWindow.xaml;Views\CommandCenterView.xaml;Views\CommandView.xaml;Views\FreeFolderView.xaml;Views\GlobalCenterView.xaml;Views\LoginView.xaml;Views\MainMenuView.xaml;Views\NewFileView.xaml;Views\NotificationPageView.xaml;Views\OldFolderView.xaml;Views\PersoSpaceView.xaml;Views\RedWireView.xaml;
+MainWindow.xaml;Views\CommandCenterView.xaml;Views\CommandView.xaml;Views\FreeFolderView.xaml;Views\GlobalCenterView.xaml;Views\LoginView.xaml;Views\MainMenuView.xaml;Views\NewFileView.xaml;Views\NotificationPageView.xaml;Views\OldFolderView.xaml;Views\ParameterMenuView.xaml;Views\PersoSpaceView.xaml;Views\RedWireView.xaml;
 
 False
 

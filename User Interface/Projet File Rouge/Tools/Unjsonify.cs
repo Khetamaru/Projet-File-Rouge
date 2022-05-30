@@ -761,8 +761,51 @@ namespace Projet_File_Rouge.Tools
 
             foreach (string jsonStr in objectTab)
             {
-                commandList.Add(CommandListUnjsoning(jsonStr));
+                commandList.Add(CommandListLightUnjsoning(jsonStr));
             }
+
+            return commandList;
+        }
+
+        public static CommandList CommandListLightUnjsoning(string json)
+        {
+            int id = 42;
+            RedWire redWire = new RedWire(42, new User("", "", User.AccessLevel.Intern), "", "", RedWire.EquipmentType.Autre, "", "", true, true, true, true, true, true, true);
+            CommandList.CommandStatusEnum state = CommandList.CommandStatusEnum.commande_en_attente;
+            DateTime deliveryDate = new();
+            string name = string.Empty;
+            string url = string.Empty;
+
+            int i = 0;
+
+            string[] splitTab = json.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == CommandListEnum.id.ToString())
+                {
+                    id = GetInt(splitTab[i + 1]);
+                }
+                if (split == CommandListEnum.state.ToString())
+                {
+                    state = (CommandList.CommandStatusEnum)GetInt(splitTab[i + 1]);
+                }
+                if (split == CommandListEnum.deliveryDate.ToString())
+                {
+                    deliveryDate = GetDate(splitTab[i + 2]);
+                }
+                if (split == CommandListEnum.name.ToString())
+                {
+                    name = splitTab[i + 2];
+                }
+                if (split == CommandListEnum.url.ToString())
+                {
+                    url = splitTab[i + 2];
+                }
+                i++;
+            }
+
+            CommandList commandList = new CommandList(id, state, redWire, deliveryDate, name, url);
 
             return commandList;
         }

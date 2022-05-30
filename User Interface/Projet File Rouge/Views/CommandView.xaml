@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Projet_File_Rouge.Views" xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:RedWireViewModel}"
+             xmlns:local="clr-namespace:Projet_File_Rouge.Views" 
+             xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:CommandViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
     <Grid>
@@ -13,7 +14,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Retour" Command="{Binding NavigateOutRedWireCommand}"/>
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Retour" Command="{Binding NavigateCommandCenterCommand}"/>
+        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Suivi de dossier" Command="{Binding NavigateRedWireCommand}"/>
 
         <Grid Grid.Row="1" HorizontalAlignment="Center" Name="TopGrid">
             <Grid.RowDefinitions>
@@ -40,7 +42,11 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="URL de la commande"/>
-                <RichTextBox Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Hyperlink.="{Binding Command.UrlUri}"/>
+                <TextBlock  Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20">  
+                    <Hyperlink RequestNavigate="HyperlinkRequest" NavigateUri="{Binding Command.Url}">  
+                        <TextBlock Text="{Binding Command.Url}"/>
+                    </Hyperlink>
+                </TextBlock>
             </Grid>
 
             <Grid Grid.Row="2" HorizontalAlignment="Center">
@@ -90,6 +96,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
@@ -177,6 +184,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>

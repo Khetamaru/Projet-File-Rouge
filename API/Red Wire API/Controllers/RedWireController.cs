@@ -56,7 +56,7 @@ namespace Local_API_Server.Controllers
 
             if (step >= 0) { result = result.Where(r => r.actualState == step); }
 
-            if (userId >= 0) { result = result.Where(r => r.actualRepairMan == userId); }
+            if (userId >= 0) { result = result.Where(r => r.actualRepairMan == userId || (r.transfertTarget == userId && r.actualState == 7)); }
 
             if (clientName != null && clientName != string.Empty && clientName != "*") { result = result.Where(r => r.clientName.Contains(clientName)); }
 

@@ -66,6 +66,19 @@ namespace Local_API_Server.Controllers
             return result;
         }
 
+        // GET: api/CommandList/redWireNumber/1
+        [HttpGet("redWireNumber/{id}")]
+        public ActionResult<bool> GetCommandListNotifNumber(int id)
+        {
+            if (_context.CommandList.Where(c => c.redWire == id && 
+                                          (c.state == 0 || 
+                                           c.state == 1)).Count() == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
         // GET: api/CommandList/notif
         [HttpGet("notif")]
         public async Task<ActionResult<IEnumerable<CommandList>>> GetCommandListNotif()

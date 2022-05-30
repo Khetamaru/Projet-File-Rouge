@@ -71,3 +71,5 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\CommandCenterView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\CommandView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\CommandView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\ParameterMenuView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\ParameterMenuView.baml

@@ -40,6 +40,8 @@ namespace Projet_File_Rouge.Commands
 
             else if (value == PageNameEnum.OldFolder.ToString()) { navigationStore.CurrentViewModel = new OldFolderViewModel(navigationStore, cacheStore); }
 
+            else if (value == PageNameEnum.CommandView.ToString()) { navigationStore.CurrentViewModel = new CommandViewModel(navigationStore, cacheStore); }
+
             else { PopUpCenter.MessagePopup("Le codeur sait pas coder"); }
         }
     }

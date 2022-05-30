@@ -21,6 +21,7 @@ namespace Projet_File_Rouge.ViewModel
             NavigateOldFolderCommand = new NavigateOldFolderCommand(navigationStore, cacheStore);
             NavigateFreeFolderCommand = new NavigateFreeFolderCommand(navigationStore, cacheStore);
             NavigateCommandCenterCommand = new NavigateCommandCenterCommand(navigationStore, cacheStore);
+            NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
 
             userName = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)).Name;
             notifNumber = cacheStore.GetObjectCache(ObjectCacheStoreEnum.notifNumber);
@@ -38,5 +39,6 @@ namespace Projet_File_Rouge.ViewModel
         public NavigateOldFolderCommand NavigateOldFolderCommand { get; }
         public NavigateFreeFolderCommand NavigateFreeFolderCommand { get; }
         public NavigateCommandCenterCommand NavigateCommandCenterCommand { get; }
+        public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }
     }
 }

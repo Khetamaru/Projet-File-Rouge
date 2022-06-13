@@ -152,5 +152,19 @@ namespace Local_API_Server.Controllers
 
             return Ok();
         }
+
+        // DELETE: api/CommandList/redWire/5
+        [HttpDelete("redWire/{id}")]
+        public async Task<IActionResult> DeleteCommandListByRedWire(int id)
+        {
+            var CommandList = await _context.CommandList.Where(r => r.redWire == id).ToListAsync();
+            foreach (CommandList command in CommandList)
+            {
+                _context.CommandList.Remove(command);
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

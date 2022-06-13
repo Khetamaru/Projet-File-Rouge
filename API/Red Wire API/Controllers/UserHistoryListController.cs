@@ -89,5 +89,19 @@ namespace Local_API_Server.Controllers
 
             return Ok();
         }
+
+        // DELETE: api/UserHistoryList/redWire/5
+        [HttpDelete("redWire/{id}")]
+        public async Task<IActionResult> DeleteUserHistoryListByRedWire(int id)
+        {
+            var UserHistoryList = await _context.UserHistoryList.Where(r => r.redWire == id).ToListAsync();
+            foreach(UserHistoryList userHistoryList in UserHistoryList)
+            {
+                _context.UserHistoryList.Remove(userHistoryList);
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

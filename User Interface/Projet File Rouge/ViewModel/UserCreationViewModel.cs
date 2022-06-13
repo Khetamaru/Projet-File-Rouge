@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Projet_File_Rouge.Commands;
 using Projet_File_Rouge.Object;
 using Projet_File_Rouge.Stores;
+using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
@@ -10,17 +11,57 @@ namespace Projet_File_Rouge.ViewModel
     {
         private string userNameField;
         private List<string> accessLevelList;
-        private string accessLevelField;
+        private int accessLevelField;
+        private string adminPasswordField;
 
         public UserCreationViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
-            NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
+            NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
 
             accessLevelList = new List<string>();
             foreach (string levelName in Enum.GetNames(typeof(User.AccessLevel)))
             {
                 accessLevelList.Add(levelName);
             }
+            accessLevelField = -1;
+        }
+
+        internal void UserCreation()
+        {
+            if (FieldCheck())
+            {
+                if (AccessLevelField == (int)User.AccessLevel.Admin)
+                {
+                    RequestCenter.PostUser(new User(UserNameField, AdminPasswordField, (User.AccessLevel)AccessLevelField).JsonifyLogIn());
+                }
+                else
+                {
+                    RequestCenter.PostUser(new User(UserNameField, string.Empty, (User.AccessLevel)AccessLevelField).JsonifyLogIn());
+                }
+                PopUpCenter.MessagePopup("L'utilisateur " + UserNameField + " a bien été crééer avec le niveau d'accès : " + ((User.AccessLevel)AccessLevelField).ToString());
+                NavigateParameterMenuCommand.Execute(null);
+            }
+            else
+            {
+                PopUpCenter.MessagePopup("Veuillez remplir tous les champs.");
+            }
+        }
+
+        private bool FieldCheck()
+        {
+            if (UserNameField == null || UserNameField == string.Empty)
+            {
+                return false;
+            }
+            if (AccessLevelField < 0)
+            {
+                return false;
+            }
+            if (AccessLevelField == (int)User.AccessLevel.Admin && (AdminPasswordField == null || AdminPasswordField == string.Empty))
+            {
+                return false;
+            } 
+            return true;
         }
 
         public string UserNameField
@@ -32,20 +73,39 @@ namespace Projet_File_Rouge.ViewModel
                 OnPropertyChanged(nameof(UserNameField));
             }
         }
+
         public List<string> AccessLevelList
         {
             get => accessLevelList;
         }
-        public string AccessLevelField
+        public int AccessLevelField
         {
             get => accessLevelField;
             set
             {
                 accessLevelField = value;
                 OnPropertyChanged(nameof(AccessLevelField));
+                OnPropertyChanged(nameof(ListVisibility));
+                OnPropertyChanged(nameof(AdminVisibility));
             }
         }
 
-        public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
+        public string AdminPasswordField
+        {
+            get => adminPasswordField;
+            set
+            {
+                adminPasswordField = value;
+                OnPropertyChanged(nameof(AdminPasswordField));
+            }
+        }
+        public bool AdminVisibility => AccessLevelField != (int)User.AccessLevel.Admin;
+
+        public bool ListVisibility
+        {
+            get => AccessLevelField >= 0;
+        }
+
+        public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }
     }
 }

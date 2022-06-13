@@ -114,22 +114,22 @@ namespace Projet_File_Rouge.Tools
                 i++;
             }
 
-            SaleDocument saleDocument = new SaleDocument(Id, 
-                                                         sysCreatedDate, 
-                                                         sysModifiedDate, 
-                                                         DocumentNumber, 
-                                                         NumberPrefix, 
-                                                         NumberSuffix, 
-                                                         InvoicingAddress_ThirdName, 
-                                                         InvoicingContact_Phone, 
-                                                         InvoicingContact_CellPhone, 
-                                                         InvoicingContact_Email, 
+            SaleDocument saleDocument = new SaleDocument(Id,
+                                                         sysCreatedDate,
+                                                         sysModifiedDate,
+                                                         DocumentNumber,
+                                                         NumberPrefix,
+                                                         NumberSuffix,
+                                                         InvoicingAddress_ThirdName,
+                                                         InvoicingContact_Phone,
+                                                         InvoicingContact_CellPhone,
+                                                         InvoicingContact_Email,
                                                          DeliveryAddress_Address1,
-                                                         DeliveryAddress_ZipCode, 
-                                                         DeliveryAddress_City, 
+                                                         DeliveryAddress_ZipCode,
+                                                         DeliveryAddress_City,
                                                          DeliveryAddress_State,
                                                          InvoicingAddress_CountryIsoCode,
-                                                         CommitmentsBalanceDue, 
+                                                         CommitmentsBalanceDue,
                                                          TotalDueAmount);
 
             return saleDocument;
@@ -546,8 +546,7 @@ namespace Projet_File_Rouge.Tools
             string name = string.Empty;
             string password = string.Empty;
             User.AccessLevel accessLevel = User.AccessLevel.User;
-
-            string temp;
+            bool activated = true;
 
             int i = 0;
 
@@ -571,10 +570,14 @@ namespace Projet_File_Rouge.Tools
                 {
                     accessLevel = (User.AccessLevel)GetInt(splitTab[i + 1]);
                 }
+                if (split == UserEnum.activated.ToString())
+                {
+                    activated = GetBool(splitTab[i + 1]);
+                }
                 i++;
             }
 
-            User user = new User(id, name, password, accessLevel);
+            User user = new User(id, name, password, accessLevel, activated);
 
             return user;
         }

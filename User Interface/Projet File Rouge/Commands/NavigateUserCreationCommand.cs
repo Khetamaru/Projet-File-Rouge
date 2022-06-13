@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Projet_File_Rouge.Object;
 using Projet_File_Rouge.Stores;
+using Projet_File_Rouge.Tools;
 using Projet_File_Rouge.ViewModel;
 
 namespace Projet_File_Rouge.Commands
 {
-    class NavigateUserCreationCommand : CommandBase
+    public class NavigateUserCreationCommand : CommandBase
     {
         private readonly NavigationStore navigationStore;
         public CacheStore cacheStore;
@@ -22,7 +23,10 @@ namespace Projet_File_Rouge.Commands
 
         public override void Execute(object parameter)
         {
-            navigationStore.CurrentViewModel = new UserCreationViewModel(navigationStore, cacheStore);
+            if (RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)).UserLevel >= User.AccessLevel.Admin)
+            {
+                navigationStore.CurrentViewModel = new UserCreationViewModel(navigationStore, cacheStore);
+            }
         }
     }
 }

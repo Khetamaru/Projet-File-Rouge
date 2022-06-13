@@ -96,5 +96,19 @@ namespace Local_API_Server.Controllers
 
             return Ok();
         }
+
+        // DELETE: api/DocumentList/redWire/5
+        [HttpDelete("redWire/{id}")]
+        public async Task<IActionResult> DeleteDocumentListByRedWire(int id)
+        {
+            var DocumentList = await _context.DocumentList.Where(r => r.redWire == id).ToListAsync();
+            foreach (DocumentList documentList in DocumentList)
+            {
+                _context.DocumentList.Remove(documentList);
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

@@ -83,5 +83,9 @@ namespace Projet_File_Rouge.Views
         private void OpenCommandePiecePopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenCommandePiecePopUp(); }
         private void CommandePieceYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).CommandePieceYesButton(); }
         private void CommandePieceNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).CommandePieceNoButton(); }
+
+        private void OpenReopeningPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenReopeningPopUp(); }
+        private void ReopeningYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).ReopeningYesButton(); }
+        private void ReopeningNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).ReopeningNoButton(); }
     }
 }

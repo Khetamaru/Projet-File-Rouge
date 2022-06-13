@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using Projet_File_Rouge.EBPObject;
 using Projet_File_Rouge.Object;
 
@@ -24,9 +21,44 @@ namespace Projet_File_Rouge.Tools
             return Unjsonify.RedWiresUnjsoning(result);
         }
 
+        internal static void PostUser(string json)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.user.ToString(), json);
+        }
+
         internal static void PutCommand(int id, string json)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().PutRequest(BDDTabName.commandList.ToString() + "/" + id, json);
+        }
+
+        internal static void PutUser(int id, string json)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().PutRequest(BDDTabName.user.ToString() + "/" + id, json);
+        }
+
+        internal static void DeleteEvenementByRedWire(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.evenement.ToString() + "/redWire/" + id);
+        }
+
+        internal static void DeleteUserHistoryListByRedWire(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.userHistoryList.ToString() + "/redWire/" + id);
+        }
+
+        internal static void DeleteDocumentListByRedWire(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentList.ToString() + "/redWire/" + id);
+        }
+
+        internal static void DeleteCommandListByRedWire(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.commandList.ToString() + "/redWire/" + id);
+        }
+
+        internal static void DeleteRedWire(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.redWire.ToString() + "/" + id);
         }
 
         internal static bool GetCommandListRedWireNumber(int id)
@@ -48,6 +80,18 @@ namespace Projet_File_Rouge.Tools
             return result == "" ? 0 : Int32.Parse(result);
         }
 
+        internal static int GetRedWirePurgeNumber()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/purgeNumber");
+            return result == "" ? 0 : Int32.Parse(result);
+        }
+
+        internal static List<RedWire> GetRedWirePurge()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/purge");
+            return Unjsonify.RedWiresUnjsoning(result);
+        }
+
         internal static List<CommandList> GetCommandListPage(int pageNumber)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/page/" + pageNumber);
@@ -63,6 +107,12 @@ namespace Projet_File_Rouge.Tools
         internal static List<RedWire> GetRedWireNotif(int userId)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/notif/" + userId);
+            return Unjsonify.RedWiresUnjsoning(result);
+        }
+
+        internal static List<RedWire> GetRedWireNotifAdmin()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/notifAdmin");
             return Unjsonify.RedWiresUnjsoning(result);
         }
 
@@ -91,6 +141,12 @@ namespace Projet_File_Rouge.Tools
             return result == "" ? 0 : Int32.Parse(result);
         }
 
+        internal static int GetRedWireNotifAdminNumber()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/notifAdminNumber");
+            return result == "" ? 0 : Int32.Parse(result);
+        }
+
         internal static int GetCommandListNotifNumber()
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/notifNumber");
@@ -100,6 +156,12 @@ namespace Projet_File_Rouge.Tools
         public static List<User> GetUsers()
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.user.ToString());
+            return Unjsonify.UsersUnjsoning(result);
+        }
+
+        public static List<User> GetActiveUsers()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.user.ToString() + "/active");
             return Unjsonify.UsersUnjsoning(result);
         }
 

@@ -96,5 +96,19 @@ namespace Local_API_Server.Controllers
 
             return Ok();
         }
+
+        // DELETE: api/Event/redWire/5
+        [HttpDelete("redWire/{id}")]
+        public async Task<IActionResult> DeleteEventByRedWire(int id)
+        {
+            var Event = await _context.Evenement.Where(r => r.redWire == id).ToListAsync();
+            foreach (Evenement evenement in Event)
+            {
+                _context.Evenement.Remove(evenement);
+            }
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }

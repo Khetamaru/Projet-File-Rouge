@@ -12,13 +12,17 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Button Grid.Row="0" Margin="12" Padding="5" HorizontalAlignment="Right" VerticalAlignment="Center" FontSize="20" Content="Retour" Command="{Binding NavigateMainMenuCommand}"/>
 
-        <Button Grid.Row="1" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Création Utilisateur"/>
-        <Button Grid.Row="2" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Gestion Utilisateur"/>
-        <Button Grid.Row="3" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Autre"/>
+        <Button Grid.Row="1" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Création Utilisateur" Command="{Binding NavigateUserCreationCommand}"/>
+        <Button Grid.Row="2" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Gestion Utilisateur" Command="{Binding NavigateUserCenterCommand}"/>
+        <Button Grid.Row="3" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Changement mot de passe" Command="{Binding NavigateChangePasswordCommand}"/>
+        <Button Grid.Row="4" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Purge Dossiers" Command="{Binding NavigateFolderPurgeCommand}"/>
+        <Button Grid.Row="5" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Autre"/>
         
     </Grid>
 </UserControl>

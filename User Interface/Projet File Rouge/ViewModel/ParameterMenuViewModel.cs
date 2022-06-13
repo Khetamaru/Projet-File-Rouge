@@ -9,8 +9,16 @@ namespace Projet_File_Rouge.ViewModel
         public ParameterMenuViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
+            NavigateUserCreationCommand = new NavigateUserCreationCommand(navigationStore, cacheStore);
+            NavigateUserCenterCommand = new NavigateUserCenterCommand(navigationStore, cacheStore);
+            NavigateChangePasswordCommand = new NavigateChangePasswordCommand(navigationStore, cacheStore);
+            NavigateFolderPurgeCommand = new NavigateFolderPurgeCommand(navigationStore, cacheStore);
         }
 
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
+        public NavigateUserCreationCommand NavigateUserCreationCommand { get; }
+        public NavigateUserCenterCommand NavigateUserCenterCommand { get; }
+        public NavigateChangePasswordCommand NavigateChangePasswordCommand { get; }
+        public NavigateFolderPurgeCommand NavigateFolderPurgeCommand { get; }
     }
 }

@@ -29,7 +29,7 @@ namespace Projet_File_Rouge.ViewModel
         private List<string> GetUserNames()
         {
             List<string> nameList = new List<string>();
-            List<User> users = RequestCenter.GetUsers();
+            List<User> users = RequestCenter.GetActiveUsers();
             foreach(User user in users)
             {
                 nameList.Add(user.Name);

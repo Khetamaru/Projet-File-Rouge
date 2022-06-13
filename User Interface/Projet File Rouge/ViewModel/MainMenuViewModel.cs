@@ -30,6 +30,7 @@ namespace Projet_File_Rouge.ViewModel
         public string UserName => userName;
         public int NotifNumber => notifNumber;
         public bool NotificationVisibility => NotifNumber == 0;
+        public string NotificationText => "Notifications (" + NotifNumber + ")";
 
         public LogOutCommand LogOutCommand { get; }
         public NavigateNotificationPageCommand NavigateNotificationPageCommand { get; }

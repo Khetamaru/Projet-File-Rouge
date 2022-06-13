@@ -29,12 +29,20 @@ namespace Projet_File_Rouge.Commands
 
         private void OutDatedNotif(int userId)
         {
-            int redWiresNotifNumber = RequestCenter.GetRedWireNotifNumber(userId);
+            int Count = 0;
             User user = RequestCenter.GetUser(userId);
 
-            int Count = redWiresNotifNumber;
-            if ((int)user.UserLevel >= (int)User.AccessLevel.SuperUser) { Count += RequestCenter.GetCommandListNotifNumber(); }
-
+            if (user.UserLevel == User.AccessLevel.Admin)
+            {
+                Count += RequestCenter.GetRedWireNotifAdminNumber();
+                Count += RequestCenter.GetCommandListNotifNumber();
+                Count += RequestCenter.GetRedWirePurgeNumber();
+            }
+            else
+            {
+                Count += RequestCenter.GetRedWireNotifNumber(userId);
+                if ((int)user.UserLevel >= (int)User.AccessLevel.SuperUser) { Count += RequestCenter.GetCommandListNotifNumber(); }
+            }
             cacheStore.SetObjectCache(ObjectCacheStoreEnum.notifNumber, Count);
         }
     }

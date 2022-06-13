@@ -22,7 +22,14 @@ namespace Local_API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            return await _context.User.ToListAsync();
+            return await _context.User.OrderBy(u => u.accessLevel).ToListAsync();
+        }
+
+        // GET: api/User
+        [HttpGet("active")]
+        public async Task<ActionResult<IEnumerable<User>>> GetActiveUser()
+        {
+            return await _context.User.OrderBy(u => u.accessLevel).Where(u => u.activated == true).ToListAsync();
         }
 
         // GET: api/User/5

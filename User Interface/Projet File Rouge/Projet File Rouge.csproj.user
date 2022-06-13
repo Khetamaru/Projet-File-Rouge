@@ -36,6 +36,18 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\FolderPurgeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ChangePasswordView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\UserView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\UserCenterView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\FreeFolderView.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -111,7 +111,20 @@ namespace Projet_File_Rouge.Object
         public DateTime RepairStartDate { get => repairStartDate; set => repairStartDate = value; }
         public string RepairStartDateFormated { get => RepairStartDate.ToString("dd'/'MM'/'yy' 'HH':'mm"); }
         public DateTime RepairEndDate { get => repairEndDate; set => repairEndDate = value; }
-        public string RepairEndDateFormated { get => RepairEndDate.ToString("dd'/'MM'/'yy' 'HH':'mm"); }
+        public string RepairEndDateFormated
+        {
+            get
+            {
+                if (RepairEndDate != new DateTime())
+                {
+                    return RepairEndDate.ToString("dd'/'MM'/'yy' 'HH':'mm");
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+        }
         public string Client { get => client; }
         public string ClientName { get => clientName; }
         public User Recorder { get => recorder; }

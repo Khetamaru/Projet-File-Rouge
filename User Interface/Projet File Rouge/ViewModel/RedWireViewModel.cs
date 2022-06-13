@@ -31,6 +31,7 @@ namespace Projet_File_Rouge.ViewModel
         private bool nonReparablePopUpIsOpen;
         private bool nonReparableAppelPopUpIsOpen;
         private bool nonReparableRenduPopUpIsOpen;
+        private bool reopeningPopUpIsOpen;
         private bool commandePiecePopUpIsOpen;
 
         public RedWireViewModel(NavigationStore navigationStore, CacheStore cacheStore)
@@ -94,13 +95,14 @@ namespace Projet_File_Rouge.ViewModel
             OnPropertyChanged(nameof(FinPayementButtonVisibility));
             OnPropertyChanged(nameof(NonReparableButtonVisibility));
             OnPropertyChanged(nameof(NonReparableAppelButtonVisibility));
+            OnPropertyChanged(nameof(ReopeningButtonVisibility));
             OnPropertyChanged(nameof(NonReparableRenduButtonVisibility));
             OnPropertyChanged(nameof(PECDevisButtonVisibility));
             OnPropertyChanged(nameof(PECClientResponseButtonVisibility));
             OnPropertyChanged(nameof(InsertTextVisibility));
         }
 
-        private bool AccessAuthorization() { return RedWire.ActualRepairMan != null && ActualUser.Id == RedWire.ActualRepairMan.Id ? true : false; }
+        private bool AccessAuthorization() { return RedWire.ActualRepairMan != null && (ActualUser.Id == RedWire.ActualRepairMan.Id || ActualUser.UserLevel >= User.AccessLevel.SuperUser) ? true : false; }
 
         public string DetailInfos { get => SaleDocument.DetailInfos(); }
 
@@ -118,7 +120,14 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (TextInsert != null && TextInsert.Trim() != string.Empty)
             {
-                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Message utilisateur : " + TextInsert));
+                if (ActualUser.Id == RedWire.ActualRepairMan.Id)
+                {
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Message utilisateur : " + TextInsert));
+                }
+                else
+                {
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Message utilisateur (" + ActualUser.Name + ") : " + TextInsert));
+                }
                 UIUpdate();
                 TextInsert = string.Empty;
             }
@@ -498,7 +507,7 @@ namespace Projet_File_Rouge.ViewModel
             CloseFinAppelPopUp();
         }
 
-        public bool FinPayementButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_payé || !AccessAuthorization(); }
+        public bool FinPayementButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_payé || !(ActualUser.UserLevel >= User.AccessLevel.User); }
         public bool FinPayementPopUpIsOpen
         {
             get => finPayementPopUpIsOpen;
@@ -605,7 +614,7 @@ namespace Projet_File_Rouge.ViewModel
             CloseNonReparableAppelPopUp();
         }
 
-        public bool NonReparableRenduButtonVisibility { get => RedWire.ActualState != RedWire.state.NR_rendu || !AccessAuthorization(); }
+        public bool NonReparableRenduButtonVisibility { get => RedWire.ActualState != RedWire.state.NR_rendu || !(ActualUser.UserLevel >= User.AccessLevel.User); }
         public bool NonReparableRenduPopUpIsOpen
         {
             get => nonReparableRenduPopUpIsOpen;
@@ -630,6 +639,31 @@ namespace Projet_File_Rouge.ViewModel
         public void NonReparableRenduNoButton()
         {
             CloseNonReparableRenduPopUp();
+        }
+
+        public bool ReopeningButtonVisibility { get => RedWire.ActualState != RedWire.state.fin || !(ActualUser.UserLevel >= User.AccessLevel.User); }
+        public bool ReopeningPopUpIsOpen
+        {
+            get => reopeningPopUpIsOpen;
+            set
+            {
+                reopeningPopUpIsOpen = value;
+                OnPropertyChanged(nameof(ReopeningPopUpIsOpen));
+            }
+        }
+        public void OpenReopeningPopUp() => ReopeningPopUpIsOpen = true;
+        public void CloseReopeningPopUp() => ReopeningPopUpIsOpen = false;
+        public void ReopeningYesButton()
+        {
+            RedWire.ActualState = RedWire.state.en_cours;
+            RedWireMaj();
+            AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier réouvert par " + ActualUser.Name));
+            UIUpdate();
+            CloseReopeningPopUp();
+        }
+        public void ReopeningNoButton()
+        {
+            CloseReopeningPopUp();
         }
 
         public NavigateOutRedWireCommand NavigateOutRedWireCommand { get; }

@@ -85,6 +85,16 @@ namespace Local_API_Server.Controllers
 
         }
 
+        // GET: api/RedWire/notifAdmin
+        [HttpGet("notifAdmin")]
+        public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWireNotifAdmin()
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+            result = FilterAdmin(result);
+            return await result.ToListAsync();
+
+        }
+
         // GET: api/RedWire/notifNumber/0
         [HttpGet("notifNumber/{userId}")]
         public ActionResult<int> GetRedWireNotifNumber(int userId)
@@ -94,7 +104,83 @@ namespace Local_API_Server.Controllers
             return result.Count();
         }
 
+        // GET: api/RedWire/notifAdminNumber
+        [HttpGet("notifAdminNumber")]
+        public ActionResult<int> GetRedWireNotifAdminNumber()
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+            result = FilterAdmin(result);
+            return result.Count();
+        }
+
+        // GET: api/RedWire/purgeNumber/2022-05-01T00:00:00
+        [HttpGet("purgeNumber")]
+        public ActionResult<int> GetRedWirePurgeNumber()
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+            result = PurgeFilter(result);
+            return result.Count();
+        }
+
+        // GET: api/RedWire/purge/2022-05-01T00:00:00
+        [HttpGet("purge")]
+        public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWirePurge()
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+            result = PurgeFilter(result);
+            return await result.ToListAsync();
+        }
+
+        private IQueryable<RedWire> PurgeFilter(IQueryable<RedWire> result)
+        {
+            DateTime purgeDate = DateTime.Now/*.AddYears(-3)*/.AddDays(-2);
+            DateTime startPurgeDate = Convert.ToDateTime(purgeDate.Year + "-05-01T00:00:00");
+
+            if (purgeDate < startPurgeDate)
+            {
+                startPurgeDate = startPurgeDate.AddYears(1);
+            }
+
+            result = result.Where(r => r.actualState == 11
+                                    && r.repairEndDate <= startPurgeDate);
+
+            return result;
+        }
+
         public static IQueryable<RedWire> Filter(IQueryable<RedWire> result, int userId)
+        {
+            result = result.Where(r => (
+            r.actualState != 0
+                                            && r.actualState != 5
+                                            && r.actualState != 6
+                                            && r.actualState != 10
+                                            && r.actualState != 11
+                                            && r.actualState != 13
+
+                                            &&
+                                            (
+                                                r.actualRepairMan == userId
+                                                || (r.actualState == 7 && r.transfertTarget == userId)
+                                            )
+                                            && r.lastUpdate <= DateTime.Now.AddDays(-7)
+                                       )
+
+                                       || (
+                                            r.repairStartDate <= DateTime.Now.AddMonths(-6)
+                                            && r.actualState != 11
+
+                                            &&
+                                            (
+                                                r.actualRepairMan == userId
+                                                || (r.actualState == 7 && r.transfertTarget == userId)
+                                            )
+                                          )
+                                       );
+
+            return result;
+        }
+
+        public static IQueryable<RedWire> FilterAdmin(IQueryable<RedWire> result)
         {
             result = result.Where(r => (r.actualState != 0
                                      && r.actualState != 5
@@ -102,10 +188,7 @@ namespace Local_API_Server.Controllers
                                      && r.actualState != 10
                                      && r.actualState != 11
                                      && r.actualState != 13
-                                    && (r.actualRepairMan == userId 
-                                    || (r.actualState == 7 
-                                     && r.transfertTarget == userId))
-                                     && r.lastUpdate <= DateTime.Now.AddDays(-7))
+                                     && r.lastUpdate <= DateTime.Now.AddDays(-7).AddDays(-3))
                                     || (r.repairStartDate <= DateTime.Now.AddMonths(-6)
                                      && r.actualState != 11));
 

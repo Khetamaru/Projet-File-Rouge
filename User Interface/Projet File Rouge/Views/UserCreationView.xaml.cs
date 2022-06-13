@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Projet_File_Rouge.ViewModel;
 
 namespace Projet_File_Rouge.Views
 {
@@ -23,6 +24,11 @@ namespace Projet_File_Rouge.Views
         public UserCreationView()
         {
             InitializeComponent();
+        }
+
+        private void UserCreation(object sender, RoutedEventArgs e)
+        {
+            (DataContext as UserCreationViewModel).UserCreation();
         }
     }
 }

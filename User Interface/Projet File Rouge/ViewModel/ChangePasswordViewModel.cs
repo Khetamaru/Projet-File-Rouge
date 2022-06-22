@@ -17,6 +17,8 @@ namespace Projet_File_Rouge.ViewModel
 
         public ChangePasswordViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            oldPassword = newPassword = newPasswordConfirm = string.Empty;
+
             NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
 
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));

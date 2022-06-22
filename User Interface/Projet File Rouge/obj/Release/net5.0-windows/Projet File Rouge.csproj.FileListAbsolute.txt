@@ -68,3 +68,4 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net5.
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net5.0-windows\ref\Projet File Rouge.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net5.0-windows\Projet File Rouge.pdb
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net5.0-windows\Projet File Rouge.genruntimeconfig.cache
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net5.0-windows\Projet File Rouge.csproj.AssemblyReference.cache

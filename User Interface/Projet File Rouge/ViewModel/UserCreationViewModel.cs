@@ -28,6 +28,7 @@ namespace Projet_File_Rouge.ViewModel
             accessLevelField = -1;
 
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+            adminPasswordField = string.Empty;
         }
 
         internal void UserCreation()

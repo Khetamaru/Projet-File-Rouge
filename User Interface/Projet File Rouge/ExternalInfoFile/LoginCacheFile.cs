@@ -15,7 +15,9 @@ namespace Projet_File_Rouge.ExternalInfoFile
 
             try
             {
-                StreamReader sr = new StreamReader("loginCache.txt");
+                string completePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RG File Rouge_loginCache");
+
+                StreamReader sr = new StreamReader(completePath);
                 content = sr.ReadLine();
                 sr.Close();
             }
@@ -35,8 +37,10 @@ namespace Projet_File_Rouge.ExternalInfoFile
         {
             try
             {
-                StreamWriter sw = new StreamWriter("loginCache.txt");
-                sw.WriteLine(content);
+                string completePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RG File Rouge_loginCache");
+
+                StreamWriter sw = new StreamWriter(completePath);
+                sw.Write(content);
                 sw.Close();
             }
             catch (Exception e)

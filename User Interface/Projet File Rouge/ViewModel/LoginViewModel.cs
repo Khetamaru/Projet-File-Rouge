@@ -52,7 +52,7 @@ namespace Projet_File_Rouge.ViewModel
 
             if (string.Compare(lvn, svn.VersionNumber) < 0)
             {
-                if (DateTime.Now.AddDays(-3) > svn.Date)
+                if (DateTime.Now.AddDays(-3) < svn.Date)
                 {
                     PopUpCenter.MessagePopup("Votre version du logiciel n'est plus à jour.\nVous avez jusqu'à 3 jours après le " + svn.Date.ToString("dd'-'mm'-'yy' 'HH'H'mm") + "\n\nVersion actuelle : " + lvn + "\nVersion nécéssaire : " + svn.VersionNumber);
                 }

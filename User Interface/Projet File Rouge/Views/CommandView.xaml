@@ -1,0 +1,258 @@
+﻿<UserControl x:Class="Projet_File_Rouge.Views.CommandView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Projet_File_Rouge.Views" 
+             xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:CommandViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Retour" Command="{Binding NavigateCommandCenterCommand}"/>
+        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Suivi de dossier" Command="{Binding NavigateRedWireCommand}"/>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Center" Name="TopGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nom de la commande"/>
+                <TextBlock Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Command.Name}"/>
+            </Grid>
+
+            <Grid Grid.Row="1" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="URL de la commande"/>
+                <TextBlock  Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20">  
+                    <Hyperlink RequestNavigate="HyperlinkRequest" NavigateUri="{Binding Command.Url}">  
+                        <TextBlock Text="{Binding Command.Url}"/>
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
+
+            <Grid Grid.Row="2" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de livraison prévue"/>
+                <TextBlock Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Command.DeliveryDateFormated}"/>
+            </Grid>
+
+            <Grid Grid.Row="3" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Etat de la commande"/>
+                <TextBlock Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Command.State}"/>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="2" HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Commander" Click="OpenCommandDonePopUp">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CommandDoneButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Popup IsOpen="{Binding CommandDonePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
+                <Border Background="LightGreen">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CommandDoneNoButton"/>
+
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Vous commandez l'article ?"/>
+
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de livraison prévue"/>
+                            <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" SelectedDate="{Binding CommandDoneDateField, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CommandDoneYesButton"/>
+                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CommandDoneNoButton"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Popup>
+
+            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Commande arrivée" Click="OpenCommandArrivedPopUp">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CommandArrivedButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Popup IsOpen="{Binding CommandArrivedPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
+                <Border Background="LightGreen">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CommandArrivedNoButton"/>
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Le matériel a été livré ?"/>
+
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CommandArrivedYesButton"/>
+                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CommandArrivedNoButton"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Popup>
+
+            <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Mise à jour date de livraison" Click="OpenDeliveryDateUpdatePopUp">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding DeliveryDateUpdateButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Popup IsOpen="{Binding DeliveryDateUpdatePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
+                <Border Background="LightGreen">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="DeliveryDateUpdateNoButton"/>
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="La date de livraison prévue doit être mise à jour ?"/>
+
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de livraison prévue"/>
+                            <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" SelectedDate="{Binding DeliveryDateUpdateField, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                        
+                        <Grid Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="DeliveryDateUpdateYesButton"/>
+                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="DeliveryDateUpdateNoButton"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Popup>
+
+            <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Annulation commande" Click="OpenCancelCommandPopUp">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CancelCommandButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Popup IsOpen="{Binding CancelCommandPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
+                <Border Background="LightGreen">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CancelCommandNoButton"/>
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="La commande est annulée ?"/>
+
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CancelCommandYesButton"/>
+                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CancelCommandNoButton"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Popup>
+
+        </Grid>
+    </Grid>
+</UserControl>

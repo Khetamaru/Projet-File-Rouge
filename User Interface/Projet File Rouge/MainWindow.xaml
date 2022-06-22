@@ -1,0 +1,101 @@
+﻿<Window x:Class="Projet_File_Rouge.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodels="clr-namespace:Projet_File_Rouge.ViewModel"
+        xmlns:views="clr-namespace:Projet_File_Rouge.Views"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <ContentControl Content="{Binding CurrentViewModel}">
+        <ContentControl.Resources>
+
+            <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
+                <views:LoginView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:NotificationPageViewModel}">
+                <views:NotificationPageView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:MainMenuViewModel}">
+                <views:MainMenuView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:NewFileViewModel}">
+                <views:NewFileView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:GlobalCenterViewModel}">
+                <views:GlobalCenterView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:PersoSpaceViewModel}">
+                <views:PersoSpaceView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:OldFolderViewModel}">
+                <views:OldFolderView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:FreeFolderViewModel}">
+                <views:FreeFolderView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:RedWireViewModel}">
+                <views:RedWireView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:CommandViewModel}">
+                <views:CommandView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:CommandCenterViewModel}">
+                <views:CommandCenterView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:ParameterMenuViewModel}">
+                <views:ParameterMenuView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:UserCreationViewModel}">
+                <views:UserCreationView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:UserCenterViewModel}">
+                <views:UserCenterView/>
+            </DataTemplate> 
+
+            <DataTemplate DataType="{x:Type viewmodels:UserViewModel}">
+                <views:UserView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:ChangePasswordViewModel}">
+                <views:ChangePasswordView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:FolderPurgeViewModel}">
+                <views:FolderPurgeView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:DocumentCenterViewModel}">
+                <views:DocumentCenterView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:DocumentViewModel}">
+                <views:DocumentView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:UserHistoryViewModel}">
+                <views:UserHistoryView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:LogCenterViewModel}">
+                <views:LogCenterView/>
+            </DataTemplate>
+
+        </ContentControl.Resources>
+    </ContentControl>
+
+</Window>

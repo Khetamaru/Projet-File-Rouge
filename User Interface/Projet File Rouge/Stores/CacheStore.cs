@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Projet_File_Rouge.Stores
 {
@@ -7,10 +8,14 @@ namespace Projet_File_Rouge.Stores
         private Dictionary<ObjectCacheStoreEnum, int> objectCache;
         private Dictionary<InfoCacheStoreEnum, string> infoCache;
 
-        public CacheStore()
+        public readonly Action CloseEvent;
+
+        public CacheStore(Action CloseEvent)
         {
             objectCache = new Dictionary<ObjectCacheStoreEnum, int>();
             infoCache = new Dictionary<InfoCacheStoreEnum, string>();
+
+            this.CloseEvent = CloseEvent;
         }
 
         public int GetObjectCache(ObjectCacheStoreEnum cacheKey) { return objectCache.GetValueOrDefault(cacheKey); }
@@ -51,7 +56,8 @@ public enum ObjectCacheStoreEnum
 }
 public enum InfoCacheStoreEnum
 {
-    PreviousPageRedWire
+    PreviousPageRedWire,
+    SaleDocumentDetail
 }
 public enum PageNameEnum
 {

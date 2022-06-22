@@ -83,3 +83,11 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\ChangePasswordView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\FolderPurgeView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\FolderPurgeView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\DocumentCenterView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\DocumentView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\DocumentCenterView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\DocumentView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\UserHistoryView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\UserHistoryView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\LogCenterView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net5.0-windows\Views\LogCenterView.baml

@@ -92,7 +92,6 @@ namespace Local_API_Server.Controllers
             IQueryable<RedWire> result = _context.RedWire;
             result = FilterAdmin(result);
             return await result.ToListAsync();
-
         }
 
         // GET: api/RedWire/notifNumber/0
@@ -133,12 +132,12 @@ namespace Local_API_Server.Controllers
 
         private IQueryable<RedWire> PurgeFilter(IQueryable<RedWire> result)
         {
-            DateTime purgeDate = DateTime.Now/*.AddYears(-3)*/.AddDays(-2);
-            DateTime startPurgeDate = Convert.ToDateTime(purgeDate.Year + "-05-01T00:00:00");
+            DateTime purgeDate = DateTime.Now.AddYears(-3);
+            DateTime startPurgeDate = Convert.ToDateTime(purgeDate.Year + "-08-31T00:00:00");
 
             if (purgeDate < startPurgeDate)
             {
-                startPurgeDate = startPurgeDate.AddYears(1);
+                startPurgeDate = startPurgeDate.AddYears(-1);
             }
 
             result = result.Where(r => r.actualState == 11
@@ -156,6 +155,7 @@ namespace Local_API_Server.Controllers
                                             && r.actualState != 10
                                             && r.actualState != 11
                                             && r.actualState != 13
+                                            && r.actualState != 14
 
                                             &&
                                             (
@@ -167,7 +167,9 @@ namespace Local_API_Server.Controllers
 
                                        || (
                                             r.repairStartDate <= DateTime.Now.AddMonths(-6)
+                                            && r.actualState != 0
                                             && r.actualState != 11
+                                            && r.actualState != 14
 
                                             &&
                                             (
@@ -188,9 +190,12 @@ namespace Local_API_Server.Controllers
                                      && r.actualState != 10
                                      && r.actualState != 11
                                      && r.actualState != 13
+                                     && r.actualState != 14
                                      && r.lastUpdate <= DateTime.Now.AddDays(-7).AddDays(-3))
-                                    || (r.repairStartDate <= DateTime.Now.AddMonths(-6)
-                                     && r.actualState != 11));
+                                    || (r.repairStartDate <= DateTime.Now.AddMonths(-6).AddDays(-3)
+                                     && r.actualState != 0
+                                     && r.actualState != 11
+                                     && r.actualState != 14));
 
             return result;
         }

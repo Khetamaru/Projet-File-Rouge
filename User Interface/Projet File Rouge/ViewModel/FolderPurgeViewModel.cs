@@ -26,12 +26,12 @@ namespace Projet_File_Rouge.ViewModel
 
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
 
-            DateTime purgeDate = DateTime.Now/*.AddYears(-3)*/.AddDays(-2);
-            startPurgeDate = Convert.ToDateTime(purgeDate.Year + "-05-01T00:00:00");
+            DateTime purgeDate = DateTime.Now.AddYears(-3);
+            startPurgeDate = Convert.ToDateTime(purgeDate.Year + "-08-31T00:00:00");
 
             if (purgeDate < startPurgeDate)
             {
-                startPurgeDate = startPurgeDate.AddYears(1);
+                startPurgeDate = startPurgeDate.AddYears(-1);
             }
             purgeFolderNumber = RequestCenter.GetRedWirePurgeNumber();
             nonPurgeFolderNumber = RequestCenter.GetRedWireNumber(new DateTime(), -1, -1, "") - purgeFolderNumber;
@@ -67,6 +67,7 @@ namespace Projet_File_Rouge.ViewModel
                 RequestCenter.DeleteRedWire(redWire.Id);
             }
             PurgePopUpIsOpen = false;
+            RequestCenter.PostLog(new Log("Purge dossiers effectiuée. Nombre de dossiers purgés : " + PurgeFolderNumber + " / " + (nonPurgeFolderNumber + PurgeFolderNumber), DateTime.Now, Log.LogTypeEnum.RedWire, actualUser).Jsonify());
             PurgeFolderNumber = 0;
             PopUpCenter.MessagePopup("Purge dossiers terminée.");
         }
@@ -137,7 +138,7 @@ namespace Projet_File_Rouge.ViewModel
 
         public string StartPurgeDate
         {
-            get => startPurgeDate.ToString("dd'/'MM'/'yy");
+            get => startPurgeDate.ToString("dd'/'MM'/'yyyy");
         }
 
         public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }

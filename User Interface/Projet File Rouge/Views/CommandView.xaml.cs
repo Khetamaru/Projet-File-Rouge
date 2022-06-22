@@ -30,24 +30,7 @@ namespace Projet_File_Rouge.Views
 
         private void HyperlinkRequest(object sender, RequestNavigateEventArgs e)
         {
-            string url = e.Uri.AbsoluteUri.ToString();
-
-            try
-            {
-                Process.Start(url);
-            }
-            catch
-            {
-                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                {
-                    url = url.Replace("&", "^&");
-                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            (DataContext as CommandViewModel).HyperlinkRequest(e.Uri.ToString());
         }
 
         private void OpenCancelCommandPopUp(object sender, RoutedEventArgs e) { (DataContext as CommandViewModel).OpenCancelCommandPopUp(); }

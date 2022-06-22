@@ -12,8 +12,8 @@ namespace Projet_File_Rouge.ViewModel
         private List<RedWire> redWireList;
 
         private int actualPage;
-
         private int pageNumber;
+
         private DateTime date;
         private int step;
         internal int userId;

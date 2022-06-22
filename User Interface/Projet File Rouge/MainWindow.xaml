@@ -79,6 +79,22 @@
                 <views:FolderPurgeView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodels:DocumentCenterViewModel}">
+                <views:DocumentCenterView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:DocumentViewModel}">
+                <views:DocumentView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:UserHistoryViewModel}">
+                <views:UserHistoryView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:LogCenterViewModel}">
+                <views:LogCenterView/>
+            </DataTemplate>
+
         </ContentControl.Resources>
     </ContentControl>
 

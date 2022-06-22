@@ -158,6 +158,7 @@ namespace Projet_File_Rouge.Tools
             Guid documentId = new Guid();
             int LineOrder = 0;
             string DescriptionClear = string.Empty;
+            Decimal NetPriceVatIncluded = 0;
 
             int i = 0;
 
@@ -177,10 +178,14 @@ namespace Projet_File_Rouge.Tools
                 {
                     DescriptionClear = splitTab[i + 2];
                 }
+                else if (split == SaleDocumentLineEnum.netPriceVatIncluded.ToString())
+                {
+                    NetPriceVatIncluded = decimal.Parse(GetShort(splitTab[i + 1]).Replace('.', ','));
+                }
                 i++;
             }
 
-            SaleDocumentLine saleDocumentLine = new SaleDocumentLine(documentId, LineOrder/100, DescriptionClear);
+            SaleDocumentLine saleDocumentLine = new SaleDocumentLine(documentId, LineOrder/100, DescriptionClear, NetPriceVatIncluded);
 
             return saleDocumentLine;
         }
@@ -813,11 +818,128 @@ namespace Projet_File_Rouge.Tools
             return commandList;
         }
 
+        public static Log LogUnjsoning(string json)
+        {
+            int id = 42;
+            string text = String.Empty;
+            DateTime date = new();
+            Log.LogTypeEnum type = Log.LogTypeEnum.User;
+            User user = null;
+
+            int i = 0;
+
+            string[] splitTab = json.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == LogEnum.id.ToString())
+                {
+                    id = GetInt(splitTab[i + 1]);
+                }
+                if (split == LogEnum.text.ToString())
+                {
+                    text = splitTab[i + 2];
+                }
+                if (split == LogEnum.date.ToString())
+                {
+                    date = GetDate(splitTab[i + 2]);
+                }
+                if (split == LogEnum.type.ToString())
+                {
+                    type = (Log.LogTypeEnum)GetInt(splitTab[i + 1]);
+                }
+                if (split == LogEnum.user.ToString())
+                {
+                    user = RequestCenter.GetUser(GetInt(splitTab[i + 1]));
+                }
+                i++;
+            }
+
+            Log log = new Log(id, text, date, type, user);
+
+            return log;
+        }
+
+        public static List<Log> LogsUnjsoning(string json)
+        {
+            if (IsEmpty(json)) { return new List<Log>(); }
+
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
+            string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
+            List<Log> commandList = new List<Log>();
+
+            foreach (string jsonStr in objectTab)
+            {
+                commandList.Add(LogUnjsoning(jsonStr));
+            }
+
+            return commandList;
+        }
+
+        public static Object.Version VersionUnjsoning(string json)
+        {
+            int id = 42;
+            string versionNumber = string.Empty;
+            DateTime date = new();
+
+            int i = 0;
+
+            string[] splitTab = json.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == VersionEnum.id.ToString())
+                {
+                    id = GetInt(splitTab[i + 1]);
+                }
+                if (split == VersionEnum.versionNumber.ToString())
+                {
+                    versionNumber = splitTab[i + 2];
+                }
+                if (split == VersionEnum.date.ToString())
+                {
+                    date = GetDate(splitTab[i + 2]);
+                }
+                i++;
+            }
+
+            Object.Version Version = new Object.Version(id, versionNumber, date);
+
+            return Version;
+        }
+
+        public static List<Object.Version> VersionsUnjsoning(string json)
+        {
+            if (IsEmpty(json)) { return new List<Object.Version>(); }
+
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
+            string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
+            List<Object.Version> VersionList = new List<Object.Version>();
+
+            foreach (string jsonStr in objectTab)
+            {
+                VersionList.Add(VersionUnjsoning(jsonStr));
+            }
+
+            return VersionList;
+        }
+
         public static int GetInt(string json)
         {
             json = GetShort(json);
 
             return Int32.Parse(json);
+        }
+
+        public static double GetDouble(string json)
+        {
+            json = GetShort(json);
+
+            return Convert.ToDouble(json);
         }
 
         public static int? GetIntNullable(string json)

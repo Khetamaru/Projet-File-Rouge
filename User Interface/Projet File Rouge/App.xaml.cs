@@ -14,7 +14,7 @@ namespace Projet_File_Rouge
         protected override void OnStartup(StartupEventArgs e)
         {
             NavigationStore navigationStore = new NavigationStore();
-            CacheStore cacheStore = new CacheStore();
+            CacheStore cacheStore = new CacheStore(CloseApp);
 
             navigationStore.CurrentViewModel = new LoginViewModel(navigationStore, cacheStore);
 
@@ -28,6 +28,11 @@ namespace Projet_File_Rouge
             MainWindow.Show();
 
             base.OnStartup(e);
+        }
+
+        private void CloseApp()
+        {
+            OnExit(new EventArgs() as ExitEventArgs);
         }
     }
 }

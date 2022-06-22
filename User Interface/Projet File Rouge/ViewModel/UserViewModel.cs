@@ -90,6 +90,7 @@ namespace Projet_File_Rouge.ViewModel
         public string ChangeNameField { get => changeNameField; set { changeNameField = value; OnPropertyChanged(nameof(changeNameField)); } }
         public void ChangeNameYesButton()
         {
+            RequestCenter.PostLog(new Log("Changement de nom d'utilisateur " + ChangeNameField, DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
             User.Name = ChangeNameField;
             MajUI();
             MajUser();
@@ -113,6 +114,7 @@ namespace Projet_File_Rouge.ViewModel
         public void CloseResetPasswordPopUp() => ResetPasswordPopUpIsOpen = false;
         public void ResetPasswordYesButton()
         {
+            RequestCenter.PostLog(new Log("Mot de passe d'utilisateur " + User.Name + " remis à zéro", DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
             User.Password = SHA256Cypher.Cyphing("");
             MajUI();
             MajUser();
@@ -138,6 +140,7 @@ namespace Projet_File_Rouge.ViewModel
         public int ChangeAccessLevelField { get => changeAccessLevelField; set { changeAccessLevelField = value; OnPropertyChanged(nameof(ChangeAccessLevelField)); } }
         public void ChangeAccessLevelYesButton()
         {
+            RequestCenter.PostLog(new Log("Niveau d'accès changer " + User.Name + " : " + User.UserLevel + " => " + (User.AccessLevel)ChangeAccessLevelField, DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
             User.UserLevel = (User.AccessLevel)ChangeAccessLevelField;
             MajUI();
             MajUser();
@@ -166,6 +169,7 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (PopUpCenter.ActionValidPopup("Êtes-vous sûr de vouloir désactiver l'utilisateur ?\nL'utilisateur ne pourra plus se connecter avec si il n'est pas réactivé plus tard."))
             {
+                RequestCenter.PostLog(new Log("Désactivation d'utilisateur " + User.Name, DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
                 User.Activated = false;
                 User.UserLevel = User.AccessLevel.Intern;
                 MajUI();
@@ -193,6 +197,7 @@ namespace Projet_File_Rouge.ViewModel
         public void CloseUnablePopUp() => UnablePopUpIsOpen = false;
         public void UnableYesButton()
         {
+            RequestCenter.PostLog(new Log("Réactivation d'utilisateur " + User.Name, DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
             User.Activated = true;
             MajUI();
             MajUser();

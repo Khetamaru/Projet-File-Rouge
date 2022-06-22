@@ -13,6 +13,7 @@ namespace Projet_File_Rouge.ViewModel
             NavigateUserCenterCommand = new NavigateUserCenterCommand(navigationStore, cacheStore);
             NavigateChangePasswordCommand = new NavigateChangePasswordCommand(navigationStore, cacheStore);
             NavigateFolderPurgeCommand = new NavigateFolderPurgeCommand(navigationStore, cacheStore);
+            NavigateLogCenterCommand = new NavigateLogCenterCommand(navigationStore, cacheStore);
         }
 
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
@@ -20,5 +21,6 @@ namespace Projet_File_Rouge.ViewModel
         public NavigateUserCenterCommand NavigateUserCenterCommand { get; }
         public NavigateChangePasswordCommand NavigateChangePasswordCommand { get; }
         public NavigateFolderPurgeCommand NavigateFolderPurgeCommand { get; }
+        public NavigateLogCenterCommand NavigateLogCenterCommand { get; }
     }
 }

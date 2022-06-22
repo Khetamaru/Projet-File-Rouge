@@ -30,6 +30,7 @@ namespace Projet_File_Rouge.ViewModel
                 {
                     if (NewPassword == NewPasswordConfirm)
                     {
+                        RequestCenter.PostLog(new Log("Changement de mot de passe utilisateur " + ActualUser.Name, DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
                         ActualUser.Password = SHA256Cypher.Cyphing(NewPassword);
                         RequestCenter.PutUser(ActualUser.Id, ActualUser.JsonifyId());
                         PopUpCenter.MessagePopup("Mot de passe correctement modifié.");

@@ -20,10 +20,10 @@ namespace Red_Wire_API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseSetting("http_port", "8085");
+                    webBuilder.UseSetting("http_port", "8086");
                     webBuilder.UseStartup<Startup>();
-                    //webBuilder.UseUrls("http://192.168.1.79:8085/");
-                    webBuilder.UseUrls("http://localhost:8085/");
+                    webBuilder.UseUrls("http://192.168.1.79:8086/");
+                    //webBuilder.UseUrls("http://localhost:8086/");
                 });
     }
 }

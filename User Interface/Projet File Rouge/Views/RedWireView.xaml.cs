@@ -87,5 +87,13 @@ namespace Projet_File_Rouge.Views
         private void OpenReopeningPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenReopeningPopUp(); }
         private void ReopeningYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).ReopeningYesButton(); }
         private void ReopeningNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).ReopeningNoButton(); }
+
+        private void OpenAdminAsignPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenAdminAsignPopUp(); }
+        private void AdminAsignYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AdminAsignYesButton(); }
+        private void AdminAsignNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AdminAsignNoButton(); }
+
+        private void OpenGiveUpPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenGiveUpPopUp(); }
+        private void GiveUpYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).GiveUpYesButton(); }
+        private void GiveUpNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).GiveUpNoButton(); }
     }
 }

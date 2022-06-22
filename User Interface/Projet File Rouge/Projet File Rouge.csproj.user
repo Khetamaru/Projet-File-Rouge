@@ -42,6 +42,18 @@
     <Page Update="Views\ChangePasswordView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\DocumentCenterView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DocumentView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\LogCenterView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\UserHistoryView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\UserView.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -14,6 +14,8 @@ namespace Projet_File_Rouge.ViewModel
         private int accessLevelField;
         private string adminPasswordField;
 
+        private readonly User actualUser;
+
         public UserCreationViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
             NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
@@ -24,6 +26,8 @@ namespace Projet_File_Rouge.ViewModel
                 accessLevelList.Add(levelName);
             }
             accessLevelField = -1;
+
+            actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
         }
 
         internal void UserCreation()
@@ -39,6 +43,7 @@ namespace Projet_File_Rouge.ViewModel
                     RequestCenter.PostUser(new User(UserNameField, string.Empty, (User.AccessLevel)AccessLevelField).JsonifyLogIn());
                 }
                 PopUpCenter.MessagePopup("L'utilisateur " + UserNameField + " a bien été crééer avec le niveau d'accès : " + ((User.AccessLevel)AccessLevelField).ToString());
+                RequestCenter.PostLog(new Log("Création de l'utilisateur " + UserNameField + " => " + AccessLevelField, DateTime.Now, Log.LogTypeEnum.User, actualUser).Jsonify());
                 NavigateParameterMenuCommand.Execute(null);
             }
             else

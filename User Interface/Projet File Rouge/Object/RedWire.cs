@@ -51,7 +51,8 @@ namespace Projet_File_Rouge.Object
             fin_payé,
             fin,
             NR_appel,
-            NR_rendu
+            NR_rendu,
+            abandon
         }
 
         public enum EquipmentType

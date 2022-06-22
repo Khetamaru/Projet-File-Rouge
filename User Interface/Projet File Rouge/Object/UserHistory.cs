@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Projet_File_Rouge.Object
 {
-    class UserHistory : BDDObject
+    public class UserHistory : BDDObject
     {
         private readonly int? id;
 
@@ -25,6 +25,7 @@ namespace Projet_File_Rouge.Object
 
         public int Id { get => id != null ? (int)id : -1; }
         public DateTime Time { get => time; }
+        public string TimeFormated { get => Time.ToString("dd'/'MM'/'yy' 'HH':'mm"); }
         public User User { get => user; }
         public RedWire RedWire { get => redWire; }
 
@@ -33,7 +34,7 @@ namespace Projet_File_Rouge.Object
             return "{" +
                    "\"" + UserHistoryEnum.id + "\" : " + Id + "," +
                    "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + UserHistoryEnum.user + "\" : " + User.Id +
+                   "\"" + UserHistoryEnum.user + "\" : " + User.Id + "," +
                    "\"" + UserHistoryEnum.redWire + "\" : " + RedWire.Id +
                    "}";
         }
@@ -42,7 +43,7 @@ namespace Projet_File_Rouge.Object
         {
             return "{" +
                    "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + UserHistoryEnum.user + "\" : " + User.Id +
+                   "\"" + UserHistoryEnum.user + "\" : " + User.Id + "," +
                    "\"" + UserHistoryEnum.redWire + "\" : " + RedWire.Id +
                    "}";
         }

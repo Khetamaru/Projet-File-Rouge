@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Projet_File_Rouge.Commands;
 using Projet_File_Rouge.EBPObject;
 using Projet_File_Rouge.Object;
@@ -33,10 +32,14 @@ namespace Projet_File_Rouge.ViewModel
         private bool nonReparableRenduPopUpIsOpen;
         private bool reopeningPopUpIsOpen;
         private bool commandePiecePopUpIsOpen;
+        private bool adminAsignPopUpIsOpen;
+        public bool giveUpPopUpIsOpen;
 
         public RedWireViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
             NavigateOutRedWireCommand = new NavigateOutRedWireCommand(navigationStore, cacheStore);
+            NavigateDocumentCenterCommand = new NavigateDocumentCenterCommand(navigationStore, cacheStore);
+            NavigateUserHistoryCommand = new NavigateUserHistoryCommand(navigationStore, cacheStore);
 
             redWire = RequestCenter.GetRedWire(cacheStore.GetObjectCache(ObjectCacheStoreEnum.RedWireDetail));
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
@@ -100,6 +103,8 @@ namespace Projet_File_Rouge.ViewModel
             OnPropertyChanged(nameof(PECDevisButtonVisibility));
             OnPropertyChanged(nameof(PECClientResponseButtonVisibility));
             OnPropertyChanged(nameof(InsertTextVisibility));
+            OnPropertyChanged(nameof(AdminAsignButtonVisibility));
+            OnPropertyChanged(nameof(GiveUpButtonVisibility));
         }
 
         private bool AccessAuthorization() { return RedWire.ActualRepairMan != null && (ActualUser.Id == RedWire.ActualRepairMan.Id || ActualUser.UserLevel >= User.AccessLevel.SuperUser) ? true : false; }
@@ -115,7 +120,7 @@ namespace Projet_File_Rouge.ViewModel
                 OnPropertyChanged(nameof(TextInsert));
             }
         }
-        public bool InsertTextVisibility { get => RedWire.ActualState == RedWire.state.fin || !AccessAuthorization(); }
+        public bool InsertTextVisibility { get => RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !AccessAuthorization(); }
         public void InsertText()
         {
             if (TextInsert != null && TextInsert.Trim() != string.Empty)
@@ -202,7 +207,9 @@ namespace Projet_File_Rouge.ViewModel
                 RedWire.ActualState = RedWire.state.start_response;
                 RedWireMaj();
                 AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Devis créé et envoyé : " + PECDevisField));
-                AddDocument(new DocumentList(PECDevisField, RedWire));
+                DocumentList document = new DocumentList(PECDevisField, RedWire);
+                AddDocument(document);
+                DocumentList.Add(document);
                 UIUpdate();
                 ClosePECDevisPopUp();
             }
@@ -216,7 +223,6 @@ namespace Projet_File_Rouge.ViewModel
             RedWire.ActualState = RedWire.state.en_cours;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Pas de devis post diag créé"));
-            AddDocument(new DocumentList(PECDevisField, RedWire));
             UIUpdate();
             ClosePECDevisPopUp();
         }
@@ -666,6 +672,79 @@ namespace Projet_File_Rouge.ViewModel
             CloseReopeningPopUp();
         }
 
+        public bool AdminAsignButtonVisibility { get => RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !(ActualUser.UserLevel >= User.AccessLevel.Admin); }
+        public bool AdminAsignPopUpIsOpen
+        {
+            get => adminAsignPopUpIsOpen;
+            set
+            {
+                adminAsignPopUpIsOpen = value;
+                OnPropertyChanged(nameof(AdminAsignPopUpIsOpen));
+            }
+        }
+        public void OpenAdminAsignPopUp() => AdminAsignPopUpIsOpen = true;
+        public void CloseAdminAsignPopUp() => AdminAsignPopUpIsOpen = false;
+        public string adminAsignField;
+        public string AdminAsignField { get => adminAsignField; set { adminAsignField = value; } }
+        public void AdminAsignYesButton()
+        {
+            if (AdminAsignField != null)
+            {
+                User user = RequestCenter.GetUserByName(AdminAsignField);
+
+                if (RedWire.ActualRepairMan == null)
+                {
+                    RedWire.ActualRepairMan = user;
+                    RedWire.ActualState = RedWire.state.start_diag;
+                    RedWire.RepairStartDate = DateTime.Now;
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, ActualUser.Name + " a assigné le dossier à " + AdminAsignField));
+                }
+                else
+                {
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, ActualUser.Name + " a fait passer le dossier de " + RedWire.ActualRepairMan.Name + " à " + AdminAsignField));
+                    RedWire.ActualRepairMan = user;
+                }
+                RequestCenter.PostUserHistory(new UserHistory(DateTime.Now, RedWire.ActualRepairMan, RedWire).Jsonify());
+                RedWireMaj();
+                UIUpdate();
+                AdminAsignField = null;
+            }
+            CloseAdminAsignPopUp();
+        }
+        public void AdminAsignNoButton()
+        {
+            CloseAdminAsignPopUp();
+        }
+
+        public bool GiveUpButtonVisibility { get => RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !(ActualUser.UserLevel >= User.AccessLevel.User) || !(DateTime.Now.AddMonths(-6) > RedWire.RepairStartDate); }
+        public bool GiveUpPopUpIsOpen
+        {
+            get => giveUpPopUpIsOpen;
+            set
+            {
+                giveUpPopUpIsOpen = value;
+                OnPropertyChanged(nameof(GiveUpPopUpIsOpen));
+            }
+        }
+        public void OpenGiveUpPopUp() => GiveUpPopUpIsOpen = true;
+        public void CloseGiveUpPopUp() => GiveUpPopUpIsOpen = false;
+        public void GiveUpYesButton()
+        {
+            RedWire.ActualState = RedWire.state.abandon;
+            RedWire.RepairEndDate = DateTime.Now;
+            RequestCenter.PostLog(new Log("Dossier abandonné : " + RedWire.ClientName + " - " + RedWire.RepairStartDateFormated, DateTime.Now, Log.LogTypeEnum.RedWire, actualUser).Jsonify());
+            AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier et matériel abandonnés par le client."));
+            RedWireMaj();
+            UIUpdate();
+            CloseGiveUpPopUp();
+        }
+        public void GiveUpNoButton()
+        {
+            CloseGiveUpPopUp();
+        }
+
+        public NavigateDocumentCenterCommand NavigateDocumentCenterCommand { get; }
         public NavigateOutRedWireCommand NavigateOutRedWireCommand { get; }
+        public NavigateUserHistoryCommand NavigateUserHistoryCommand { get; }
     }
 }

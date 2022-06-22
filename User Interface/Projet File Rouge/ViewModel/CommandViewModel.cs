@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using Projet_File_Rouge.Commands;
 using Projet_File_Rouge.Object;
 using Projet_File_Rouge.Stores;
@@ -87,6 +89,7 @@ namespace Projet_File_Rouge.ViewModel
         public void CancelCommandYesButton()
         {
             Command.State = CommandList.CommandStatusEnum.annulé;
+            RequestCenter.PostLog(new Log("Annulation de commande : " + Command.Name, DateTime.Now, Log.LogTypeEnum.CommandList, actualUser).Jsonify());
             CommandMaj();
             RedWireMaj();
             UIUpdate();
@@ -116,6 +119,7 @@ namespace Projet_File_Rouge.ViewModel
             if (CommandDoneDateField != new DateTime())
             {
                 Command.DeliveryDate = CommandDoneDateField;
+                RequestCenter.PostLog(new Log("Commande Faite : " + Command.Name, DateTime.Now, Log.LogTypeEnum.CommandList, actualUser).Jsonify());
                 RedWireMaj();
                 Command.State = CommandList.CommandStatusEnum.livraison_en_cours;
                 CommandMaj();
@@ -143,6 +147,7 @@ namespace Projet_File_Rouge.ViewModel
         public void CommandArrivedYesButton()
         {
             Command.State = CommandList.CommandStatusEnum.livré;
+            RequestCenter.PostLog(new Log("Commande arrivée : " + Command.Name, DateTime.Now, Log.LogTypeEnum.CommandList, actualUser).Jsonify());
             CommandMaj();
             RedWireMaj();
             UIUpdate();
@@ -181,6 +186,19 @@ namespace Projet_File_Rouge.ViewModel
         public void DeliveryDateUpdateNoButton()
         {
             CloseDeliveryDateUpdatePopUp();
+        }
+
+        public void HyperlinkRequest(string url)
+        {
+            try
+            {
+                url = url.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            catch
+            {
+                PopUpCenter.MessagePopup("Le billy qui a écrit l'url sait pas faire un \"Ctrl + C & Ctrl + V\"");
+            }
         }
 
         public NavigateCommandCenterCommand NavigateCommandCenterCommand { get; }

@@ -27,6 +27,7 @@ namespace Projet_File_Rouge.EBPObject
 
         public Decimal CommitmentsBalanceDue { get; set; }
         public Decimal TotalDueAmount { get; set; }
+        public string TotalDueAmountFormated { get => Math.Round(TotalDueAmount, 2) + " €"; }
 
         public SaleDocument(Guid Id,
                             DateTime sysCreatedDate,

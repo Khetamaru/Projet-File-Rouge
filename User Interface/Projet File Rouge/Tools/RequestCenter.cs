@@ -21,6 +21,46 @@ namespace Projet_File_Rouge.Tools
             return Unjsonify.RedWiresUnjsoning(result);
         }
 
+        internal static List<Log> GetLogFiltered(int pageNumber, DateTime date, int type, int userId)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.log.ToString() + "/page/" + pageNumber + "/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + type + "/" + userId);
+            return Unjsonify.LogsUnjsoning(result);
+        }
+
+        internal static int GetLogNumber(DateTime date, int type, int userId)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.log.ToString() + "/total/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + type + "/" + userId);
+            return result == "" ? 0 : Int32.Parse(result);
+        }
+
+        internal static Object.Version GetVersion()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.version.ToString() + "/last");
+            return Unjsonify.VersionUnjsoning(result);
+        }
+
+        internal static List<UserHistory> GetUserHistoryByRedWire(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.userHistoryList.ToString() + "/redwire/" + id);
+            return Unjsonify.UserHistorysUnjsoning(result);
+        }
+
+        internal static List<DocumentList> GetDocumentLists(int redWireId)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.documentList.ToString() + "/redWire/" + redWireId);
+            return Unjsonify.DocumentListsUnjsoning(result);
+        }
+
+        internal static void PostVersion(string json)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.version.ToString(), json);
+        }
+
+        internal static void PostLog(string json)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.log.ToString(), json);
+        }
+
         internal static void PostUser(string json)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.user.ToString(), json);
@@ -259,6 +299,8 @@ namespace Projet_File_Rouge.Tools
         commandList,
 
         saleDocument,
-        saleDocumentLine
+        saleDocumentLine,
+        log,
+        version
     }
 }

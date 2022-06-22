@@ -47,6 +47,12 @@ namespace Red_Wire_API
             services.AddDbContext<CommandListContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
 
+            services.AddDbContext<LogContext>(opt =>
+                opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
+
+            services.AddDbContext<VersionContext>(opt =>
+                opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
+
             services.AddDbContext<SaleDocumentContext>(opt =>
                 opt.UseSqlServer(ebpConnectionString.GetConnectionString() + ";Encrypt=true;TrustServerCertificate=true;", providerOptions => providerOptions.EnableRetryOnFailure()));
 

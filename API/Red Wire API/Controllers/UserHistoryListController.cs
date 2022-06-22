@@ -37,6 +37,15 @@ namespace Local_API_Server.Controllers
             return UserHistoryList;
         }
 
+        // GET: api/UserHistoryList/redWire/5
+        [HttpGet("redWire/{id}")]
+        public async Task<ActionResult<IEnumerable<UserHistoryList>>> GetUserHistoryListByRedWire(int id)
+        {
+            var UserHistoryList = await _context.UserHistoryList.Where(u => u.redWire == id).ToListAsync();
+
+            return UserHistoryList;
+        }
+
         // POST: api/UserHistoryList
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]

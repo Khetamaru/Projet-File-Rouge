@@ -134,6 +134,7 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <CheckBox Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Sacoche" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
@@ -141,7 +142,7 @@
                         <CheckBox Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Souris" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
                         <CheckBox Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Batterie" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
                         <CheckBox Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Autre" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-
+                        <TextBox  Grid.Column="5" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding OtherText, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
 
                     <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Garantie"/>

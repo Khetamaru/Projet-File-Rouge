@@ -121,7 +121,7 @@
             <Button Grid.Column="4" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Annuler Filtre" Click="AntiFilter"/>
         </Grid>
 
-        <DataGrid Grid.Row="3" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="False" IsReadOnly="True" ItemsSource="{Binding StackPanelContent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <DataGrid Grid.Row="3" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding StackPanelContent, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*" Header="Date" Binding="{Binding DateFormated}"/>
                 <DataGridTextColumn Width="*" Header="Auteur" Binding="{Binding User.Name}"/>

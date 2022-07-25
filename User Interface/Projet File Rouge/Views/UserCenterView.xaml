@@ -15,7 +15,7 @@
 
         <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Command="{Binding NavigateParameterMenuCommand}"/>
 
-        <DataGrid Grid.Row="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="False" IsReadOnly="True" ItemsSource="{Binding UserList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
+        <DataGrid Grid.Row="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding UserList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*" Header="Nom de l'utilisateur" Binding="{Binding Name}"/>
                 <DataGridTextColumn Width="*" Header="Niveau d'accès" Binding="{Binding UserLevel}"/>

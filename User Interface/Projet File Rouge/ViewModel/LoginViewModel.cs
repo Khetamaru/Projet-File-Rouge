@@ -47,7 +47,8 @@ namespace Projet_File_Rouge.ViewModel
 
         public void IsProgramUpToDate()
         {
-            string lvn = ConfigurationManager.AppSettings["version"];
+            string lvn = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
+            lvn = lvn.Remove(lvn.Length - 2, 2);/*ConfigurationManager.AppSettings["version"];*/
             Object.Version svn = RequestCenter.GetVersion();
 
             if (string.Compare(lvn, svn.VersionNumber) < 0)

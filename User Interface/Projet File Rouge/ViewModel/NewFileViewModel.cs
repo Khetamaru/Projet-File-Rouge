@@ -34,6 +34,7 @@ namespace Projet_File_Rouge.ViewModel
         private bool mouse;
         private bool battery;
         private bool other;
+        private string otherText;
         private bool warranty;
         private bool problemReproduced;
         private string supportState;
@@ -41,6 +42,8 @@ namespace Projet_File_Rouge.ViewModel
         public NewFileViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
+
+            otherText = string.Empty;
         }
 
         public void ChargeSaleDocument(object sender, RoutedEventArgs e, string[] strTab)
@@ -195,7 +198,7 @@ namespace Projet_File_Rouge.ViewModel
             if (Alimentation) { stringList.Add("Matériel supplémentaire pris en charge : Alimentation"); }
             if (Mouse) { stringList.Add("Matériel supplémentaire pris en charge : Souris"); }
             if (Battery) { stringList.Add("Matériel supplémentaire pris en charge : Batterie"); }
-            if (Other) { stringList.Add("Matériel supplémentaire pris en charge : Autre"); }
+            if (Other) { stringList.Add("Matériel supplémentaire pris en charge : " + OtherText); }
             if (Warranty) { stringList.Add("ATTENTION : Matériel sous garantie"); }
             else { stringList.Add("Matériel non garantie"); }
             if (ProblemReproduced) { stringList.Add("Problème reproduit avec le client lors de la prise en charge"); }
@@ -239,6 +242,15 @@ namespace Projet_File_Rouge.ViewModel
             }
             else { stringList.Add("État du matériel Client : " + supportState); }
 
+            if (Other)
+            {
+                if (OtherText.Trim() == string.Empty)
+                {
+                    PopUpCenter.MessagePopup("Erreur : Case \"Autre\" cochée, mais champ de texte vide.");
+                    return (false, null);
+                }
+            }
+
             return (true, stringList);
         }
 
@@ -246,9 +258,20 @@ namespace Projet_File_Rouge.ViewModel
         {
             foreach (SaleDocumentLine line in saleLines)
             {
-                Evenement temp = new Evenement(redWire.Id, Evenement.EventType.simpleText, line.DescriptionClear);
-
-                RequestCenter.PostEvent(temp.Jsonify());
+                if (line.DescriptionClear.Contains("\\r\\n"))
+                {
+                    List<string> strTab = line.DescriptionClear.Split("\\r\\n").ToList();
+                    foreach(string str in strTab)
+                    {
+                        Evenement temp = new Evenement(redWire.Id, Evenement.EventType.simpleText, str);
+                        RequestCenter.PostEvent(temp.Jsonify());
+                    }
+                }
+                else
+                {
+                    Evenement temp = new Evenement(redWire.Id, Evenement.EventType.simpleText, line.DescriptionClear);
+                    RequestCenter.PostEvent(temp.Jsonify());
+                }
             }
             foreach (string line in stringList)
             {
@@ -415,6 +438,12 @@ namespace Projet_File_Rouge.ViewModel
         {
             get { return other; }
             set { other = value; }
+        }
+
+        public string OtherText
+        {
+            get { return otherText; }
+            set { otherText = value; }
         }
 
         private bool Warranty

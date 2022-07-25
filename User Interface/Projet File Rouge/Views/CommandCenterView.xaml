@@ -37,7 +37,7 @@
             <Button Grid.Column="2" Width="40" Height="40" Content="{StaticResource right}" Background="Transparent" BorderBrush="Transparent" Click="ArrowRight"/>
         </Grid>
 
-        <DataGrid Grid.Row="2" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="False" IsReadOnly="True" ItemsSource="{Binding CommandList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
+        <DataGrid Grid.Row="2" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding CommandList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*" Header="Nom de la commande" Binding="{Binding Name}"/>
                 <DataGridTextColumn Width="*" Header="Date de livraison prévue" Binding="{Binding DeliveryDateFormated}"/>

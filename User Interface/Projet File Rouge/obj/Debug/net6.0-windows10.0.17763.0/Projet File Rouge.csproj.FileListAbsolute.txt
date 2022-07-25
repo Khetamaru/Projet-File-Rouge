@@ -1,0 +1,71 @@
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.exe
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.dll.config
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.deps.json
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.runtimeconfig.json
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.pdb
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Microsoft.Extensions.DependencyInjection.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Microsoft.Toolkit.Mvvm.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Microsoft.Windows.SDK.NET.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\WinRT.Runtime.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.csproj.AssemblyReference.cache
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\MainWindow.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\ChangePasswordView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\CommandCenterView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\CommandView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\DocumentCenterView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\DocumentView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\FolderPurgeView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\FreeFolderView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\GlobalCenterView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\LogCenterView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\LoginView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MainMenuView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\NewFileView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\NotificationPageView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\OldFolderView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\ParameterMenuView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\PersoSpaceView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\RedWireView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\UserCenterView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\UserCreationView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\UserHistoryView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\UserView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\App.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\GeneratedInternalTypeHelper.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge_MarkupCompile.cache
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge_MarkupCompile.lref
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\MainWindow.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\ChangePasswordView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\CommandCenterView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\CommandView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\DocumentCenterView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\DocumentView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\FolderPurgeView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\FreeFolderView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\GlobalCenterView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\LogCenterView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\LoginView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MainMenuView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\NewFileView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\NotificationPageView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\OldFolderView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\ParameterMenuView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\PersoSpaceView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\RedWireView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\UserCenterView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\UserCreationView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\UserHistoryView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\UserView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.g.resources
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.GeneratedMSBuildEditorConfig.editorconfig
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.AssemblyInfoInputs.cache
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.AssemblyInfo.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.csproj.CoreCompileInputs.cache
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.csproj.CopyComplete
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\refint\Projet File Rouge.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.pdb
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.genruntimeconfig.cache
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\ref\Projet File Rouge.dll

@@ -103,7 +103,7 @@
             <Button Grid.Column="4" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Annuler Filtre" Click="AntiFilter"/>
         </Grid>
 
-        <DataGrid Grid.Row="3" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="False" IsReadOnly="True" ItemsSource="{Binding RedWireList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
+        <DataGrid Grid.Row="3" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding RedWireList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*" Header="Prise en charge" Binding="{Binding InChargeDateFormated}"/>
                 <DataGridTextColumn Width="*" Header="Début réparation" Binding="{Binding RepairStartDateFormated}"/>

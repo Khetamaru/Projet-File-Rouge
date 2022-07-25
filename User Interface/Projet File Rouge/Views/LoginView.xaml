@@ -8,7 +8,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodel:LoginViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid VerticalAlignment="Center">
+    <Grid VerticalAlignment="Center" FocusManager.FocusedElement="{Binding ElementName=Password}">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -30,7 +30,7 @@
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Utilisateur"/>
             <ComboBox x:Name="UserName" Grid.Row="0" Grid.Column="1" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding UserNameList}" SelectedItem="{Binding UserNameField}"/>
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Mot De Passe"/>
-            <PasswordBox x:Name="Password" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" PasswordChanged="PasswordBox_PasswordChanged"/>
+            <PasswordBox x:Name="Password" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" PasswordChanged="PasswordBox_PasswordChanged" KeyDown="KeyPressedEvent"/>
 
         </Grid>
 

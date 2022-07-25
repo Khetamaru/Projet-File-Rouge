@@ -33,7 +33,8 @@ namespace Projet_File_Rouge.ViewModel
         private bool reopeningPopUpIsOpen;
         private bool commandePiecePopUpIsOpen;
         private bool adminAsignPopUpIsOpen;
-        public bool giveUpPopUpIsOpen;
+        private bool ajoutDevisPopUpIsOpen;
+        private bool giveUpPopUpIsOpen;
 
         public RedWireViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
@@ -105,6 +106,7 @@ namespace Projet_File_Rouge.ViewModel
             OnPropertyChanged(nameof(InsertTextVisibility));
             OnPropertyChanged(nameof(AdminAsignButtonVisibility));
             OnPropertyChanged(nameof(GiveUpButtonVisibility));
+            OnPropertyChanged(nameof(AjoutDevisButtonVisibility));
         }
 
         private bool AccessAuthorization() { return RedWire.ActualRepairMan != null && (ActualUser.Id == RedWire.ActualRepairMan.Id || ActualUser.UserLevel >= User.AccessLevel.SuperUser) ? true : false; }
@@ -716,7 +718,7 @@ namespace Projet_File_Rouge.ViewModel
             CloseAdminAsignPopUp();
         }
 
-        public bool GiveUpButtonVisibility { get => RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !(ActualUser.UserLevel >= User.AccessLevel.User) || !(DateTime.Now.AddMonths(-6) > RedWire.RepairStartDate); }
+        public bool GiveUpButtonVisibility { get => RedWire.ActualState == RedWire.state.libre || RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !(ActualUser.UserLevel >= User.AccessLevel.User) || !(DateTime.Now.AddMonths(-6) > RedWire.RepairStartDate); }
         public bool GiveUpPopUpIsOpen
         {
             get => giveUpPopUpIsOpen;
@@ -741,6 +743,39 @@ namespace Projet_File_Rouge.ViewModel
         public void GiveUpNoButton()
         {
             CloseGiveUpPopUp();
+        }
+
+        public bool AjoutDevisButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool AjoutDevisPopUpIsOpen
+        {
+            get => ajoutDevisPopUpIsOpen;
+            set
+            {
+                ajoutDevisPopUpIsOpen = value;
+                OnPropertyChanged(nameof(AjoutDevisPopUpIsOpen));
+            }
+        }
+        public void OpenAjoutDevisPopUp() => AjoutDevisPopUpIsOpen = true;
+        public void CloseAjoutDevisPopUp() => AjoutDevisPopUpIsOpen = false;
+        public string ajoutDevisField;
+        public string AjoutDevisField { get => ajoutDevisField; set { ajoutDevisField = value; OnPropertyChanged("AjoutDevisField"); } }
+        public void AjoutDevisYesButton()
+        {
+            (bool result, SaleDocument temp) = SaleDocument.FormatVerification(AjoutDevisField, new string[] { "DE" });
+            if (result)
+            {
+                RedWireMaj();
+                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Devis créé : " + AjoutDevisField));
+                DocumentList document = new DocumentList(AjoutDevisField, RedWire);
+                AddDocument(document);
+                DocumentList.Add(document);
+                UIUpdate();
+                CloseAjoutDevisPopUp();
+            }
+        }
+        public void AjoutDevisNoButton()
+        {
+            CloseAjoutDevisPopUp();
         }
 
         public NavigateDocumentCenterCommand NavigateDocumentCenterCommand { get; }

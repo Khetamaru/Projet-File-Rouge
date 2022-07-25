@@ -2,10 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net6.0-windows10.0.17763.0</TargetFramework>
     <RootNamespace>Projet_File_Rouge</RootNamespace>
     <UseWPF>true</UseWPF>
     <StartupObject>Projet_File_Rouge.App</StartupObject>
+    <ApplicationIcon>logo final.ico</ApplicationIcon>
+    <Version>$(VersionPrefix)</Version>
+	<VersionPrefix>1.1.5</VersionPrefix>
+    <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

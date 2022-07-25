@@ -95,5 +95,9 @@ namespace Projet_File_Rouge.Views
         private void OpenGiveUpPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenGiveUpPopUp(); }
         private void GiveUpYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).GiveUpYesButton(); }
         private void GiveUpNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).GiveUpNoButton(); }
+
+        private void OpenAjoutDevisPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenAjoutDevisPopUp(); }
+        private void AjoutDevisYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AjoutDevisYesButton(); }
+        private void AjoutDevisNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AjoutDevisNoButton(); }
     }
 }

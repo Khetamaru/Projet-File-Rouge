@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Personnal Red Wires View
+    /// </summary>
     class PersoSpaceViewModel : ViewModelBase
     {
         private List<RedWire> redWireList;
@@ -22,20 +25,26 @@ namespace Projet_File_Rouge.ViewModel
 
         public PersoSpaceViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateRedWireCommand = new NavigateRedWireCommand(navigationStore, cacheStore);
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
 
+            // set up BDD objects
+            userId = cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser);
+
+            // set up view objects
             FilterInit();
             stepList = new List<string>();
             foreach (string stepName in Enum.GetNames(typeof(RedWire.state)))
             {
                 stepList.Add(stepName);
             }
-            userId = cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser);
-
             PageInit();
         }
 
+        /// <summary>
+        /// set filter empty
+        /// </summary>
         private void FilterInit()
         {
             Date = new DateTime();
@@ -43,13 +52,17 @@ namespace Projet_File_Rouge.ViewModel
             clientName = string.Empty;
         }
 
+        /// <summary>
+        /// load first page
+        /// </summary>
         private void PageInit()
         {
             int redWireTotal = RequestCenter.GetRedWireNumber(date, step, userId, clientName);
 
+            redWireList = RequestCenter.GetRedWirePageWithoutOld(0, date, step, userId, clientName);
+
             CalculPageNumber(redWireTotal);
 
-            redWireList = RequestCenter.GetRedWirePage(0, date, step, userId, clientName);
             actualPage = 1;
         }
 
@@ -156,6 +169,10 @@ namespace Projet_File_Rouge.ViewModel
         { 
             get => actualPage + "/" + pageNumber;
         }
+
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateRedWireCommand NavigateRedWireCommand { get; }
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
     }

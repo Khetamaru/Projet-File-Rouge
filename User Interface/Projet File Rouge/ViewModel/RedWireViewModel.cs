@@ -8,6 +8,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Red Wire view
+    /// </summary>
     public class RedWireViewModel : ViewModelBase
     {
         private RedWire redWire;
@@ -33,26 +36,33 @@ namespace Projet_File_Rouge.ViewModel
         private bool reopeningPopUpIsOpen;
         private bool commandePiecePopUpIsOpen;
         private bool adminAsignPopUpIsOpen;
-        private bool ajoutDevisPopUpIsOpen;
+        private bool ajoutDocumentPopUpIsOpen;
         private bool giveUpPopUpIsOpen;
+        private bool providerCallPopUpIsOpen;
+        private bool endProviderCallPopUpIsOpen;
 
         public RedWireViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateOutRedWireCommand = new NavigateOutRedWireCommand(navigationStore, cacheStore);
             NavigateDocumentCenterCommand = new NavigateDocumentCenterCommand(navigationStore, cacheStore);
             NavigateUserHistoryCommand = new NavigateUserHistoryCommand(navigationStore, cacheStore);
 
+            // set up BDD objects
             redWire = RequestCenter.GetRedWire(cacheStore.GetObjectCache(ObjectCacheStoreEnum.RedWireDetail));
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
-
-            ReloadEvents();
-
             saleDocument = RequestCenter.GetSaleDocument(redWire.Client);
             documentList = RequestCenter.GetDocumentList(redWire.Id);
 
+            // set up view objects
+            ReloadEvents();
             userList = GetUserNames();
         }
 
+        /// <summary>
+        /// Generate user list
+        /// </summary>
+        /// <returns></returns>
         private List<string> GetUserNames()
         {
             List<string> nameList = new List<string>();
@@ -106,9 +116,14 @@ namespace Projet_File_Rouge.ViewModel
             OnPropertyChanged(nameof(InsertTextVisibility));
             OnPropertyChanged(nameof(AdminAsignButtonVisibility));
             OnPropertyChanged(nameof(GiveUpButtonVisibility));
-            OnPropertyChanged(nameof(AjoutDevisButtonVisibility));
+            OnPropertyChanged(nameof(AjoutDocumentButtonVisibility));
+            OnPropertyChanged(nameof(ProviderCallButtonVisibility));
+            OnPropertyChanged(nameof(EndProviderCallButtonVisibility));
         }
 
+        /// <summary>
+        /// Check Access Level
+        /// </summary>
         private bool AccessAuthorization() { return RedWire.ActualRepairMan != null && (ActualUser.Id == RedWire.ActualRepairMan.Id || ActualUser.UserLevel >= User.AccessLevel.SuperUser) ? true : false; }
 
         public string DetailInfos { get => SaleDocument.DetailInfos(); }
@@ -117,7 +132,7 @@ namespace Projet_File_Rouge.ViewModel
         public string TextInsert
         {
             get => textInsert;
-            set { 
+            set {
                 textInsert = value;
                 OnPropertyChanged(nameof(TextInsert));
             }
@@ -127,16 +142,24 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (TextInsert != null && TextInsert.Trim() != string.Empty)
             {
-                if (ActualUser.Id == RedWire.ActualRepairMan.Id)
+                if (TextInsert.Length < 98)
                 {
-                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Message utilisateur : " + TextInsert));
+                    if (ActualUser.Id == RedWire.ActualRepairMan.Id)
+                    {
+                        AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Message utilisateur : " + TextInsert));
+                    }
+                    else
+                    {
+                        AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Message utilisateur (" + ActualUser.Name + ") : " + TextInsert));
+                    }
+                    RedWireMaj();
+                    UIUpdate();
+                    TextInsert = string.Empty;
                 }
                 else
                 {
-                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Message utilisateur (" + ActualUser.Name + ") : " + TextInsert));
+                    PopUpCenter.MessagePopup("Message trop long (98 characters max)");
                 }
-                UIUpdate();
-                TextInsert = string.Empty;
             }
         }
 
@@ -157,8 +180,14 @@ namespace Projet_File_Rouge.ViewModel
         public User ActualUser { get => actualUser; }
         public List<string> UserList { get => userList; }
 
+        /// <summary>
+        /// Document List Button Logic
+        /// </summary>
         public bool DocumentListButtonVisibility { get => DocumentList.Count <= 0; }
 
+        /// <summary>
+        /// In Charge Button Logic
+        /// </summary>
         public bool PriseEnChargeButtonVisibility { get => RedWire.ActualState != RedWire.state.libre; }
         public bool PriseEnChargePopUpIsOpen
         {
@@ -173,7 +202,7 @@ namespace Projet_File_Rouge.ViewModel
         public void ClosePriseEnChargePopUp() => PriseEnChargePopUpIsOpen = false;
         public void PriseEnChargeYesButton()
         {
-            RedWire.ActualState = RedWire.state.start_diag;
+            RedWire.ActualState = RedWire.state.début_diag;
             RedWire.ActualRepairMan = ActualUser;
             RedWire.RepairStartDate = DateTime.Now;
             RequestCenter.PostUserHistory(new UserHistory(DateTime.Now, ActualUser, RedWire).Jsonify());
@@ -187,7 +216,10 @@ namespace Projet_File_Rouge.ViewModel
             ClosePriseEnChargePopUp();
         }
 
-        public bool PECDevisButtonVisibility { get => RedWire.ActualState != RedWire.state.start_diag || !AccessAuthorization(); }
+        /// <summary>
+        /// In Charge Sale Document Button Logic
+        /// </summary>
+        public bool PECDevisButtonVisibility { get => RedWire.ActualState != RedWire.state.début_diag || !AccessAuthorization(); }
         public bool PECDevisPopUpIsOpen
         {
             get => pECDevisPopUpIsOpen;
@@ -206,7 +238,7 @@ namespace Projet_File_Rouge.ViewModel
             (bool result, SaleDocument temp) = SaleDocument.FormatVerification(PECDevisField, new string[] { "DE" });
             if (result)
             {
-                RedWire.ActualState = RedWire.state.start_response;
+                RedWire.ActualState = RedWire.state.début_reponse_client;
                 RedWireMaj();
                 AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Devis créé et envoyé : " + PECDevisField));
                 DocumentList document = new DocumentList(PECDevisField, RedWire);
@@ -229,7 +261,10 @@ namespace Projet_File_Rouge.ViewModel
             ClosePECDevisPopUp();
         }
 
-        public bool PECClientResponseButtonVisibility { get => RedWire.ActualState != RedWire.state.start_response || !AccessAuthorization(); }
+        /// <summary>
+        /// In Charge Sale Document Client Response Button Logic
+        /// </summary>
+        public bool PECClientResponseButtonVisibility { get => RedWire.ActualState != RedWire.state.début_reponse_client || !AccessAuthorization(); }
         public bool PECClientResponsePopUpIsOpen
         {
             get => pECClientResponsePopUpIsOpen;
@@ -254,6 +289,9 @@ namespace Projet_File_Rouge.ViewModel
             ClosePECClientResponsePopUp();
         }
 
+        /// <summary>
+        /// Piece Command Button Logic
+        /// </summary>
         public bool CommandePieceButtonVisibility { get => (RedWire.ActualState != RedWire.state.en_cours && RedWire.ActualState != RedWire.state.attente_commande) || !AccessAuthorization(); }
         public bool CommandePiecePopUpIsOpen
         {
@@ -290,20 +328,30 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (CommandePieceNameField != string.Empty && CommandePieceNameField != null && CommandePieceUrlField != string.Empty && CommandePieceUrlField != null)
             {
-                CommandList command = new CommandList(RedWire, new DateTime(), CommandePieceNameField, CommandePieceUrlField);
-                RequestCenter.PostCommand(command.Jsonify());
-                RedWire.ActualState = RedWire.state.attente_commande;
-                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, command.Name + " : Commande envoyée au centre de commande."));
+                if (CommandePieceNameField.Length < 78)
+                {
+                    CommandList command = new CommandList(RedWire, new DateTime(), CommandePieceNameField, CommandePieceUrlField);
+                    RequestCenter.PostCommand(command.Jsonify());
+                    RedWire.ActualState = RedWire.state.attente_commande;
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, command.Name + " : Commande envoyée au centre de commande."));
+                    RedWireMaj();
+                    UIUpdate();
+                    CloseCommandePiecePopUp();
+                }
+                else
+                {
+                    PopUpCenter.MessagePopup("Message trop long (78 characters max)");
+                }
             }
-            RedWireMaj();
-            UIUpdate();
-            CloseCommandePiecePopUp();
         }
         public void CommandePieceNoButton()
         {
             CloseCommandePiecePopUp();
         }
 
+        /// <summary>
+        /// Problem or Asking Button Logic
+        /// </summary>
         public bool ProblemeQuestionButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
         public bool ProblemeQuestionPopUpIsOpen
         {
@@ -316,19 +364,35 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void OpenProblemeQuestionPopUp() => ProblemeQuestionPopUpIsOpen = true;
         public void CloseProblemeQuestionPopUp() => ProblemeQuestionPopUpIsOpen = false;
+        public string problemeQuestionField;
+        public string ProblemeQuestionField { get => problemeQuestionField; set { problemeQuestionField = value; OnPropertyChanged("ProblemeQuestionField"); } }
         public void ProblemeQuestionYesButton()
         {
-            RedWire.ActualState =  RedWire.state.attente_client;
-            AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Prise de contact avec le client."));
-            RedWireMaj();
-            UIUpdate();
-            CloseProblemeQuestionPopUp();
+            if (ProblemeQuestionField != null && ProblemeQuestionField != string.Empty)
+            {
+                if (ProblemeQuestionField.Length < 96)
+                {
+                    RedWire.ActualState = RedWire.state.attente_client;
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Question(s) au client : " + ProblemeQuestionField));
+                    RedWireMaj();
+                    UIUpdate();
+                    CloseProblemeQuestionPopUp();
+                }
+                else
+                {
+                    PopUpCenter.MessagePopup("Message trop long (96 characters max)");
+                }
+            }
         }
+
         public void ProblemeQuestionNoButton()
         {
             CloseProblemeQuestionPopUp();
         }
 
+        /// <summary>
+        /// Client Response Button Logic
+        /// </summary>
         public bool ReponseClientButtonVisibility { get => RedWire.ActualState != RedWire.state.attente_client || !AccessAuthorization(); }
         public bool ReponseClientPopUpIsOpen
         {
@@ -347,11 +411,18 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (ReponseClientField != null && ReponseClientField != string.Empty)
             {
-                RedWire.ActualState = RedWire.state.en_cours;
-                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Réponse du client : " + ReponseClientField));
-                ReponseClientField = null;
-                RedWireMaj();
-                UIUpdate();
+                if (ReponseClientField.Length < 100)
+                {
+                    RedWire.ActualState = RedWire.state.en_cours;
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Réponse du client : " + ReponseClientField));
+                    ReponseClientField = null;
+                    RedWireMaj();
+                    UIUpdate();
+                }
+                else
+                {
+                    PopUpCenter.MessagePopup("Message trop long (100 characters max)");
+                }
             }
             else { PopUpCenter.MessagePopup("Veuillez indiquer la réponse donnée par le client."); }
             CloseReponseClientPopUp();
@@ -361,6 +432,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseReponseClientPopUp();
         }
 
+        /// <summary>
+        /// Tech Switch Button Logic
+        /// </summary>
         public bool TransfertTechButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
         public bool TransfertTechPopUpIsOpen
         {
@@ -394,6 +468,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseTransfertTechPopUp();
         }
 
+        /// <summary>
+        /// Tech Swicth In Charge Button Logic
+        /// </summary>
         public bool PriseEnChargeTransfertButtonVisibility { get => RedWire.ActualState != RedWire.state.transit || (RedWire.ActualRepairMan.Id != ActualUser.Id && RedWire.TransfertTarget.Id != ActualUser.Id); }
         public bool PriseEnChargeTransfertPopUpIsOpen
         {
@@ -425,6 +502,9 @@ namespace Projet_File_Rouge.ViewModel
             ClosePriseEnChargeTransfertPopUp();
         }
 
+        /// <summary>
+        /// End Button Logic
+        /// </summary>
         public bool FinButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
         public bool FinPopUpIsOpen
         {
@@ -444,7 +524,8 @@ namespace Projet_File_Rouge.ViewModel
             (bool result, SaleDocument temp) = SaleDocument.FormatVerification(FinField, new string[] { "FA" });
             if (result)
             {
-                RedWire.ActualState = RedWire.state.fin_facture;
+                RedWire.ActualState = RedWire.state.fin_facture_OK;
+                RedWire.RepairEndDate = DateTime.Now;
                 RedWireMaj();
                 AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Facture finale faite : " + FinField));
                 AddDocument(new DocumentList(FinField, RedWire));
@@ -458,14 +539,17 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void FinSkipButton()
         {
-            RedWire.ActualState = RedWire.state.fin_facture;
+            RedWire.ActualState = RedWire.state.fin_facture_OK;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Pas de facture finale préparé"));
             UIUpdate();
             CloseFinPopUp();
         }
 
-        public bool FinAppelButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_facture || !AccessAuthorization(); }
+        /// <summary>
+        /// End Client Call Button Logic
+        /// </summary>
+        public bool FinAppelButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_facture_OK || !AccessAuthorization(); }
         public bool FinAppelPopUpIsOpen
         {
             get => finAppelPopUpIsOpen;
@@ -483,18 +567,26 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (FinAppelField != null && FinAppelField != string.Empty)
             {
-                RedWire.ActualState = RedWire.state.fin_payé;
-                RedWireMaj();
-                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Appel client, réponse : " + FinAppelField));
-                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel client prêt pour rendu"));
-                UIUpdate();
+                if (FinAppelField.Length < 96)
+                {
+                    RedWire.ActualState = RedWire.state.fin_payement_OK;
+                    RedWireMaj();
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Appel client, réponse : " + FinAppelField));
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel client prêt pour rendu"));
+                    UIUpdate();
+                }
+                else
+                {
+                    PopUpCenter.MessagePopup("Message trop long (96 characters max)");
+                }
             }
             else { PopUpCenter.MessagePopup("Veuillez indiquer la réponse donnée par le client."); }
             CloseFinAppelPopUp();
         }
+
         public void FinAppelYesMailButton()
         {
-            RedWire.ActualState = RedWire.state.fin_payé;
+            RedWire.ActualState = RedWire.state.fin_payement_OK;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Mail envoyé pour prévention client"));
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel client prêt pour rendu"));
@@ -507,7 +599,7 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void FinAppelSkipButton()
         {
-            RedWire.ActualState = RedWire.state.fin_payé;
+            RedWire.ActualState = RedWire.state.fin_payement_OK;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Message vocal laissé pour prévention client"));
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel client prêt pour rendu"));
@@ -515,7 +607,10 @@ namespace Projet_File_Rouge.ViewModel
             CloseFinAppelPopUp();
         }
 
-        public bool FinPayementButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_payé || !(ActualUser.UserLevel >= User.AccessLevel.User); }
+        /// <summary>
+        /// End Pay Button Logic
+        /// </summary>
+        public bool FinPayementButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_payement_OK || !(ActualUser.UserLevel >= User.AccessLevel.User); }
         public bool FinPayementPopUpIsOpen
         {
             get => finPayementPopUpIsOpen;
@@ -530,7 +625,6 @@ namespace Projet_File_Rouge.ViewModel
         public void FinPayementYesButton()
         {
             RedWire.ActualState = RedWire.state.fin;
-            RedWire.RepairEndDate = DateTime.Now;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Facture payée et matériel rendu"));
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier cloturé"));
@@ -542,6 +636,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseFinPayementPopUp();
         }
 
+        /// <summary>
+        /// Unrepairable Button Logic
+        /// </summary>
         public bool NonReparableButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
         public bool NonReparablePopUpIsOpen
         {
@@ -560,19 +657,31 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (NonReparableField != null && NonReparableField != string.Empty)
             {
-                RedWire.ActualState = RedWire.state.NR_appel;
-                RedWireMaj();
-                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier non réparable : " + NonReparableField));
-                UIUpdate();
-                CloseNonReparablePopUp();
+                if (NonReparableField.Length < 96)
+                {
+                    RedWire.ActualState = RedWire.state.non_réparable_appel;
+                    RedWire.RepairEndDate = DateTime.Now;
+                    RedWireMaj();
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier non réparable : " + NonReparableField));
+                    UIUpdate();
+                    CloseNonReparablePopUp();
+                }
+                else
+                {
+                    PopUpCenter.MessagePopup("Message trop long (96 characters max)");
+                }
             }
         }
+
         public void NonReparableNoButton()
         {
             CloseNonReparablePopUp();
         }
 
-        public bool NonReparableAppelButtonVisibility { get => RedWire.ActualState != RedWire.state.NR_appel || !AccessAuthorization(); }
+        /// <summary>
+        /// Unrepairable Call Button Logic
+        /// </summary>
+        public bool NonReparableAppelButtonVisibility { get => RedWire.ActualState != RedWire.state.non_réparable_appel || !AccessAuthorization(); }
         public bool NonReparableAppelPopUpIsOpen
         {
             get => nonReparableAppelPopUpIsOpen;
@@ -590,18 +699,29 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (NonReparableAppelField != null && NonReparableAppelField != string.Empty)
             {
-                RedWire.ActualState = RedWire.state.NR_rendu;
-                RedWireMaj();
-                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Appel client, réponse : " + NonReparableAppelField));
-                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel client prêt pour rendu"));
-                UIUpdate();
+                if (NonReparableAppelField.Length < 96)
+                {
+                    RedWire.ActualState = RedWire.state.non_réparable_rendu;
+                    RedWireMaj();
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Appel client, réponse : " + NonReparableAppelField));
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel client prêt pour rendu"));
+                    UIUpdate();
+                }
+                else
+                {
+                    PopUpCenter.MessagePopup("Message trop long (96 characters max)");
+                }
             }
-            else { PopUpCenter.MessagePopup("Veuillez indiquer la réponse donnée par le client."); }
+            else
+            {
+                PopUpCenter.MessagePopup("Veuillez indiquer la réponse donnée par le client.");
+            }
             CloseNonReparableAppelPopUp();
         }
+
         public void NonReparableAppelYesMailButton()
         {
-            RedWire.ActualState = RedWire.state.NR_rendu;
+            RedWire.ActualState = RedWire.state.non_réparable_rendu;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Mail envoyé pour prévention client"));
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel client prêt pour rendu"));
@@ -614,7 +734,7 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void NonReparableAppelSkipButton()
         {
-            RedWire.ActualState = RedWire.state.NR_rendu;
+            RedWire.ActualState = RedWire.state.non_réparable_rendu;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Message vocal laissé pour prévention client"));
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel client prêt pour rendu"));
@@ -622,7 +742,10 @@ namespace Projet_File_Rouge.ViewModel
             CloseNonReparableAppelPopUp();
         }
 
-        public bool NonReparableRenduButtonVisibility { get => RedWire.ActualState != RedWire.state.NR_rendu || !(ActualUser.UserLevel >= User.AccessLevel.User); }
+        /// <summary>
+        /// Unrepairable Give Back Button Logic
+        /// </summary>
+        public bool NonReparableRenduButtonVisibility { get => RedWire.ActualState != RedWire.state.non_réparable_rendu || !(ActualUser.UserLevel >= User.AccessLevel.User); }
         public bool NonReparableRenduPopUpIsOpen
         {
             get => nonReparableRenduPopUpIsOpen;
@@ -637,7 +760,6 @@ namespace Projet_File_Rouge.ViewModel
         public void NonReparableRenduYesButton()
         {
             RedWire.ActualState = RedWire.state.fin;
-            RedWire.RepairEndDate = DateTime.Now;
             RedWireMaj();
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel rendu"));
             AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier cloturé"));
@@ -648,7 +770,19 @@ namespace Projet_File_Rouge.ViewModel
         {
             CloseNonReparableRenduPopUp();
         }
+        public void NonReparableRenduDestructionButton()
+        {
+            RedWire.ActualState = RedWire.state.fin;
+            RedWireMaj();
+            AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Matériel parti en destruction"));
+            AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Dossier cloturé"));
+            UIUpdate();
+            CloseNonReparableRenduPopUp();
+        }
 
+        /// <summary>
+        /// Reopen Button Logic
+        /// </summary>
         public bool ReopeningButtonVisibility { get => RedWire.ActualState != RedWire.state.fin || !(ActualUser.UserLevel >= User.AccessLevel.User); }
         public bool ReopeningPopUpIsOpen
         {
@@ -674,6 +808,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseReopeningPopUp();
         }
 
+        /// <summary>
+        /// Admin Asign Button Logic
+        /// </summary>
         public bool AdminAsignButtonVisibility { get => RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !(ActualUser.UserLevel >= User.AccessLevel.Admin); }
         public bool AdminAsignPopUpIsOpen
         {
@@ -697,7 +834,7 @@ namespace Projet_File_Rouge.ViewModel
                 if (RedWire.ActualRepairMan == null)
                 {
                     RedWire.ActualRepairMan = user;
-                    RedWire.ActualState = RedWire.state.start_diag;
+                    RedWire.ActualState = RedWire.state.début_diag;
                     RedWire.RepairStartDate = DateTime.Now;
                     AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, ActualUser.Name + " a assigné le dossier à " + AdminAsignField));
                 }
@@ -718,6 +855,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseAdminAsignPopUp();
         }
 
+        /// <summary>
+        /// Give Up Button Logic
+        /// </summary>
         public bool GiveUpButtonVisibility { get => RedWire.ActualState == RedWire.state.libre || RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !(ActualUser.UserLevel >= User.AccessLevel.User) || !(DateTime.Now.AddMonths(-6) > RedWire.RepairStartDate); }
         public bool GiveUpPopUpIsOpen
         {
@@ -745,39 +885,127 @@ namespace Projet_File_Rouge.ViewModel
             CloseGiveUpPopUp();
         }
 
-        public bool AjoutDevisButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
-        public bool AjoutDevisPopUpIsOpen
+        /// <summary>
+        /// Add Sale Document Button Logic
+        /// </summary>
+        public bool AjoutDocumentButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool AjoutDocumentPopUpIsOpen
         {
-            get => ajoutDevisPopUpIsOpen;
+            get => ajoutDocumentPopUpIsOpen;
             set
             {
-                ajoutDevisPopUpIsOpen = value;
-                OnPropertyChanged(nameof(AjoutDevisPopUpIsOpen));
+                ajoutDocumentPopUpIsOpen = value;
+                OnPropertyChanged(nameof(AjoutDocumentPopUpIsOpen));
             }
         }
-        public void OpenAjoutDevisPopUp() => AjoutDevisPopUpIsOpen = true;
-        public void CloseAjoutDevisPopUp() => AjoutDevisPopUpIsOpen = false;
-        public string ajoutDevisField;
-        public string AjoutDevisField { get => ajoutDevisField; set { ajoutDevisField = value; OnPropertyChanged("AjoutDevisField"); } }
-        public void AjoutDevisYesButton()
+        public void OpenAjoutDocumentPopUp() => AjoutDocumentPopUpIsOpen = true;
+        public void CloseAjoutDocumentPopUp() => AjoutDocumentPopUpIsOpen = false;
+        public string ajoutDocumentField;
+        public string AjoutDocumentField { get => ajoutDocumentField; set { ajoutDocumentField = value; OnPropertyChanged("AjoutDocumentField"); } }
+        public void AjoutDocumentYesButton()
         {
-            (bool result, SaleDocument temp) = SaleDocument.FormatVerification(AjoutDevisField, new string[] { "DE" });
+            (bool result, SaleDocument temp) = SaleDocument.FormatVerification(AjoutDocumentField, new string[] { "DE", "FA", "CM" });
             if (result)
             {
                 RedWireMaj();
-                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Devis créé : " + AjoutDevisField));
-                DocumentList document = new DocumentList(AjoutDevisField, RedWire);
+                AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Document créé : " + AjoutDocumentField));
+                DocumentList document = new DocumentList(AjoutDocumentField, RedWire);
                 AddDocument(document);
                 DocumentList.Add(document);
                 UIUpdate();
-                CloseAjoutDevisPopUp();
+                CloseAjoutDocumentPopUp();
             }
         }
-        public void AjoutDevisNoButton()
+        public void AjoutDocumentNoButton()
         {
-            CloseAjoutDevisPopUp();
+            CloseAjoutDocumentPopUp();
         }
 
+        /// <summary>
+        /// You need to do a call to provider
+        /// </summary>
+        public bool ProviderCallButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool ProviderCallPopUpIsOpen
+        {
+            get => providerCallPopUpIsOpen;
+            set
+            {
+                providerCallPopUpIsOpen = value;
+                OnPropertyChanged(nameof(ProviderCallPopUpIsOpen));
+            }
+        }
+        public void OpenProviderCallPopUp() => ProviderCallPopUpIsOpen = true;
+        public void CloseProviderCallPopUp() => ProviderCallPopUpIsOpen = false;
+
+        public string providerCallField;
+        public string ProviderCallField { get => providerCallField; set { providerCallField = value; OnPropertyChanged("ProviderCallField"); } }
+        public void ProviderCallYesButton()
+        {
+            if (ProviderCallField != null)
+            {
+                if (ProviderCallField.Length < 81)
+                {
+                    RedWire.ActualState = RedWire.state.attente_fournisseur;
+                    RedWireMaj();
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Contact avec le fournisseur effectué : " + ProviderCallField));
+                    UIUpdate();
+                    CloseProviderCallPopUp();
+                }
+                else
+                {
+                    PopUpCenter.MessagePopup("Message trop long (81 characters max)");
+                }
+            }
+        }
+        public void ProviderCallNoButton()
+        {
+            CloseProviderCallPopUp();
+        }
+
+        /// <summary>
+        /// End of call to provider
+        /// </summary>
+        public bool EndProviderCallButtonVisibility { get => RedWire.ActualState != RedWire.state.attente_fournisseur || !AccessAuthorization(); }
+        public bool EndProviderCallPopUpIsOpen
+        {
+            get => endProviderCallPopUpIsOpen;
+            set
+            {
+                endProviderCallPopUpIsOpen = value;
+                OnPropertyChanged(nameof(EndProviderCallPopUpIsOpen));
+            }
+        }
+        public void OpenEndProviderCallPopUp() => EndProviderCallPopUpIsOpen = true;
+        public void CloseEndProviderCallPopUp() => EndProviderCallPopUpIsOpen = false;
+
+        public string endProviderCallField;
+        public string EndProviderCallField { get => endProviderCallField; set { endProviderCallField = value; OnPropertyChanged("EndProviderCallField"); } }
+        public void EndProviderCallYesButton()
+        {
+            if (EndProviderCallField != null)
+            {
+                if (EndProviderCallField.Length < 95)
+                {
+                    RedWire.ActualState = RedWire.state.en_cours;
+                    RedWireMaj();
+                    AddEvent(new Evenement(RedWire.Id, Evenement.EventType.simpleText, "Réponse du fournisseur : " + EndProviderCallField));
+                    UIUpdate();
+                    CloseEndProviderCallPopUp();
+                }
+                else
+                {
+                    PopUpCenter.MessagePopup("Message trop long (95 characters max)");
+                }
+            }
+        }
+        public void EndProviderCallNoButton()
+        {
+            CloseEndProviderCallPopUp();
+        }
+
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateDocumentCenterCommand NavigateDocumentCenterCommand { get; }
         public NavigateOutRedWireCommand NavigateOutRedWireCommand { get; }
         public NavigateUserHistoryCommand NavigateUserHistoryCommand { get; }

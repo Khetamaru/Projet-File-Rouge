@@ -24,7 +24,6 @@ namespace Projet_File_Rouge.Commands
         {
             cacheStore.SetObjectCache(ObjectCacheStoreEnum.RedWireDetail, redWire.Id);
             cacheStore.SetInfoCache(InfoCacheStoreEnum.PreviousPageRedWire, pageName.ToString());
-            Execute(new object());
         }
 
         public override void Execute(object parameter)

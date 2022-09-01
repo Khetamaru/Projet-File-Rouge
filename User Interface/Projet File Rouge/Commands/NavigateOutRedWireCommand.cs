@@ -21,6 +21,11 @@ namespace Projet_File_Rouge.Commands
             this.cacheStore = cacheStore;
         }
 
+        /// <summary>
+        /// Get Redwire for cache
+        /// </summary>
+        /// <param name="redWire"></param>
+        /// <param name="pageName"></param>
         public void LoadRedWire(RedWire redWire, PageNameEnum pageName)
         {
             cacheStore.SetObjectCache(ObjectCacheStoreEnum.RedWireDetail, redWire.Id);

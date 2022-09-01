@@ -16,6 +16,10 @@ namespace Projet_File_Rouge.Commands
             this.cacheStore = cacheStore;
         }
 
+        /// <summary>
+        /// Get sale document number for cache
+        /// </summary>
+        /// <param name="saleDocumentNumber"></param>
         public void SetSaleDocumentCacheInfo(string saleDocumentNumber)
         {
             cacheStore.SetInfoCache(InfoCacheStoreEnum.SaleDocumentDetail, saleDocumentNumber);

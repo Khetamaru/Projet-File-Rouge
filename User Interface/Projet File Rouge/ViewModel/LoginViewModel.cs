@@ -9,6 +9,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Login View
+    /// </summary>
     public class LoginViewModel : ViewModelBase
     {
         ConnectionCommand connectionCommand;
@@ -22,11 +25,12 @@ namespace Projet_File_Rouge.ViewModel
 
         public LoginViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
-            CloseEvent = cacheStore.CloseEvent;
-            IsProgramUpToDate();
-
+            // set up commands
             connectionCommand = new ConnectionCommand(navigationStore, cacheStore);
 
+            // set up view objects
+            CloseEvent = cacheStore.CloseEvent;
+            IsProgramUpToDate();
             userNameList = GetUserNames();
             loginCacheString = LoginCacheFile.Read();
             passwordField = string.Empty;
@@ -48,7 +52,7 @@ namespace Projet_File_Rouge.ViewModel
         public void IsProgramUpToDate()
         {
             string lvn = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
-            lvn = lvn.Remove(lvn.Length - 2, 2);/*ConfigurationManager.AppSettings["version"];*/
+            lvn = lvn.Remove(lvn.Length - 2, 2);
             Object.Version svn = RequestCenter.GetVersion();
 
             if (string.Compare(lvn, svn.VersionNumber) < 0)
@@ -89,6 +93,9 @@ namespace Projet_File_Rouge.ViewModel
             }
         }
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public List<string> UserNameList { get { return userNameList; } }
         public ConnectionCommand ConnectionCommand { get { return connectionCommand.ChargeParameters(UserNameField, PasswordField); } }
     }

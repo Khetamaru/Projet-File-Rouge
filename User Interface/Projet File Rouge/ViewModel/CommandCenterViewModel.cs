@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Command Center View
+    /// </summary>
     class CommandCenterViewModel : ViewModelBase
     {
         private List<CommandList> commandList;
@@ -16,9 +19,11 @@ namespace Projet_File_Rouge.ViewModel
 
         public CommandCenterViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateCommandCommand = new NavigateCommandCommand(navigationStore, cacheStore);
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
 
+            // set up view objects
             PageInit();
         }
 
@@ -88,6 +93,10 @@ namespace Projet_File_Rouge.ViewModel
         { 
             get => actualPage + "/" + pageNumber;
         }
+
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateCommandCommand NavigateCommandCommand { get; }
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
     }

@@ -10,6 +10,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// New File View
+    /// </summary>
     class NewFileViewModel : ViewModelBase
     {
         private string inChargeNumber;
@@ -41,8 +44,10 @@ namespace Projet_File_Rouge.ViewModel
 
         public NewFileViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
 
+            // set up view objects
             otherText = string.Empty;
         }
 
@@ -56,6 +61,10 @@ namespace Projet_File_Rouge.ViewModel
             }
         }
 
+        /// <summary>
+        /// Check boxs
+        /// </summary>
+        /// <param name="boxName"></param>
         public void Box_checked(string boxName)
         {
             switch(boxName)
@@ -90,6 +99,10 @@ namespace Projet_File_Rouge.ViewModel
             }
         }
 
+        /// <summary>
+        /// Uncheck Boxs
+        /// </summary>
+        /// <param name="boxName"></param>
         public void Box_unchecked(string boxName)
         {
             switch (boxName)
@@ -155,6 +168,9 @@ namespace Projet_File_Rouge.ViewModel
             }
         }
 
+        /// <summary>
+        /// Launch Red Wire Creation
+        /// </summary>
         public void RedWireCreation()
         {
             (bool result, List<string> stringList) = FieldsVerification();
@@ -192,6 +208,10 @@ namespace Projet_File_Rouge.ViewModel
             }
         }
 
+        /// <summary>
+        /// Format booleans to string for red wire comment lines
+        /// </summary>
+        /// <param name="stringList"></param>
         private void BoolAttributeStringify(List<string> stringList)
         {
             if (Bag) { stringList.Add("Matériel supplémentaire pris en charge : Sacoche"); }
@@ -206,6 +226,10 @@ namespace Projet_File_Rouge.ViewModel
             if (SupportModel != null) { stringList.Add("Model de l'appareil : " + SupportModel); }
         }
 
+        /// <summary>
+        /// Check if fields are correctly fills
+        /// </summary>
+        /// <returns></returns>
         public (bool, List<string>) FieldsVerification()
         {
             List<string> stringList = new();
@@ -251,9 +275,39 @@ namespace Projet_File_Rouge.ViewModel
                 }
             }
 
+            if (supportModel == null)
+            {
+                PopUpCenter.MessagePopup("Erreur : Champ de texte vide. Donnez le modèle de l'appareil ou un équivalent.");
+                return (false, null);
+            }
+
+            if (SupportModel.Length > 45)
+            {
+                PopUpCenter.MessagePopup("Erreur : Champ \"Modèle de l'appareil\" trop long (Taille Max 45).");
+                return (false, null);
+            }
+
+            if (otherText.Length > 70)
+            {
+                PopUpCenter.MessagePopup("Erreur : Champ \"Autre\" trop long (Taille Max 70).");
+                return (false, null);
+            }
+
+            if (SupportState.Length > 70)
+            {
+                PopUpCenter.MessagePopup("Erreur : Champ \"Etat du matériel\" trop long (Taille Max 70).");
+                return (false, null);
+            }
+
             return (true, stringList);
         }
 
+        /// <summary>
+        /// Check if some line skips exists in the text, format and generate red wire comment lines
+        /// </summary>
+        /// <param name="redWire"></param>
+        /// <param name="saleLines"></param>
+        /// <param name="stringList"></param>
         public void linesEdition(RedWire redWire, List<SaleDocumentLine> saleLines, List<string> stringList)
         {
             foreach (SaleDocumentLine line in saleLines)
@@ -464,6 +518,9 @@ namespace Projet_File_Rouge.ViewModel
             set { supportState = value; }
         }
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
     }
 }

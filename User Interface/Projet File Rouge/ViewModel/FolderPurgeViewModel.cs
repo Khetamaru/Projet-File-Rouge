@@ -8,6 +8,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Purge Folder View
+    /// </summary>
     public class FolderPurgeViewModel : ViewModelBase
     {
         private User actualUser;
@@ -22,10 +25,15 @@ namespace Projet_File_Rouge.ViewModel
 
         public FolderPurgeViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
 
+            // set up BDD objects
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+            purgeFolderNumber = RequestCenter.GetRedWirePurgeNumber();
+            nonPurgeFolderNumber = RequestCenter.GetRedWireNumber(new DateTime(), -1, -1, "") - purgeFolderNumber;
 
+            // set up view objects
             DateTime purgeDate = DateTime.Now.AddYears(-3);
             startPurgeDate = Convert.ToDateTime(purgeDate.Year + "-08-31T00:00:00");
 
@@ -33,13 +41,13 @@ namespace Projet_File_Rouge.ViewModel
             {
                 startPurgeDate = startPurgeDate.AddYears(-1);
             }
-            purgeFolderNumber = RequestCenter.GetRedWirePurgeNumber();
-            nonPurgeFolderNumber = RequestCenter.GetRedWireNumber(new DateTime(), -1, -1, "") - purgeFolderNumber;
-
             ActualIndex = 0;
             PurgeDetails = "";
         }
 
+        /// <summary>
+        /// Start purge process
+        /// </summary>
         public void LaunchPurge()
         {
             ActualIndex = 0;
@@ -72,6 +80,9 @@ namespace Projet_File_Rouge.ViewModel
             PopUpCenter.MessagePopup("Purge dossiers terminée.");
         }
 
+        /// <summary>
+        /// Force UI to update during animation
+        /// </summary>
         void AllowUIToUpdate()
         {
             DispatcherFrame frame = new DispatcherFrame();
@@ -141,6 +152,9 @@ namespace Projet_File_Rouge.ViewModel
             get => startPurgeDate.ToString("dd'/'MM'/'yyyy");
         }
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }
     }
 }

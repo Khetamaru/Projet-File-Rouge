@@ -22,6 +22,7 @@ namespace Projet_File_Rouge.Views
             if (DataContext != null && redWire != null)
             {
                 ((dynamic)DataContext as FreeFolderViewModel).NavigateRedWireCommand.LoadRedWire(redWire, PageNameEnum.FreeFolder);
+                ((dynamic)DataContext as FreeFolderViewModel).NavigateRedWireCommand.Execute(null);
             }
         }
 

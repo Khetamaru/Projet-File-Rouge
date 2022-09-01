@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Notification Page View
+    /// </summary>
     public class NotificationPageViewModel : ViewModelBase
     {
         private readonly List<string> stackPanelContent;
@@ -14,12 +17,15 @@ namespace Projet_File_Rouge.ViewModel
 
         public NotificationPageViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up command
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
 
+            // set up BDD objects
+            User user = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+
+            // set up view objects
             stackPanelContent = new List<string>();
             warningText = string.Empty;
-
-            User user = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
 
             if (user.UserLevel == User.AccessLevel.Admin)
             {
@@ -36,9 +42,14 @@ namespace Projet_File_Rouge.ViewModel
                     CommandListNotifEdit();
                 }
             }
+            MissingCallNotifEdit(user.Id);
             warningText = WarningTextEdit(user);
         }
 
+        /// <summary>
+        /// Format red wires notifications
+        /// </summary>
+        /// <param name="user"></param>
         private void RedWireNotifEdit(User user)
         {
             List<RedWire> redWireList = RequestCenter.GetRedWireNotif(user.Id);
@@ -55,6 +66,17 @@ namespace Projet_File_Rouge.ViewModel
                                           "Le dossier est présent depuis 6 mois. Voir si il doit aller en destruction." +
                                           "\n");
                 }
+                else if (redWire.ActualState == RedWire.state.attente_fournisseur)
+                {
+                    stackPanelContent.Add("\n" +
+                                          "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +
+                                          "Nom du client : " + redWire.ClientName + "\n" +
+                                          "Dernière action sur le dossier : " + redWire.LastUpdateFormated + "\n" +
+                                          "Nombre de jours depuis la dernière action : " + Math.Round((DateTime.Now - redWire.LastUpdate).TotalDays, 1) + "\n" +
+                                          "Etat actuel : " + redWire.ActualState.ToString() + "\n\n" +
+                                          "Le fournisseur a été contacté depuis plus de 2 jours sans réaction du réparateur." +
+                                          "\n");
+                }
                 else
                 {
                     stackPanelContent.Add("\n" +
@@ -63,12 +85,15 @@ namespace Projet_File_Rouge.ViewModel
                                           "Dernière action sur le dossier : " + redWire.LastUpdateFormated + "\n" +
                                           "Nombre de jours sans action : " + Math.Round((DateTime.Now - redWire.LastUpdate).TotalDays, 1) + "\n" +
                                           "Etat actuel : " + redWire.ActualState.ToString() + "\n\n" +
-                                          "Le dossier doit être mis à jour ou cloturé." +
+                                          "Le dossier doit être mis à jour ou cloturé par le réparateur." +
                                           "\n");
                 }
             }
         }
 
+        /// <summary>
+        /// Format commands notifications
+        /// </summary>
         public void CommandListNotifEdit()
         {
             List<CommandList> commandList = RequestCenter.GetCommandNotif();
@@ -96,6 +121,26 @@ namespace Projet_File_Rouge.ViewModel
             }
         }
 
+        /// <summary>
+        /// Format commands notifications
+        /// </summary>
+        public void MissingCallNotifEdit(int userId)
+        {
+            List<MissingCall> missingCalls = RequestCenter.GetMissingCallUnread(userId);
+            foreach (MissingCall missingCall in missingCalls)
+            {
+                stackPanelContent.Add("\n" +
+                                          "Main courante en attente de lecture. \n" +
+                                          "Date : " + missingCall.Date + "\n" +
+                                          "Technicien témoin : " + missingCall.Author.Name + "\n" +
+                                          "Auteur du message : " + missingCall.Caller + "\n" +
+                                          "\n");
+            }
+        }
+
+        /// <summary>
+        /// Format admin notifications
+        /// </summary>
         private void RedWireNotifEditAdmin(User user)
         {
             List<RedWire> redWireList = RequestCenter.GetRedWireNotifAdmin();
@@ -112,6 +157,31 @@ namespace Projet_File_Rouge.ViewModel
                                           "Le dossier est présent depuis 6 mois. Voir si il doit aller en destruction." +
                                           "\n");
                 }
+                else if (redWire.ActualState == RedWire.state.attente_fournisseur)
+                {
+                    if (redWire.ActualRepairMan.Id == user.Id)
+                    {
+                        stackPanelContent.Add("\n" +
+                                          "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +
+                                          "Nom du client : " + redWire.ClientName + "\n" +
+                                          "Dernière action sur le dossier : " + redWire.LastUpdateFormated + "\n" +
+                                          "Nombre de jours depuis la dernière action : " + Math.Round((DateTime.Now - redWire.LastUpdate).TotalDays, 1) + "\n" +
+                                          "Etat actuel : " + redWire.ActualState.ToString() + "\n\n" +
+                                          "Le fournisseur a été contacté depuis plus de 2 jours sans réaction du réparateur." +
+                                          "\n");
+                    }
+                    else 
+                    {
+                        stackPanelContent.Add("\n" +
+                                              "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +
+                                              "Nom du client : " + redWire.ClientName + "\n" +
+                                              "Dernière action sur le dossier : " + redWire.LastUpdateFormated + "\n" +
+                                              "Nombre de jours depuis la dernière action : " + Math.Round((DateTime.Now - redWire.LastUpdate).TotalDays, 1) + "\n" +
+                                              "Etat actuel : " + redWire.ActualState.ToString() + "\n\n" +
+                                              "Le fournisseur a été contacté depuis plus de 5 jours sans réponse." +
+                                              "\n");
+                    }
+                }
                 else
                 {
                     stackPanelContent.Add("\n" +
@@ -126,6 +196,9 @@ namespace Projet_File_Rouge.ViewModel
             }
         }
 
+        /// <summary>
+        /// Format purge notifications
+        /// </summary>
         public void PurgeNotifAdmin()
         {
             int count = RequestCenter.GetRedWirePurgeNumber();
@@ -138,6 +211,10 @@ namespace Projet_File_Rouge.ViewModel
             }
         }
 
+        /// <summary>
+        /// set up Vincent to LMAO
+        /// </summary>
+        /// <param name="user"></param>
         private string WarningTextEdit(User user)
         {
             switch (StackPanelContent.Count)
@@ -158,6 +235,9 @@ namespace Projet_File_Rouge.ViewModel
         public List<string> StackPanelContent => stackPanelContent;
         public string WarningText => warningText;
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
     }
 }

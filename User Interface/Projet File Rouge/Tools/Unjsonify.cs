@@ -5,6 +5,9 @@ using Projet_File_Rouge.Object;
 
 namespace Projet_File_Rouge.Tools
 {
+    /// <summary>
+    /// Get string send by the server and transform into BDD Object(s)
+    /// </summary>
     static class Unjsonify
     {
         const string empty = "[]";
@@ -769,6 +772,24 @@ namespace Projet_File_Rouge.Tools
 
             foreach (string jsonStr in objectTab)
             {
+                commandList.Add(CommandListUnjsoning(jsonStr));
+            }
+
+            return commandList;
+        }
+
+        public static List<CommandList> CommandListsLightUnjsoning(string json)
+        {
+            if (IsEmpty(json)) { return new List<CommandList>(); }
+
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
+            string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
+            List<CommandList> commandList = new List<CommandList>();
+
+            foreach (string jsonStr in objectTab)
+            {
                 commandList.Add(CommandListLightUnjsoning(jsonStr));
             }
 
@@ -926,6 +947,76 @@ namespace Projet_File_Rouge.Tools
             }
 
             return VersionList;
+        }
+
+        public static MissingCall MissingCallUnjsoning(string json)
+        {
+            int id = 42;
+            User author = null;
+            User recipient = null;
+            string caller = string.Empty;
+            string message = string.Empty;
+            DateTime date = new();
+            bool read = true;
+
+            int i = 0;
+
+            string[] splitTab = json.Split(new string[] { "\"" }, StringSplitOptions.None);
+
+            foreach (string split in splitTab)
+            {
+                if (split == MissingCallEnum.id.ToString())
+                {
+                    id = GetInt(splitTab[i + 1]);
+                }
+                if (split == MissingCallEnum.author.ToString())
+                {
+                    author = RequestCenter.GetUser(GetInt(splitTab[i + 1]));
+                }
+                if (split == MissingCallEnum.recipient.ToString())
+                {
+                    recipient = RequestCenter.GetUser(GetInt(splitTab[i + 1]));
+                }
+                if (split == MissingCallEnum.caller.ToString())
+                {
+                    caller = splitTab[i + 2];
+                }
+                if (split == MissingCallEnum.message.ToString())
+                {
+                    message = splitTab[i + 2];
+                }
+                if (split == MissingCallEnum.date.ToString())
+                {
+                    date = GetDate(splitTab[i + 2]);
+                }
+                if (split == MissingCallEnum.read.ToString())
+                {
+                    read = GetBool(splitTab[i + 1]);
+                }
+                i++;
+            }
+
+            MissingCall MissingCall = new MissingCall(id, author, recipient, caller, message, date, read);
+
+            return MissingCall;
+        }
+
+        public static List<MissingCall> MissingCallsUnjsoning(string json)
+        {
+            if (IsEmpty(json)) { return new List<MissingCall>(); }
+
+            json = json.Remove(0, 1);
+            json = json.Remove(json.Length - 1, 1);
+
+            string[] objectTab = json.Split(new string[] { ",{" }, StringSplitOptions.None);
+            List<MissingCall> MissingCallList = new List<MissingCall>();
+
+            foreach (string jsonStr in objectTab)
+            {
+                MissingCallList.Add(MissingCallUnjsoning(jsonStr));
+            }
+
+            return MissingCallList;
         }
 
         public static int GetInt(string json)

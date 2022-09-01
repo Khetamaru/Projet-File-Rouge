@@ -39,6 +39,21 @@ namespace Local_API_Server.Controllers
             return await result.ToListAsync();
         }
 
+        // GET: api/RedWire/page/0/0001-01-01T00:00:00/-1/-1/CM
+        [HttpGet("page/noOld/{pageNumber}/{date}/{step}/{userId}/{clientName}")]
+        public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWireFilteredNoOld(int pageNumber, DateTime date, int step, int userId, string clientName)
+        {
+            IQueryable<RedWire> result = _context.RedWire.OrderByDescending(r => r.inChargeDate);
+
+            result = Filtering(result, date, step, userId, clientName);
+
+            result = result.Where(r => r.actualState != 11 && r.actualState != 14);
+
+            result = result.Skip(pageNumber * 10).Take(10);
+
+            return await result.ToListAsync();
+        }
+
         // GET: api/RedWire/total/0001-01-01T00:00:00/-1/-1/CM
         [HttpGet("total/{date}/{step}/{userId}/{clientName}")]
         public ActionResult<int> GetRedWireNumber(DateTime date, int step, int userId, string clientName)
@@ -46,6 +61,19 @@ namespace Local_API_Server.Controllers
             IQueryable<RedWire> result = _context.RedWire;
 
             result = Filtering(result, date, step, userId, clientName);
+
+            return result.Count();
+        }
+
+        // GET: api/RedWire/total/0001-01-01T00:00:00/-1/-1/CM
+        [HttpGet("total/noOld/{date}/{step}/{userId}/{clientName}")]
+        public ActionResult<int> GetRedWireNumberNoOld(DateTime date, int step, int userId, string clientName)
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+
+            result = Filtering(result, date, step, userId, clientName);
+
+            result = result.Where(r => r.actualState != 11 && r.actualState != 14);
 
             return result.Count();
         }
@@ -112,6 +140,15 @@ namespace Local_API_Server.Controllers
             return result.Count();
         }
 
+        // GET: api/RedWire/notifAdminNumber
+        [HttpGet("notifPrividerWaitingNumber")]
+        public ActionResult<int> GetRedWireNotifPrividerWaitingNumber()
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+            result = FilterPrividerWaiting(result);
+            return result.Count();
+        }
+
         // GET: api/RedWire/purgeNumber/2022-05-01T00:00:00
         [HttpGet("purgeNumber")]
         public ActionResult<int> GetRedWirePurgeNumber()
@@ -141,7 +178,7 @@ namespace Local_API_Server.Controllers
             }
 
             result = result.Where(r => r.actualState == 11
-                                    && r.repairEndDate <= startPurgeDate);
+                                    && r.lastUpdate <= startPurgeDate);
 
             return result;
         }
@@ -177,6 +214,17 @@ namespace Local_API_Server.Controllers
                                                 || (r.actualState == 7 && r.transfertTarget == userId)
                                             )
                                           )
+
+                                       || (
+                                            r.lastUpdate <= DateTime.Now.AddDays(-2)
+                                            && r.actualState == 15
+
+                                            &&
+                                            (
+                                                r.actualRepairMan == userId
+                                                || (r.actualState == 7 && r.transfertTarget == userId)
+                                            )
+                                          )
                                        );
 
             return result;
@@ -195,7 +243,17 @@ namespace Local_API_Server.Controllers
                                     || (r.repairStartDate <= DateTime.Now.AddMonths(-6).AddDays(-3)
                                      && r.actualState != 0
                                      && r.actualState != 11
-                                     && r.actualState != 14));
+                                     && r.actualState != 14)
+                                    || (r.actualState == 15
+                                     && r.lastUpdate <= DateTime.Now.AddDays(-2).AddDays(-3)));
+
+            return result;
+        }
+
+        public static IQueryable<RedWire> FilterPrividerWaiting(IQueryable<RedWire> result)
+        {
+            result = result.Where(r => r.actualState == 15
+                                     && r.lastUpdate <= DateTime.Now.AddDays(-2));
 
             return result;
         }

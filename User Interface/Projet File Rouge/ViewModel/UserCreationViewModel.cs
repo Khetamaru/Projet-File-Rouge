@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// User Creation View
+    /// </summary>
     public class UserCreationViewModel : ViewModelBase
     {
         private string userNameField;
@@ -18,8 +21,10 @@ namespace Projet_File_Rouge.ViewModel
 
         public UserCreationViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // Set up command
             NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
 
+            // Set up view objets
             accessLevelList = new List<string>();
             foreach (string levelName in Enum.GetNames(typeof(User.AccessLevel)))
             {
@@ -27,20 +32,27 @@ namespace Projet_File_Rouge.ViewModel
             }
             accessLevelField = -1;
 
+            // Set up BDD objects
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
             adminPasswordField = string.Empty;
         }
 
+        /// <summary>
+        /// Launch user creation
+        /// </summary>
         internal void UserCreation()
         {
             if (FieldCheck())
             {
+                // Check permissions
                 if (AccessLevelField == (int)User.AccessLevel.Admin)
                 {
+                    // user admin creation
                     RequestCenter.PostUser(new User(UserNameField, AdminPasswordField, (User.AccessLevel)AccessLevelField).JsonifyLogIn());
                 }
                 else
                 {
+                    // user creation
                     RequestCenter.PostUser(new User(UserNameField, string.Empty, (User.AccessLevel)AccessLevelField).JsonifyLogIn());
                 }
                 PopUpCenter.MessagePopup("L'utilisateur " + UserNameField + " a bien été crééer avec le niveau d'accès : " + ((User.AccessLevel)AccessLevelField).ToString());
@@ -49,14 +61,23 @@ namespace Projet_File_Rouge.ViewModel
             }
             else
             {
+                // error message
                 PopUpCenter.MessagePopup("Veuillez remplir tous les champs.");
             }
         }
 
+        /// <summary>
+        /// Check if there if empty fields or errors
+        /// </summary>
         private bool FieldCheck()
         {
             if (UserNameField == null || UserNameField == string.Empty)
             {
+                return false;
+            }
+            if (UserNameField.Length > 45)
+            {
+                PopUpCenter.MessagePopup("Champ trop long (Taille Max 45)");
                 return false;
             }
             if (AccessLevelField < 0)
@@ -112,6 +133,9 @@ namespace Projet_File_Rouge.ViewModel
             get => AccessLevelField >= 0;
         }
 
+        /// <summary>
+        /// Command
+        /// </summary>
         public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }
     }
 }

@@ -6,6 +6,9 @@ using Projet_File_Rouge.Object;
 
 namespace Projet_File_Rouge.Tools
 {
+    /// <summary>
+    /// Generate HTTP sentences for server
+    /// </summary>
     static class RequestCenter
     {
         public static User GetUser(int userId)
@@ -19,6 +22,33 @@ namespace Projet_File_Rouge.Tools
             if (clientName == string.Empty) { clientName = "*"; }
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/page/" + pageNumber + "/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + step + "/" + userId + "/" + clientName);
             return Unjsonify.RedWiresUnjsoning(result);
+        }
+
+        internal static List<MissingCall> GetMissingCallsByUser(int userId)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.missingCall.ToString() + "/user/" + userId);
+            return Unjsonify.MissingCallsUnjsoning(result);
+        }
+
+        internal static void PutMissingCall(int id, string json)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().PutRequest(BDDTabName.missingCall.ToString() + "/" + id, json);
+        }
+
+        internal static void DeleteMissingCall(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.missingCall.ToString() + "/" + id);
+        }
+
+        internal static MissingCall GetMissingCall(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.missingCall.ToString() + "/" + id);
+            return Unjsonify.MissingCallUnjsoning(result);
+        }
+
+        internal static void PostMissingCall(string json)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.missingCall.ToString(), json);
         }
 
         internal static List<Log> GetLogFiltered(int pageNumber, DateTime date, int type, int userId)
@@ -37,6 +67,19 @@ namespace Projet_File_Rouge.Tools
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.version.ToString() + "/last");
             return Unjsonify.VersionUnjsoning(result);
+        }
+
+        internal static int GetPrividerWaitingNotifNumber()
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/notifPrividerWaitingNumber");
+            return result == "" ? 0 : Int32.Parse(result);
+        }
+
+        internal static List<RedWire> GetRedWirePageWithoutOld(int pageNumber, DateTime date, int step, int userId, string clientName)
+        {
+            if (clientName == string.Empty) { clientName = "*"; }
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/page/noOld/" + pageNumber + "/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + step + "/" + userId + "/" + clientName);
+            return Unjsonify.RedWiresUnjsoning(result);
         }
 
         internal static List<UserHistory> GetUserHistoryByRedWire(int id)
@@ -86,6 +129,12 @@ namespace Projet_File_Rouge.Tools
             (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.userHistoryList.ToString() + "/redWire/" + id);
         }
 
+        internal static List<MissingCall> GetMissingCallUnread(int userId)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.missingCall.ToString() + "/unread/" + userId);
+            return Unjsonify.MissingCallsUnjsoning(result);
+        }
+
         internal static void DeleteDocumentListByRedWire(int id)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentList.ToString() + "/redWire/" + id);
@@ -125,6 +174,12 @@ namespace Projet_File_Rouge.Tools
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/purgeNumber");
             return result == "" ? 0 : Int32.Parse(result);
         }
+        
+        internal static int GetMissingCallUnreadNumber(int id)
+        {
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.missingCall.ToString() + "/unreadNumber/" + id);
+            return result == "" ? 0 : Int32.Parse(result);
+        }
 
         internal static List<RedWire> GetRedWirePurge()
         {
@@ -135,7 +190,7 @@ namespace Projet_File_Rouge.Tools
         internal static List<CommandList> GetCommandListPage(int pageNumber)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.commandList.ToString() + "/page/" + pageNumber);
-            return Unjsonify.CommandListsUnjsoning(result);
+            return Unjsonify.CommandListsLightUnjsoning(result);
         }
 
         internal static List<Evenement> GetEvents(int id)
@@ -172,6 +227,13 @@ namespace Projet_File_Rouge.Tools
         {
             if (clientName == string.Empty) { clientName = "*"; }
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/total" + "/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + step + "/" + userId + "/" + clientName);
+            return result == "" ? 0 : Int32.Parse(result);
+        }
+
+        internal static int GetRedWireNumberNoOld(DateTime date, int step, int userId, string clientName)
+        {
+            if (clientName == string.Empty) { clientName = "*"; }
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/total/NoOld/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + step + "/" + userId + "/" + clientName);
             return result == "" ? 0 : Int32.Parse(result);
         }
 
@@ -301,6 +363,7 @@ namespace Projet_File_Rouge.Tools
         saleDocument,
         saleDocumentLine,
         log,
-        version
+        version,
+        missingCall
     }
 }

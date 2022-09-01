@@ -27,6 +27,10 @@ namespace Projet_File_Rouge.Commands
             navigationStore.CurrentViewModel = new MainMenuViewModel(navigationStore, cacheStore);
         }
 
+        /// <summary>
+        /// Checkout for notifs and switch page
+        /// </summary>
+        /// <param name="userId"></param>
         private void OutDatedNotif(int userId)
         {
             int Count = 0;
@@ -41,6 +45,7 @@ namespace Projet_File_Rouge.Commands
             else
             {
                 Count += RequestCenter.GetRedWireNotifNumber(userId);
+                Count += RequestCenter.GetMissingCallUnreadNumber(userId);
                 if ((int)user.UserLevel >= (int)User.AccessLevel.SuperUser) { Count += RequestCenter.GetCommandListNotifNumber(); }
             }
             cacheStore.SetObjectCache(ObjectCacheStoreEnum.notifNumber, Count);

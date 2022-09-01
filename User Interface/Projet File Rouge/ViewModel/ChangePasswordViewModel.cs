@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Password Changing View
+    /// </summary>
     public class ChangePasswordViewModel : ViewModelBase
     {
         private User actualUser;
@@ -17,26 +20,39 @@ namespace Projet_File_Rouge.ViewModel
 
         public ChangePasswordViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
-            oldPassword = newPassword = newPasswordConfirm = string.Empty;
-
+            // set up commands
             NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
 
+            // set up BDD objects
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+
+            // set up view objects
+            oldPassword = newPassword = newPasswordConfirm = string.Empty;
         }
 
+        /// <summary>
+        /// Launch Password Modification
+        /// </summary>
         public void ChangePassword()
         {
+            // test if saved password and "old" one are equals
             if (ActualUser.Password == SHA256Cypher.Cyphing(OldPassword))
             {
+                // test if "old" and "new" are differents
                 if (OldPassword != NewPassword)
                 {
+                    // test if "new" and "confirmed" passwords are equals
                     if (NewPassword == NewPasswordConfirm)
                     {
-                        RequestCenter.PostLog(new Log("Changement de mot de passe utilisateur " + ActualUser.Name, DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
-                        ActualUser.Password = SHA256Cypher.Cyphing(NewPassword);
-                        RequestCenter.PutUser(ActualUser.Id, ActualUser.JsonifyId());
-                        PopUpCenter.MessagePopup("Mot de passe correctement modifié.");
-                        NavigateParameterMenuCommand.Execute(null);
+                        if (NewPassword.Length < 120)
+                        {
+                            RequestCenter.PostLog(new Log("Changement de mot de passe utilisateur " + ActualUser.Name, DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
+                            ActualUser.Password = SHA256Cypher.Cyphing(NewPassword);
+                            RequestCenter.PutUser(ActualUser.Id, ActualUser.JsonifyId());
+                            PopUpCenter.MessagePopup("Mot de passe correctement modifié.");
+                            NavigateParameterMenuCommand.Execute(null);
+                        }
+                        else { PopUpCenter.MessagePopup("Nouveau mot de passe trop long (Taille Max 120)"); }
                     }
                     else { PopUpCenter.MessagePopup("Nouveau mot de passe et confirmation différentes."); }
                 }
@@ -69,6 +85,9 @@ namespace Projet_File_Rouge.ViewModel
             set => newPasswordConfirm = value;
         }
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }
     }
 }

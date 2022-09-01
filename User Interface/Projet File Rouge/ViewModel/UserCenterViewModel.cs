@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Users Global center
+    /// </summary>
     public class UserCenterViewModel : ViewModelBase
     {
         private List<User> userList;
@@ -14,9 +17,11 @@ namespace Projet_File_Rouge.ViewModel
 
         public UserCenterViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // Set up commands
             NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
             NavigateUserCommand = new NavigateUserCommand(navigationStore, cacheStore);
 
+            // set up BDD objects
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
             userList = RequestCenter.GetUsers();
         }
@@ -32,6 +37,9 @@ namespace Projet_File_Rouge.ViewModel
         }
         public User ActualUser => actualUser;
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }
         public NavigateUserCommand NavigateUserCommand { get; }
     }

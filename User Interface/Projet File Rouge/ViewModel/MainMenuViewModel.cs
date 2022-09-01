@@ -6,6 +6,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Main Menu View
+    /// </summary>
     public class MainMenuViewModel : ViewModelBase
     {
         private string userName;
@@ -13,7 +16,9 @@ namespace Projet_File_Rouge.ViewModel
 
         public MainMenuViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             LogOutCommand = new LogOutCommand(navigationStore, cacheStore);
+            NavigateMissingCallMenuCommand = new NavigateMissingCallMenuCommand(navigationStore, cacheStore);
             NavigateNotificationPageCommand = new NavigateNotificationPageCommand(navigationStore, cacheStore);
             NavigateGlobalCenterCommand = new NavigateGlobalCenterCommand(navigationStore, cacheStore);
             NavigateNewFileCommand = new NavigateNewFileCommand(navigationStore, cacheStore);
@@ -23,6 +28,7 @@ namespace Projet_File_Rouge.ViewModel
             NavigateCommandCenterCommand = new NavigateCommandCenterCommand(navigationStore, cacheStore);
             NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
 
+            // set up BDD objects
             userName = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)).Name;
             notifNumber = cacheStore.GetObjectCache(ObjectCacheStoreEnum.notifNumber);
         }
@@ -32,7 +38,11 @@ namespace Projet_File_Rouge.ViewModel
         public bool NotificationVisibility => NotifNumber == 0;
         public string NotificationText => "Notifications (" + NotifNumber + ")";
 
+        /// <summary>
+        ///  commands
+        /// </summary>
         public LogOutCommand LogOutCommand { get; }
+        public NavigateMissingCallMenuCommand NavigateMissingCallMenuCommand { get; }
         public NavigateNotificationPageCommand NavigateNotificationPageCommand { get; }
         public NavigateGlobalCenterCommand NavigateGlobalCenterCommand { get; }
         public NavigateNewFileCommand NavigateNewFileCommand { get; }

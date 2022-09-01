@@ -123,6 +123,7 @@
                     <ComboBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding SupportTypeList}" SelectedItem="{Binding SupportType}"/>
 
                     <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Modèle de l'appareil"/>
+                    <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
                     <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" TextChanged="SupportModel"/>
 
                     <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Accessoires"/>

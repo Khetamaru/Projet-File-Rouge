@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Log Center View
+    /// </summary>
     public class LogCenterViewModel : ViewModelBase
     {
         private List<Log> stackPanelContent;
@@ -23,10 +26,11 @@ namespace Projet_File_Rouge.ViewModel
 
         public LogCenterViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up 
             NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
 
+            // set up view objects
             FilterInit();
-
             TypeList = new List<string>();
             foreach (string stepName in Enum.GetNames(typeof(Log.LogTypeEnum)))
             {
@@ -38,9 +42,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 UserList.Add(user.Name);
             }
-
             StackPanelContent = RequestCenter.GetLogFiltered(0, Date, Type, UserId);
-
             PageInit();
         }
 
@@ -185,6 +187,9 @@ namespace Projet_File_Rouge.ViewModel
             get => actualPage + "/" + pageNumber;
         }
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }
     }
 }

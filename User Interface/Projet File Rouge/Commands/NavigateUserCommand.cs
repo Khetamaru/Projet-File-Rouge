@@ -20,6 +20,10 @@ namespace Projet_File_Rouge.Commands
             this.cacheStore = cacheStore;
         }
 
+        /// <summary>
+        /// get user for cache
+        /// </summary>
+        /// <param name="user"></param>
         public void LoadUser(User user)
         {
             cacheStore.SetObjectCache(ObjectCacheStoreEnum.UserDetail, user.Id);

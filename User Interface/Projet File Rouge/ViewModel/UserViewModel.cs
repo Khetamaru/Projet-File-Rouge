@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// View to see and manage user infos
+    /// </summary>
     public class UserViewModel : ViewModelBase
     {
         private User user;
@@ -22,12 +25,15 @@ namespace Projet_File_Rouge.ViewModel
 
         public UserViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // Set up commands
             NavigateUserCenterCommand = new NavigateUserCenterCommand(navigationStore, cacheStore);
             LogOutCommand = new LogOutCommand(navigationStore, cacheStore);
 
+            // Set up BDD Objects
             user = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.UserDetail));
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
 
+            // Set up view objects
             accessLevelList = new List<string>();
             foreach (string levelName in Enum.GetNames(typeof(User.AccessLevel)))
             {
@@ -36,6 +42,9 @@ namespace Projet_File_Rouge.ViewModel
             accessLevelField = (int)user.UserLevel;
         }
 
+        /// <summary>
+        /// User Interface Update
+        /// </summary>
         public void MajUI()
         {
             OnPropertyChanged(nameof(User));
@@ -43,6 +52,9 @@ namespace Projet_File_Rouge.ViewModel
             OnPropertyChanged(nameof(UnableButtonVisibility));
         }
 
+        /// <summary>
+        /// User Update
+        /// </summary>
         public void MajUser()
         {
             RequestCenter.PutUser(User.Id, User.JsonifyId());
@@ -75,6 +87,9 @@ namespace Projet_File_Rouge.ViewModel
             get => AccessLevelField >= 0;
         }
 
+        /// <summary>
+        /// Change Name button logic
+        /// </summary>
         public bool ChangeNamePopUpIsOpen
         {
             get => changeNamePopUpIsOpen;
@@ -90,17 +105,30 @@ namespace Projet_File_Rouge.ViewModel
         public string ChangeNameField { get => changeNameField; set { changeNameField = value; OnPropertyChanged(nameof(changeNameField)); } }
         public void ChangeNameYesButton()
         {
-            RequestCenter.PostLog(new Log("Changement de nom d'utilisateur " + ChangeNameField, DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
-            User.Name = ChangeNameField;
-            MajUI();
-            MajUser();
-            CloseChangeNamePopUp();
+            if (ChangeNameField == null)
+            {
+                if (ChangeNameField.Length < 45)
+                {
+                    RequestCenter.PostLog(new Log("Changement de nom d'utilisateur " + ChangeNameField, DateTime.Now, Log.LogTypeEnum.User, ActualUser).Jsonify());
+                    User.Name = ChangeNameField;
+                    MajUI();
+                    MajUser();
+                    CloseChangeNamePopUp();
+                }
+                else
+                {
+                    PopUpCenter.MessagePopup("Champ trop long (Taille Max 45)");
+                }
+            }
         }
         public void ChangeNameNoButton()
         {
             CloseChangeNamePopUp();
         }
 
+        /// <summary>
+        /// Reset Password button logic
+        /// </summary>
         public bool ResetPasswordPopUpIsOpen
         {
             get => resetPasswordPopUpIsOpen;
@@ -124,7 +152,10 @@ namespace Projet_File_Rouge.ViewModel
         {
             CloseResetPasswordPopUp();
         }
-        
+
+        /// <summary>
+        /// Change Access Level button logic
+        /// </summary>
         public bool ChangeAccessLevelPopUpIsOpen
         {
             get => changeAccessLevelPopUpIsOpen;
@@ -153,6 +184,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseChangeAccessLevelPopUp();
         }
 
+        /// <summary>
+        /// Desable button logic
+        /// </summary>
         public bool DesableButtonVisibility { get => User.Activated != true; }
         public bool DesablePopUpIsOpen
         {
@@ -183,6 +217,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseDesablePopUp();
         }
 
+        /// <summary>
+        /// Unable button logic
+        /// </summary>
         public bool UnableButtonVisibility { get => User.Activated != false; }
         public bool UnablePopUpIsOpen
         {
@@ -208,6 +245,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseUnablePopUp();
         }
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateUserCenterCommand NavigateUserCenterCommand { get; }
         public LogOutCommand LogOutCommand { get; }
     }

@@ -39,25 +39,26 @@ namespace Projet_File_Rouge.Object
         public enum state
         {
             libre,
-            start,
-            start_diag,
-            start_response,
+            début,
+            début_diag,
+            début_reponse_client,
             en_cours,
             attente_commande,
             attente_client,
             transit,
-            fin_facture,
-            fin_appel,
-            fin_payé,
+            fin_facture_OK,
+            fin_appel_OK,
+            fin_payement_OK,
             fin,
-            NR_appel,
-            NR_rendu,
-            abandon
+            non_réparable_appel,
+            non_réparable_rendu,
+            abandon,
+            attente_fournisseur
         }
 
         public enum EquipmentType
         {
-            Portable,
+            Ordinateur_Portable,
             Tour,
             AllInOne,
             Téléphone,

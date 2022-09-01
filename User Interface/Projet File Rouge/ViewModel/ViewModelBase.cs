@@ -3,6 +3,9 @@ using System.ComponentModel;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Base class for INotifyPropertyChanged and IDisposable inheritation
+    /// </summary>
     public class ViewModelBase : INotifyPropertyChanged, IDisposable
     {
         public event PropertyChangedEventHandler PropertyChanged;

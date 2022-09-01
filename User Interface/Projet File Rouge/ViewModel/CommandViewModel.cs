@@ -8,6 +8,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Command View
+    /// </summary>
     public class CommandViewModel : ViewModelBase
     {
         private CommandList command;
@@ -20,12 +23,19 @@ namespace Projet_File_Rouge.ViewModel
 
         public CommandViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateCommandCenterCommand = new NavigateCommandCenterCommand(navigationStore, cacheStore);
             NavigateRedWireCommand = new NavigateRedWireCommand(navigationStore, cacheStore);
 
+            // set up BDD objects
             command = RequestCenter.GetCommandList(cacheStore.GetObjectCache(ObjectCacheStoreEnum.CommandListDetail));
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+
+            // set up view objects
             NavigateRedWireCommand.LoadRedWire(Command.RedWire, PageNameEnum.CommandView);
+            commandDoneDateField = DateTime.Now;
+            deliveryDateUpdateField = DateTime.Now;
+            OnPropertyChanged(nameof(deliveryDateUpdateField));
         }
 
         private void CommandMaj()
@@ -74,6 +84,9 @@ namespace Projet_File_Rouge.ViewModel
         }
         public User ActualUser { get => actualUser; }
 
+        /// <summary>
+        /// Cancel Command Button Logic
+        /// </summary>
         public bool CancelCommandButtonVisibility { get => Command.State != CommandList.CommandStatusEnum.commande_en_attente && Command.State != CommandList.CommandStatusEnum.livraison_en_cours; }
         public bool CancelCommandPopUpIsOpen
         {
@@ -100,6 +113,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseCancelCommandPopUp();
         }
 
+        /// <summary>
+        /// Command Done Button Logic
+        /// </summary>
         public bool CommandDoneButtonVisibility { get => Command.State != CommandList.CommandStatusEnum.commande_en_attente; }
         public bool CommandDonePopUpIsOpen
         {
@@ -132,6 +148,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseCommandDonePopUp();
         }
 
+        /// <summary>
+        /// Command Arrived Button Logic
+        /// </summary>
         public bool CommandArrivedButtonVisibility { get => Command.State != CommandList.CommandStatusEnum.livraison_en_cours; }
         public bool CommandArrivedPopUpIsOpen
         {
@@ -158,6 +177,9 @@ namespace Projet_File_Rouge.ViewModel
             CloseCommandArrivedPopUp();
         }
 
+        /// <summary>
+        /// Update Delivery Date Button Logic
+        /// </summary>
         public bool DeliveryDateUpdateButtonVisibility { get => Command.State != CommandList.CommandStatusEnum.livraison_en_cours; }
         public bool DeliveryDateUpdatePopUpIsOpen
         {
@@ -201,6 +223,9 @@ namespace Projet_File_Rouge.ViewModel
             }
         }
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateCommandCenterCommand NavigateCommandCenterCommand { get; }
         public NavigateRedWireCommand NavigateRedWireCommand { get; }
     }

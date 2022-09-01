@@ -3,6 +3,9 @@ using System.Windows.Input;
 
 namespace Projet_File_Rouge.Commands
 {
+    /// <summary>
+    /// Class for Commands to launch to switch page
+    /// </summary>
     public abstract class CommandBase : ICommand
     {
         public event EventHandler CanExecuteChanged;

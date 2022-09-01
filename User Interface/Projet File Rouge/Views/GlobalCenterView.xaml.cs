@@ -22,6 +22,7 @@ namespace Projet_File_Rouge.Views
             if (DataContext != null && redWire != null)
             {
                 ((dynamic)DataContext as GlobalCenterViewModel).NavigateRedWireCommand.LoadRedWire(redWire, PageNameEnum.GlobalCenter);
+                ((dynamic)DataContext as GlobalCenterViewModel).NavigateRedWireCommand.Execute(null);
             }
         }
 

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Red_Wire_API</RootNamespace>
-	  <VersionPrefix>1.1.0</VersionPrefix>
+	  <VersionPrefix>1.2.1</VersionPrefix>
   </PropertyGroup>
 
   <ItemGroup>

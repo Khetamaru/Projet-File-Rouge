@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "Red Wire API/1.1.0": {
+      "Red Wire API/1.2.1": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.SqlServer": "6.0.6",
           "Pomelo.EntityFrameworkCore.MySql": "6.0.1",
@@ -479,7 +479,7 @@
     }
   },
   "libraries": {
-    "Red Wire API/1.1.0": {
+    "Red Wire API/1.2.1": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

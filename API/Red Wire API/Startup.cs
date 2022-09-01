@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Projet_File_Rouge.Object;
 
 namespace Red_Wire_API
 {
@@ -23,7 +24,10 @@ namespace Red_Wire_API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// API start here. Create BDD Connections and launch table links.
+        /// </summary>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
             redWireConnectionString = new DataBaseString("localhost", "root", "root", true, "redwiredb");
@@ -51,6 +55,9 @@ namespace Red_Wire_API
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
 
             services.AddDbContext<VersionContext>(opt =>
+                opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
+
+            services.AddDbContext<MissingCallContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
 
             services.AddDbContext<SaleDocumentContext>(opt =>
@@ -88,6 +95,9 @@ namespace Red_Wire_API
             });
         }
 
+        /// <summary>
+        /// BDD Connection String Object Manager
+        /// </summary>
         public class DataBaseString
         {
             public string serverName;

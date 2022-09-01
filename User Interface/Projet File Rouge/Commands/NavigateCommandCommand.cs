@@ -21,6 +21,10 @@ namespace Projet_File_Rouge.Commands
             this.cacheStore = cacheStore;
         }
 
+        /// <summary>
+        /// Get command for cache
+        /// </summary>
+        /// <param name="commandList"></param>
         public void LoadCommand(CommandList commandList)
         {
             cacheStore.SetObjectCache(ObjectCacheStoreEnum.CommandListDetail, commandList.Id);

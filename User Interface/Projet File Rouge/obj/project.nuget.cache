@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "vuhCrtWeYPGqhLIeHeMUBBsF6aegqdQDwlFLbcetgXR7nNSxHRdhsBg99kaV1otktU/EeyhtAIYPaDHLnIKSxA==",
+  "dgSpecHash": "tvWYCSE95Em4adnedA6Z+DMgfIt4R7PSzFC7VrKpBK/3wohl7SupiOC7DmQKH5V09VWn0jkJ1nzsta4BjqBaLQ==",
   "success": true,
   "projectFilePath": "F:\\PROJECTS\\Projet-File-Rouge\\User Interface\\Projet File Rouge\\Projet File Rouge.csproj",
   "expectedPackageFiles": [
@@ -8,7 +8,7 @@
     "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.toolkit.mvvm\\7.1.2\\microsoft.toolkit.mvvm.7.1.2.nupkg.sha512",
     "C:\\Users\\Anthony\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
-    "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.17763.25\\microsoft.windows.sdk.net.ref.10.0.17763.25.nupkg.sha512"
+    "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.17763.26\\microsoft.windows.sdk.net.ref.10.0.17763.26.nupkg.sha512"
   ],
   "logs": []
 }

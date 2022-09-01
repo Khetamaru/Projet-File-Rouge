@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace Projet_File_Rouge.ExternalInfoFile
 {
+    /// <summary>
+    /// Save last username used to connect on this laptop.
+    /// </summary>
     public static class LoginCacheFile
     {
+        /// <summary>
+        /// Search if there is a username saved
+        /// </summary>
+        /// <returns></returns>
         public static string Read()
         {
             string content = string.Empty;
@@ -33,6 +40,10 @@ namespace Projet_File_Rouge.ExternalInfoFile
             return content;
         }
 
+        /// <summary>
+        /// Save a username on connection runtime
+        /// </summary>
+        /// <param name="content"></param>
         public static void Write(string content)
         {
             try

@@ -5,7 +5,7 @@
   },
   "projects": {
     "F:\\PROJECTS\\Projet-File-Rouge\\API\\Red Wire API\\Red Wire API.csproj": {
-      "version": "1.1.0",
+      "version": "1.2.1",
       "restore": {
         "projectUniqueName": "F:\\PROJECTS\\Projet-File-Rouge\\API\\Red Wire API\\Red Wire API.csproj",
         "projectName": "Red Wire API",
@@ -71,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.303\\RuntimeIdentifierGraph.json"
         }
       }
     }

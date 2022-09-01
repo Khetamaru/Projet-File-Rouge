@@ -33,6 +33,7 @@ namespace Projet_File_Rouge.Views
             if (DataContext != null && redWire != null)
             {
                 ((dynamic)DataContext as PersoSpaceViewModel).NavigateRedWireCommand.LoadRedWire(redWire, PageNameEnum.PersoSpace);
+                ((dynamic)DataContext as PersoSpaceViewModel).NavigateRedWireCommand.Execute(null);
             }
         }
 

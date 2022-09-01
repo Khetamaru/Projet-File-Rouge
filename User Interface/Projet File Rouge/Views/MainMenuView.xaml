@@ -36,41 +36,54 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="{Binding NotificationText}" Command="{Binding NavigateNotificationPageCommand}">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Visibility" Value="Visible"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding NotificationVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
-                                <Setter Property="Visibility" Value="Collapsed"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-                <Button.Triggers>
-                    <EventTrigger RoutedEvent="Button.Loaded">
-                        <EventTrigger.Actions>
-                            <BeginStoryboard>
-                                <Storyboard BeginTime="00:00:00" 
-                                RepeatBehavior="Forever"
-                                Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
-                                    <ColorAnimation From="{DynamicResource {x:Static SystemColors.ControlBrush}}" To="PaleVioletRed" BeginTime="0:0:0" Duration="0:0:0.5"/>
-                                    <ColorAnimation From="PaleVioletRed" To="{DynamicResource {x:Static SystemColors.ControlBrush}}" BeginTime="0:0:0.5" Duration="0:0:0.5"/>
-                                </Storyboard>
-                            </BeginStoryboard>
-                        </EventTrigger.Actions>
-                    </EventTrigger>
-                </Button.Triggers>
-            </Button>
+
+            <Grid Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <Button Grid.Column="0" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="{Binding NotificationText}" Command="{Binding NavigateNotificationPageCommand}">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding NotificationVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="Button.Loaded">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                                    <Storyboard BeginTime="00:00:00" 
+                                    RepeatBehavior="Forever"
+                                    Storyboard.TargetProperty="(Background).(SolidColorBrush.Color)">
+                                        <ColorAnimation From="{DynamicResource {x:Static SystemColors.ControlBrush}}" To="PaleVioletRed" BeginTime="0:0:0" Duration="0:0:0.5"/>
+                                        <ColorAnimation From="PaleVioletRed" To="{DynamicResource {x:Static SystemColors.ControlBrush}}" BeginTime="0:0:0.5" Duration="0:0:0.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+
+                <Button Grid.Column="1" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Main Courante" Command="{Binding NavigateMissingCallMenuCommand}"/>
+            </Grid>
+
             <TextBlock Grid.Column="1" Margin="12" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Text="{Binding UserName, Mode=OneWay}"/>
+            
             <Button Grid.Column="2" Margin="12" Padding="5" VerticalAlignment="Center" FontSize="20" Content="Déconnection" Command="{Binding LogOutCommand}"/>
         </Grid>
 
-        <Button Grid.Row="1" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Global" Command="{Binding NavigateGlobalCenterCommand}"/>
-        <Button Grid.Row="2" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Personnel" Command="{Binding NavigatePersoSpaceCommand}"/>
-        <Button Grid.Row="3" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Nouveau Dossier" Command="{Binding NavigateNewFileCommand}"/>
-        <Button Grid.Row="4" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Disponible" Command="{Binding NavigateFreeFolderCommand}"/>
-        <Button Grid.Row="5" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Commande" Command="{Binding NavigateCommandCenterCommand}"/>
+        <Button Grid.Row="1" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Personnel" Command="{Binding NavigatePersoSpaceCommand}"/>
+        <Button Grid.Row="2" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Nouveau Dossier" Command="{Binding NavigateNewFileCommand}"/>
+        <Button Grid.Row="3" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Disponible" Command="{Binding NavigateFreeFolderCommand}"/>
+        <Button Grid.Row="4" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Commande" Command="{Binding NavigateCommandCenterCommand}"/>
+        <Button Grid.Row="5" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Espace Global" Command="{Binding NavigateGlobalCenterCommand}"/>
         <Button Grid.Row="6" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Ancien Dossier" Command="{Binding NavigateOldFolderCommand}"/>
         <Button Grid.Row="7" Margin="12" Padding="5" VerticalAlignment="Stretch" FontSize="20" Content="Paramètres" Command="{Binding NavigateParameterMenuCommand}"/>
 

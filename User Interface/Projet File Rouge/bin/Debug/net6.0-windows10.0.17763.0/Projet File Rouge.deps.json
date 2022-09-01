@@ -6,25 +6,25 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "Projet File Rouge/1.1.5": {
+      "Projet File Rouge/1.1.9": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "6.0.0",
           "Microsoft.Toolkit.Mvvm": "7.1.2",
-          "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.17763.25"
+          "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.17763.26"
         },
         "runtime": {
           "Projet File Rouge.dll": {}
         }
       },
-      "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.25": {
+      "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.26": {
         "runtime": {
           "Microsoft.Windows.SDK.NET.dll": {
             "assemblyVersion": "10.0.17763.24",
-            "fileVersion": "10.0.17763.25"
+            "fileVersion": "10.0.17763.26"
           },
           "WinRT.Runtime.dll": {
             "assemblyVersion": "1.6.0.0",
-            "fileVersion": "1.6.2.38681"
+            "fileVersion": "1.6.4.39141"
           }
         }
       },
@@ -60,12 +60,12 @@
     }
   },
   "libraries": {
-    "Projet File Rouge/1.1.5": {
+    "Projet File Rouge/1.1.9": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.25": {
+    "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.26": {
       "type": "runtimepack",
       "serviceable": false,
       "sha512": ""

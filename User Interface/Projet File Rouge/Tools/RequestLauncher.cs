@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Projet_File_Rouge.Tools
 {
+    /// <summary>
+    /// Launch requests to the server
+    /// </summary>
     class RequestLauncher
     {
         public enum HttpVerb
@@ -29,6 +32,11 @@ namespace Projet_File_Rouge.Tools
             httpMethod = HttpVerb.GET;
         }
 
+        /// <summary>
+        /// Launch with a JSON
+        /// </summary>
+        /// <param name="json"></param>
+        /// <returns></returns>
         private (string, HttpStatusCode) MakeRequest(string json)
         {
             string strResponseValue = string.Empty;
@@ -69,6 +77,10 @@ namespace Projet_File_Rouge.Tools
             return (strResponseValue, statusCode);
         }
 
+        /// <summary>
+        /// Launch without JSON
+        /// </summary>
+        /// <returns></returns>
         private (string, HttpStatusCode) MakeRequest()
         {
             string result = string.Empty;

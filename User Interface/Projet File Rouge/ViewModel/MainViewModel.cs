@@ -4,6 +4,9 @@ using Projet_File_Rouge.Stores;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Base View
+    /// </summary>
     public class MainViewModel : ViewModelBase
     {
         private readonly NavigationStore navigationStore;

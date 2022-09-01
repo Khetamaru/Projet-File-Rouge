@@ -21,6 +21,12 @@ namespace Projet_File_Rouge.Commands
             this.cacheStore = cacheStore;
         }
 
+        /// <summary>
+        /// Get Key Value to check connection
+        /// </summary>
+        /// <param name="userNameField"></param>
+        /// <param name="passwordField"></param>
+        /// <returns></returns>
         public ConnectionCommand ChargeParameters(string userNameField, string passwordField)
         {
             UserNameField = userNameField;
@@ -51,6 +57,7 @@ namespace Projet_File_Rouge.Commands
 
             if (user.UserLevel == User.AccessLevel.Admin)
             {
+                Count += RequestCenter.GetPrividerWaitingNotifNumber();
                 Count += RequestCenter.GetRedWireNotifAdminNumber();
                 Count += RequestCenter.GetCommandListNotifNumber();
                 Count += RequestCenter.GetRedWirePurgeNumber();
@@ -58,6 +65,7 @@ namespace Projet_File_Rouge.Commands
             else
             {
                 Count += RequestCenter.GetRedWireNotifNumber(userId);
+                Count += RequestCenter.GetMissingCallUnreadNumber(userId);
                 if ((int)user.UserLevel >= (int)User.AccessLevel.SuperUser) { Count += RequestCenter.GetCommandListNotifNumber(); }
             }
             cacheStore.SetObjectCache(ObjectCacheStoreEnum.notifNumber, Count);

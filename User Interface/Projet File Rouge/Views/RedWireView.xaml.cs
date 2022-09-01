@@ -78,7 +78,9 @@ namespace Projet_File_Rouge.Views
 
         private void OpenNonReparableRenduPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenNonReparableRenduPopUp(); }
         private void NonReparableRenduYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).NonReparableRenduYesButton(); }
+        
         private void NonReparableRenduNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).NonReparableRenduNoButton(); }
+        private void NonReparableRenduDestructionButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).NonReparableRenduDestructionButton(); }
 
         private void OpenCommandePiecePopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenCommandePiecePopUp(); }
         private void CommandePieceYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).CommandePieceYesButton(); }
@@ -96,8 +98,16 @@ namespace Projet_File_Rouge.Views
         private void GiveUpYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).GiveUpYesButton(); }
         private void GiveUpNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).GiveUpNoButton(); }
 
-        private void OpenAjoutDevisPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenAjoutDevisPopUp(); }
-        private void AjoutDevisYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AjoutDevisYesButton(); }
-        private void AjoutDevisNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AjoutDevisNoButton(); }
+        private void OpenAjoutDocumentPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenAjoutDocumentPopUp(); }
+        private void AjoutDocumentYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AjoutDocumentYesButton(); }
+        private void AjoutDocumentNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AjoutDocumentNoButton(); }
+
+        private void OpenProviderCallPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenProviderCallPopUp(); }
+        private void ProviderCallYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).ProviderCallYesButton(); }
+        private void ProviderCallNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).ProviderCallNoButton(); }
+
+        private void OpenEndProviderCallPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenEndProviderCallPopUp(); }
+        private void EndProviderCallYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).EndProviderCallYesButton(); }
+        private void EndProviderCallNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).EndProviderCallNoButton(); }
     }
 }

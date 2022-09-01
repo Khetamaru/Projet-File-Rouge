@@ -65,7 +65,7 @@
 
             <DataTemplate DataType="{x:Type viewmodels:UserCenterViewModel}">
                 <views:UserCenterView/>
-            </DataTemplate> 
+            </DataTemplate>
 
             <DataTemplate DataType="{x:Type viewmodels:UserViewModel}">
                 <views:UserView/>
@@ -95,7 +95,22 @@
                 <views:LogCenterView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodels:MissingCallMenuViewModel}">
+                <views:MissingCallMenuView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:MissingCallCreationViewModel}">
+                <views:MissingCallCreationView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:MissingCallPersoViewModel}">
+                <views:MissingCallPersoView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:MissingCallDetailsViewModel}">
+                <views:MissingCallDetailsView/>
+            </DataTemplate>
+
         </ContentControl.Resources>
     </ContentControl>
-
 </Window>

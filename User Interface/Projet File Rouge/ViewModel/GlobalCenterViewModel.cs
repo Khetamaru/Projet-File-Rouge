@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Global Center for red wire view
+    /// </summary>
     class GlobalCenterViewModel : ViewModelBase
     {
         private List<RedWire> redWireList;
@@ -24,9 +27,11 @@ namespace Projet_File_Rouge.ViewModel
 
         public GlobalCenterViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateRedWireCommand = new NavigateRedWireCommand(navigationStore, cacheStore);
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
 
+            // set up view objects
             FilterInit();
             stepList = new List<string>();
             foreach (string stepName in Enum.GetNames(typeof(RedWire.state)))
@@ -53,11 +58,11 @@ namespace Projet_File_Rouge.ViewModel
 
         private void PageInit()
         {
-            int redWireTotal = RequestCenter.GetRedWireNumber(date, step, userId, clientName);
+            int redWireTotal = RequestCenter.GetRedWireNumberNoOld(date, step, userId, clientName);
 
             CalculPageNumber(redWireTotal);
 
-            redWireList = RequestCenter.GetRedWirePage(0, date, step, userId, clientName);
+            redWireList = RequestCenter.GetRedWirePageWithoutOld(0, date, step, userId, clientName);
             actualPage = 1;
         }
 
@@ -139,7 +144,7 @@ namespace Projet_File_Rouge.ViewModel
             if (actualPage > 1)
             {
                 actualPage--;
-                RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientName);
+                RedWireList = RequestCenter.GetRedWirePageWithoutOld(actualPage - 1, date, step, userId, clientName);
                 OnPropertyChanged(nameof(Pagination));
             }
         }
@@ -149,15 +154,15 @@ namespace Projet_File_Rouge.ViewModel
             if (actualPage < pageNumber)
             {
                 actualPage++;
-                RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientName);
+                RedWireList = RequestCenter.GetRedWirePageWithoutOld(actualPage - 1, date, step, userId, clientName);
                 OnPropertyChanged(nameof(Pagination));
             }
         }
 
         public void Filter()
         {
-            RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientName);
-            CalculPageNumber(RequestCenter.GetRedWireNumber(date, step, userId, clientName));
+            RedWireList = RequestCenter.GetRedWirePageWithoutOld(actualPage - 1, date, step, userId, clientName);
+            CalculPageNumber(RequestCenter.GetRedWireNumberNoOld(date, step, userId, clientName));
             actualPage = 1;
             OnPropertyChanged(nameof(Pagination));
         }
@@ -165,8 +170,8 @@ namespace Projet_File_Rouge.ViewModel
         public void AntiFilter()
         {
             FilterInit();
-            RedWireList = RequestCenter.GetRedWirePage(actualPage - 1, date, step, userId, clientName);
-            CalculPageNumber(RequestCenter.GetRedWireNumber(date, step, userId, clientName));
+            RedWireList = RequestCenter.GetRedWirePageWithoutOld(actualPage - 1, date, step, userId, clientName);
+            CalculPageNumber(RequestCenter.GetRedWireNumberNoOld(date, step, userId, clientName));
             actualPage = 1;
             OnPropertyChanged(nameof(Pagination));
             OnPropertyChanged(nameof(Date));
@@ -181,6 +186,10 @@ namespace Projet_File_Rouge.ViewModel
         { 
             get => actualPage + "/" + pageNumber;
         }
+
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateRedWireCommand NavigateRedWireCommand { get; }
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
     }

@@ -7,6 +7,9 @@ using Projet_File_Rouge.ViewModel;
 
 namespace Projet_File_Rouge.Stores
 {
+    /// <summary>
+    /// Trigger class for view changement
+    /// </summary>
     public class NavigationStore
     {
         public event Action CurrentViewModelChanged;

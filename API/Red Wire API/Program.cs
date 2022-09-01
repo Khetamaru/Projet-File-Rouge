@@ -11,6 +11,11 @@ namespace Red_Wire_API
             CreateHostBuilder(args).Build().Run();
         }
 
+        /// <summary>
+        /// Set Stratup Parameters
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>

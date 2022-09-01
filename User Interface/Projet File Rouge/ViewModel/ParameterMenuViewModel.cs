@@ -3,11 +3,15 @@ using Projet_File_Rouge.Stores;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Parameters View
+    /// </summary>
     public class ParameterMenuViewModel : ViewModelBase
     {
 
         public ParameterMenuViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
             NavigateUserCreationCommand = new NavigateUserCreationCommand(navigationStore, cacheStore);
             NavigateUserCenterCommand = new NavigateUserCenterCommand(navigationStore, cacheStore);
@@ -16,6 +20,9 @@ namespace Projet_File_Rouge.ViewModel
             NavigateLogCenterCommand = new NavigateLogCenterCommand(navigationStore, cacheStore);
         }
 
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
         public NavigateUserCreationCommand NavigateUserCreationCommand { get; }
         public NavigateUserCenterCommand NavigateUserCenterCommand { get; }

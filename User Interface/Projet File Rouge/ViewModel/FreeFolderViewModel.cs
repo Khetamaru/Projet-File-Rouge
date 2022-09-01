@@ -7,6 +7,9 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.ViewModel
 {
+    /// <summary>
+    /// Red wires free for in charge view
+    /// </summary>
     class FreeFolderViewModel : ViewModelBase
     {
         private List<RedWire> redWireList;
@@ -22,9 +25,11 @@ namespace Projet_File_Rouge.ViewModel
 
         public FreeFolderViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateRedWireCommand = new NavigateRedWireCommand(navigationStore, cacheStore);
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
 
+            // set up view objects
             FilterInit();
             users = RequestCenter.GetUsers();
             userList = new List<string>();
@@ -156,6 +161,10 @@ namespace Projet_File_Rouge.ViewModel
         { 
             get => actualPage + "/" + pageNumber;
         }
+
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateRedWireCommand NavigateRedWireCommand { get; }
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
     }

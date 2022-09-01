@@ -22,17 +22,20 @@ namespace Projet_File_Rouge.ViewModel
 
         public OldFolderViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
+            // set up commands
             NavigateRedWireCommand = new NavigateRedWireCommand(navigationStore, cacheStore);
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
 
-            FilterInit();
+            // set up BDD objects
             users = RequestCenter.GetUsers();
+
+            // set up View objects
+            FilterInit();
             userList = new List<string>();
             foreach (User user in users)
             {
                 userList.Add(user.Name);
             }
-
             PageInit();
         }
 
@@ -156,6 +159,10 @@ namespace Projet_File_Rouge.ViewModel
         { 
             get => actualPage + "/" + pageNumber;
         }
+
+        /// <summary>
+        /// Commands
+        /// </summary>
         public NavigateRedWireCommand NavigateRedWireCommand { get; }
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
     }

@@ -1,14 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "tvWYCSE95Em4adnedA6Z+DMgfIt4R7PSzFC7VrKpBK/3wohl7SupiOC7DmQKH5V09VWn0jkJ1nzsta4BjqBaLQ==",
+  "dgSpecHash": "WVbWBG1c6La4OJ39n5/Dib/QbQ7NgUAJBFZwEOK+wthUzBV6c5H/cD2F8eK+/LLF0JeiFLcMY5KmsVIXDsDdOQ==",
   "success": true,
   "projectFilePath": "F:\\PROJECTS\\Projet-File-Rouge\\User Interface\\Projet File Rouge\\Projet File Rouge.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.0\\microsoft.extensions.dependencyinjection.6.0.0.nupkg.sha512",
     "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
-    "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.toolkit.mvvm\\7.1.2\\microsoft.toolkit.mvvm.7.1.2.nupkg.sha512",
+    "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\6.0.1\\microsoft.extensions.logging.abstractions.6.0.1.nupkg.sha512",
+    "C:\\Users\\Anthony\\.nuget\\packages\\mvvmcross\\9.0.1\\mvvmcross.9.0.1.nupkg.sha512",
     "C:\\Users\\Anthony\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
-    "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.17763.26\\microsoft.windows.sdk.net.ref.10.0.17763.26.nupkg.sha512"
+    "C:\\Users\\Anthony\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.17763.27\\microsoft.windows.sdk.net.ref.10.0.17763.27.nupkg.sha512"
   ],
   "logs": []
 }

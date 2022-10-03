@@ -8,7 +8,7 @@
     <StartupObject>Projet_File_Rouge.App</StartupObject>
     <ApplicationIcon>logo final.ico</ApplicationIcon>
     <Version>$(VersionPrefix)</Version>
-	<VersionPrefix>1.2.2</VersionPrefix>
+	<VersionPrefix>1.2.3</VersionPrefix>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
   </PropertyGroup>
 
@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Toolkit.Mvvm" Version="7.1.2" />
+    <PackageReference Include="MvvmCross" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>

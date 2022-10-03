@@ -5,7 +5,7 @@
   },
   "projects": {
     "F:\\PROJECTS\\Projet-File-Rouge\\User Interface\\Projet File Rouge\\Projet File Rouge.csproj": {
-      "version": "1.2.2",
+      "version": "1.2.3",
       "restore": {
         "projectUniqueName": "F:\\PROJECTS\\Projet-File-Rouge\\User Interface\\Projet File Rouge\\Projet File Rouge.csproj",
         "projectName": "Projet File Rouge",
@@ -44,9 +44,9 @@
               "target": "Package",
               "version": "[6.0.0, )"
             },
-            "Microsoft.Toolkit.Mvvm": {
+            "MvvmCross": {
               "target": "Package",
-              "version": "[7.1.2, )"
+              "version": "[9.0.1, )"
             }
           },
           "imports": [
@@ -62,7 +62,7 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.Windows.SDK.NET.Ref",
-              "version": "[10.0.17763.26, 10.0.17763.26]"
+              "version": "[10.0.17763.27, 10.0.17763.27]"
             }
           ],
           "frameworkReferences": {
@@ -76,7 +76,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.304\\RuntimeIdentifierGraph.json"
         }
       }
     }

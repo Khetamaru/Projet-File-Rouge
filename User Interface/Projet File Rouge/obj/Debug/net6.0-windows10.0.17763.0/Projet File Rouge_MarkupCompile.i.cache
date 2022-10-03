@@ -1,5 +1,5 @@
 ﻿Projet File Rouge
-1.1.9.0
+1.2.3.0
 
 winexe
 C#
@@ -13,7 +13,7 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\App.xaml
 26410103777
 
 105-1769314796
-1991493321080
+200-508506288
 MainWindow.xaml;Views\ChangePasswordView.xaml;Views\CommandCenterView.xaml;Views\CommandView.xaml;Views\DocumentCenterView.xaml;Views\DocumentView.xaml;Views\FolderPurgeView.xaml;Views\FreeFolderView.xaml;Views\GlobalCenterView.xaml;Views\LogCenterView.xaml;Views\LoginView.xaml;Views\MainMenuView.xaml;Views\MissingCallCreationView.xaml;Views\MissingCallDetailsView.xaml;Views\MissingCallMenuView.xaml;Views\MissingCallPersoView.xaml;Views\NewFileView.xaml;Views\NotificationPageView.xaml;Views\OldFolderView.xaml;Views\ParameterMenuView.xaml;Views\PersoSpaceView.xaml;Views\RedWireView.xaml;Views\UserCenterView.xaml;Views\UserCreationView.xaml;Views\UserHistoryView.xaml;Views\UserView.xaml;
 
 False

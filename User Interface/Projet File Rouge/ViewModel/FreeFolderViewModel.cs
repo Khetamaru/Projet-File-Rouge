@@ -45,6 +45,7 @@ namespace Projet_File_Rouge.ViewModel
         {
             Date = new DateTime();
             userId = -1;
+            index = -1;
             clientName = string.Empty;
         }
 
@@ -97,19 +98,22 @@ namespace Projet_File_Rouge.ViewModel
         }
         public int UserId
         {
-            get => userId;
+            get => index;
             set
             {
                 userId = users[value].Id;
+                index = value;
                 OnPropertyChanged(nameof(UserListNullVisibility));
             }
         }
+        public int UserSelected { get => userId; }
+        private int index;
         public List<string> UserList
         {
             get => userList;
             set => userList = value;
         }
-        public bool UserListNullVisibility { get => UserId != -1; }
+        public bool UserListNullVisibility { get => index != -1; }
         public string ClientName
         {
             get => clientName;

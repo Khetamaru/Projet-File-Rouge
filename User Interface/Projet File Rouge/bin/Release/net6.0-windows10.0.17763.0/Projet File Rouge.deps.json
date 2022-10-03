@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "Projet File Rouge/1.2.2": {
+      "Projet File Rouge/1.2.3": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "6.0.0",
           "Microsoft.Toolkit.Mvvm": "7.1.2",
@@ -60,7 +60,7 @@
     }
   },
   "libraries": {
-    "Projet File Rouge/1.2.2": {
+    "Projet File Rouge/1.2.3": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

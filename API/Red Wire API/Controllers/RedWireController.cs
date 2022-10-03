@@ -40,6 +40,19 @@ namespace Local_API_Server.Controllers
         }
 
         // GET: api/RedWire/page/0/0001-01-01T00:00:00/-1/-1/CM
+        [HttpGet("page/old/{pageNumber}/{date}/{userId}/{clientName}")]
+        public async Task<ActionResult<IEnumerable<RedWire>>> GetOldRedWireFiltered(int pageNumber, DateTime date, int userId, string clientName)
+        {
+            IQueryable<RedWire> result = _context.RedWire.OrderByDescending(r => r.inChargeDate);
+
+            result = Filtering(result, date, userId, clientName);
+
+            result = result.Skip(pageNumber * 10).Take(10);
+
+            return await result.ToListAsync();
+        }
+
+        // GET: api/RedWire/page/0/0001-01-01T00:00:00/-1/CM
         [HttpGet("page/noOld/{pageNumber}/{date}/{step}/{userId}/{clientName}")]
         public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWireFilteredNoOld(int pageNumber, DateTime date, int step, int userId, string clientName)
         {
@@ -65,6 +78,17 @@ namespace Local_API_Server.Controllers
             return result.Count();
         }
 
+        // GET: api/RedWire/total/0001-01-01T00:00:00/-1/CM
+        [HttpGet("total/old/{date}/{userId}/{clientName}")]
+        public ActionResult<int> GetRedWireNumber(DateTime date, int userId, string clientName)
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+
+            result = Filtering(result, date, userId, clientName);
+
+            return result.Count();
+        }
+
         // GET: api/RedWire/total/0001-01-01T00:00:00/-1/-1/CM
         [HttpGet("total/noOld/{date}/{step}/{userId}/{clientName}")]
         public ActionResult<int> GetRedWireNumberNoOld(DateTime date, int step, int userId, string clientName)
@@ -83,6 +107,19 @@ namespace Local_API_Server.Controllers
             if (date != new DateTime()) { result = result.Where(r => r.inChargeDate.Day == date.Day); }
 
             if (step >= 0) { result = result.Where(r => r.actualState == step); }
+
+            if (userId >= 0) { result = result.Where(r => r.actualRepairMan == userId || (r.transfertTarget == userId && r.actualState == 7)); }
+
+            if (clientName != null && clientName != string.Empty && clientName != "*") { result = result.Where(r => r.clientName.Contains(clientName)); }
+
+            return result;
+        }
+
+        private static IQueryable<RedWire> Filtering(IQueryable<RedWire> result, DateTime date, int userId, string clientName)
+        {
+            if (date != new DateTime()) { result = result.Where(r => r.inChargeDate.Day == date.Day); }
+
+            result = result.Where(r => r.actualState == 11 || r.actualState == 14);
 
             if (userId >= 0) { result = result.Where(r => r.actualRepairMan == userId || (r.transfertTarget == userId && r.actualState == 7)); }
 

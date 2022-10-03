@@ -6,7 +6,8 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.pdb
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Microsoft.Extensions.DependencyInjection.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Microsoft.Toolkit.Mvvm.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Microsoft.Extensions.Logging.Abstractions.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\MvvmCross.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\Microsoft.Windows.SDK.NET.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Debug\net6.0-windows10.0.17763.0\WinRT.Runtime.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.csproj.AssemblyReference.cache
@@ -22,6 +23,10 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\LogCenterView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\LoginView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MainMenuView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallCreationView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallDetailsView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallMenuView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallPersoView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\NewFileView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\NotificationPageView.g.cs
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\OldFolderView.g.cs
@@ -48,6 +53,10 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\LogCenterView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\LoginView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MainMenuView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallCreationView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallDetailsView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallMenuView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallPersoView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\NewFileView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\NotificationPageView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\OldFolderView.baml
@@ -69,11 +78,3 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.pdb
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Projet File Rouge.genruntimeconfig.cache
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\ref\Projet File Rouge.dll
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallMenuView.g.cs
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallMenuView.baml
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallCreationView.g.cs
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallCreationView.baml
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallPersoView.g.cs
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallPersoView.baml
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallDetailsView.g.cs
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Debug\net6.0-windows10.0.17763.0\Views\MissingCallDetailsView.baml

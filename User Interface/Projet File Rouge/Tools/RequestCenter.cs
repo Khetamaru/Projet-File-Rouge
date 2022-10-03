@@ -35,6 +35,20 @@ namespace Projet_File_Rouge.Tools
             (string result, HttpStatusCode statusCode) = new RequestLauncher().PutRequest(BDDTabName.missingCall.ToString() + "/" + id, json);
         }
 
+        internal static List<RedWire> GetOldRedWirePage(int pageNumber, DateTime date, int userId, string clientName)
+        {
+            if (clientName == string.Empty) { clientName = "*"; }
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/page/old/" + pageNumber + "/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + userId + "/" + clientName);
+            return Unjsonify.RedWiresUnjsoning(result);
+        }
+
+        internal static int GetOldRedWireNumber(DateTime date, int userId, string clientName)
+        {
+            if (clientName == string.Empty) { clientName = "*"; }
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/total/old/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + userId + "/" + clientName);
+            return result == "" ? 0 : Int32.Parse(result);
+        }
+
         internal static void DeleteMissingCall(int id)
         {
             (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.missingCall.ToString() + "/" + id);

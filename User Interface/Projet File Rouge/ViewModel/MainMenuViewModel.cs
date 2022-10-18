@@ -13,6 +13,7 @@ namespace Projet_File_Rouge.ViewModel
     {
         private string userName;
         private int notifNumber;
+        private int missingCallNumber;
 
         public MainMenuViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
@@ -31,12 +32,17 @@ namespace Projet_File_Rouge.ViewModel
             // set up BDD objects
             userName = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)).Name;
             notifNumber = cacheStore.GetObjectCache(ObjectCacheStoreEnum.notifNumber);
+            missingCallNumber = cacheStore.GetObjectCache(ObjectCacheStoreEnum.missingCallNumber);
         }
 
         public string UserName => userName;
         public int NotifNumber => notifNumber;
+        public int MissingCallNumber => missingCallNumber;
         public bool NotificationVisibility => NotifNumber == 0;
         public string NotificationText => "Notifications (" + NotifNumber + ")";
+        public string MissingCallText => MissingCallTrigger ? "Main Courante (" + MissingCallNumber + ")" : "Main Courante";
+        public bool MissingCallTrigger => MissingCallNumber > 0;
+        public bool MissingCallTriggerRevert => !MissingCallTrigger;
 
         /// <summary>
         ///  commands

@@ -23,14 +23,20 @@ namespace Local_API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Log>>> GetLog()
         {
-            return await _context.Log.ToListAsync();
+            return await _context.Log
+                .Include(l => l.user)
+                .ToListAsync();
         }
 
         // GET: api/Log/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Log>> GetLog(int id)
         {
-            var Log = await _context.Log.FindAsync(id);
+            var Log = await _context.Log
+                .Where(l => l.id == id)
+                .Include(l => l.user)
+                .FirstOrDefaultAsync();
+
             if (Log == null)
             {
                 return NotFound();
@@ -46,7 +52,10 @@ namespace Local_API_Server.Controllers
 
             result = Filtering(result, date, type, userId);
 
-            result = result.Skip(pageNumber * 10).Take(10);
+            result = result
+                .Include(l => l.user)
+                .Skip(pageNumber * 10)
+                .Take(10);
 
             return await result.ToListAsync();
         }
@@ -68,7 +77,7 @@ namespace Local_API_Server.Controllers
 
             if (type >= 0) { result = result.Where(l => l.type == type); }
 
-            if (userId >= 0) { result = result.Where(l => l.user == userId); }
+            if (userId >= 0) { result = result.Where(l => l.user.id == userId); }
 
             return result;
         }
@@ -79,6 +88,7 @@ namespace Local_API_Server.Controllers
         public async Task<ActionResult<Log>> PostLog(Log Log)
         {
             _context.Log.Add(Log);
+            Log.PostChild(_context);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetLog), new { id = Log.id }, Log);
         }
@@ -93,6 +103,8 @@ namespace Local_API_Server.Controllers
                 return BadRequest();
             }
             _context.Entry(Log).State = EntityState.Modified;
+            _context.Entry(Log.user).State = EntityState.Modified;
+
             try
             {
                 await _context.SaveChangesAsync();

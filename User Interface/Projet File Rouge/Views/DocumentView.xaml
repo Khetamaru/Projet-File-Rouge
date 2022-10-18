@@ -29,10 +29,10 @@
             </Grid.ColumnDefinitions>
 
             <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Nom du Client"/>
-            <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Document.InvoicingAddress_ThirdName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding Document.InvoicingAddress_ThirdName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Montant en euros"/>
-            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Document.TotalDueAmountFormated, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding Document.TotalDueAmountFormated, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         </Grid>
 
@@ -46,8 +46,8 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Margin="12" Padding="5" FontSize="20" Text="{Binding DescriptionClear}"/>
-                            <TextBlock Grid.Row="1" Margin="12" Padding="5" FontSize="20" Text="{Binding NetPriceVatIncludedFormated}"/>
+                            <TextBox Grid.Row="0" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding DescriptionClear, Mode=OneWay}"/>
+                            <TextBox Grid.Row="1" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding NetPriceVatIncludedFormated, Mode=OneWay}"/>
                             <Border Grid.Row="2" Height="1" Background="ForestGreen"/>
                         </Grid>
                     </DataTemplate>

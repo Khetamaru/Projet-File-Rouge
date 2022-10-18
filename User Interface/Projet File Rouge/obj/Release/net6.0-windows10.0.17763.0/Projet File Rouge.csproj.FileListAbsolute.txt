@@ -33,7 +33,6 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.0-windows10.0.17763.0\Projet File Rouge.pdb
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.0-windows10.0.17763.0\Microsoft.Extensions.DependencyInjection.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.0-windows10.0.17763.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
-F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.0-windows10.0.17763.0\Microsoft.Toolkit.Mvvm.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.0-windows10.0.17763.0\Microsoft.Windows.SDK.NET.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.0-windows10.0.17763.0\WinRT.Runtime.dll
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net6.0-windows10.0.17763.0\MainWindow.baml
@@ -77,3 +76,10 @@ F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net6.
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net6.0-windows10.0.17763.0\Views\MissingCallDetailsView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net6.0-windows10.0.17763.0\Views\MissingCallMenuView.baml
 F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net6.0-windows10.0.17763.0\Views\MissingCallPersoView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.0-windows10.0.17763.0\Microsoft.Extensions.Logging.Abstractions.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.0-windows10.0.17763.0\MvvmCross.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\bin\Release\net6.0-windows10.0.17763.0\Newtonsoft.Json.dll
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net6.0-windows10.0.17763.0\Views\MissingCallSendDetailsView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net6.0-windows10.0.17763.0\Views\MissingCallSendView.g.cs
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net6.0-windows10.0.17763.0\Views\MissingCallSendDetailsView.baml
+F:\PROJECTS\Projet-File-Rouge\User Interface\Projet File Rouge\obj\Release\net6.0-windows10.0.17763.0\Views\MissingCallSendView.baml

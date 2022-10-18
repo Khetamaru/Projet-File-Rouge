@@ -51,10 +51,16 @@
     <Page Update="Views\LogCenterView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\MissingCallSendDetailsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\MissingCallMenuView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MissingCallCreationView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MissingCallSendView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MissingCallPersoView.xaml">

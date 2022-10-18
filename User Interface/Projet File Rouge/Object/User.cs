@@ -1,16 +1,22 @@
 ﻿
 
 using Projet_File_Rouge.Tools;
+using Newtonsoft.Json;
 
 namespace Projet_File_Rouge.Object
 {
     public class User : BDDObject
     {
-        private readonly int? id;
+        [JsonProperty]
+        private readonly int id;
 
+        [JsonProperty]
         private string name;
+        [JsonProperty]
         private string password;
+        [JsonProperty]
         private AccessLevel accessLevel;
+        [JsonProperty]
         private bool activated;
 
         public enum AccessLevel
@@ -21,43 +27,32 @@ namespace Projet_File_Rouge.Object
             Admin
         }
 
-        public User(string _name, string _password, AccessLevel _accessLevel) : this(null, _name, _password, _accessLevel, true) { }
+        public User(string name, string password, AccessLevel accessLevel) : this(0, name, password, accessLevel, true) { }
 
-        public User(int? _id, string _name, string _password, AccessLevel _accessLevel, bool _activated)
+        [JsonConstructor]
+        public User(int id, string name, string password, int accessLevel, bool activated)
         {
-            id = _id;
-            name = _name;
-            password = _password;
-            accessLevel = _accessLevel;
-            activated = _activated;
+            this.id = id;
+            this.name = name;
+            this.password = password;
+            this.accessLevel = (AccessLevel)accessLevel;
+            this.activated = activated;
         }
 
-        public int Id { get => id == null ? -1 : (int)id; }
+        public User(int id, string name, string password, AccessLevel accessLevel, bool activated)
+        {
+            this.id = id;
+            this.name = name;
+            this.password = password;
+            this.accessLevel = accessLevel;
+            this.activated = activated;
+        }
+
+        public int Id { get => id; }
         public string Name { get => name; set => name = value; }
         public string Password { get => password; set => password = value; }
         public AccessLevel UserLevel { get => accessLevel; set => accessLevel = value; }
         public bool Activated { get => activated; set => activated = value; }
-
-        public string JsonifyId()
-        {
-            return "{" +
-                   "\"" + UserEnum.id + "\" : " + Id + "," +
-                   "\"" + UserEnum.name + "\" : \"" + Name + "\"," +
-                   "\"" + UserEnum.password + "\" : \"" + Password + "\"," +
-                   "\"" + UserEnum.accessLevel + "\" : \"" + (int)UserLevel + "\"," +
-                   "\"" + UserEnum.activated + "\" : " + Activated.ToString().ToLower() +
-                   "}";
-        }
-
-        public string Jsonify()
-        {
-            return "{" +
-                   "\"" + UserEnum.name + "\" : \"" + Name + "\"," +
-                   "\"" + UserEnum.password + "\" : \"" + Password + "\"," +
-                   "\"" + UserEnum.accessLevel + "\" : \"" + (int)UserLevel + "\"," +
-                   "\"" + UserEnum.activated + "\" : " + Activated.ToString().ToLower() +
-                   "}";
-        }
 
         public string JsonifyLogIn()
         {
@@ -67,6 +62,11 @@ namespace Projet_File_Rouge.Object
                    "\"" + UserEnum.accessLevel + "\" : \"" + (int)UserLevel + "\"," +
                    "\"" + UserEnum.activated + "\" : " + Activated.ToString().ToLower() +
                    "}";
+        }
+
+        public string Jsonify()
+        {
+            return JsonConvert.SerializeObject(this);
         }
     }
 

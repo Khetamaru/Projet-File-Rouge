@@ -57,7 +57,7 @@ namespace Projet_File_Rouge.ViewModel
         /// </summary>
         private void PageInit()
         {
-            int redWireTotal = RequestCenter.GetRedWireNumber(date, step, userId, clientName);
+            int redWireTotal = RequestCenter.GetRedWireNumberNoOld(date, step, userId, clientName);
 
             redWireList = RequestCenter.GetRedWirePageWithoutOld(0, date, step, userId, clientName);
 
@@ -68,7 +68,7 @@ namespace Projet_File_Rouge.ViewModel
 
         private void CalculPageNumber(int nbr)
         {
-            pageNumber = (int)(nbr / Math.Pow(10, 1) % 10);
+            pageNumber = (int)(nbr / 10);
 
             if (nbr % 10 != 0)
             {

@@ -13,6 +13,7 @@ namespace Projet_File_Rouge.ViewModel
             // set up commands
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
             NavigateMissingCallPersoCommand = new NavigateMissingCallPersoCommand(navigationStore, cacheStore);
+            NavigateMissingCallSendCommand = new NavigateMissingCallSendCommand(navigationStore, cacheStore);
             NavigateMissingCallCreationCommand = new NavigateMissingCallCreationCommand(navigationStore, cacheStore);
         }
 
@@ -21,6 +22,7 @@ namespace Projet_File_Rouge.ViewModel
         /// </summary>
         public NavigateMainMenuCommand NavigateMainMenuCommand { get; }
         public NavigateMissingCallPersoCommand NavigateMissingCallPersoCommand { get; }
+        public NavigateMissingCallSendCommand NavigateMissingCallSendCommand { get; }
         public NavigateMissingCallCreationCommand NavigateMissingCallCreationCommand { get; }
     }
 }

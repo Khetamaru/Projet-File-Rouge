@@ -22,14 +22,22 @@ namespace Local_API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserHistoryList>>> GetUserHistoryList()
         {
-            return await _context.UserHistoryList.ToListAsync();
+            return await _context.UserHistoryList
+                .Include(c => c.redWire)
+                .Include(c => c.user)
+                .ToListAsync();
         }
 
         // GET: api/UserHistoryList/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserHistoryList>> GetUserHistoryList(int id)
         {
-            var UserHistoryList = await _context.UserHistoryList.FindAsync(id);
+            var UserHistoryList = await _context.UserHistoryList
+                .Where(u => u.id == id)
+                .Include(c => c.redWire)
+                .Include(c => c.user)
+                .FirstOrDefaultAsync();
+
             if (UserHistoryList == null)
             {
                 return NotFound();
@@ -41,7 +49,11 @@ namespace Local_API_Server.Controllers
         [HttpGet("redWire/{id}")]
         public async Task<ActionResult<IEnumerable<UserHistoryList>>> GetUserHistoryListByRedWire(int id)
         {
-            var UserHistoryList = await _context.UserHistoryList.Where(u => u.redWire == id).ToListAsync();
+            var UserHistoryList = await _context.UserHistoryList
+                .Where(u => u.redWire.id == id)
+                .Include(c => c.redWire)
+                .Include(c => c.user)
+                .ToListAsync();
 
             return UserHistoryList;
         }
@@ -52,6 +64,7 @@ namespace Local_API_Server.Controllers
         public async Task<ActionResult<UserHistoryList>> PostUserHistoryList(UserHistoryList UserHistoryList)
         {
             _context.UserHistoryList.Add(UserHistoryList);
+            UserHistoryList.PostChild(_context);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetUserHistoryList), new { id = UserHistoryList.id }, UserHistoryList);
         }
@@ -66,6 +79,9 @@ namespace Local_API_Server.Controllers
                 return BadRequest();
             }
             _context.Entry(UserHistoryList).State = EntityState.Modified;
+            _context.Entry(UserHistoryList.redWire).State = EntityState.Modified;
+            _context.Entry(UserHistoryList.user).State = EntityState.Modified;
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -103,7 +119,7 @@ namespace Local_API_Server.Controllers
         [HttpDelete("redWire/{id}")]
         public async Task<IActionResult> DeleteUserHistoryListByRedWire(int id)
         {
-            var UserHistoryList = await _context.UserHistoryList.Where(r => r.redWire == id).ToListAsync();
+            var UserHistoryList = await _context.UserHistoryList.Where(r => r.redWire.id == id).ToListAsync();
             foreach(UserHistoryList userHistoryList in UserHistoryList)
             {
                 _context.UserHistoryList.Remove(userHistoryList);

@@ -42,6 +42,7 @@ namespace Projet_File_Rouge.Commands
                 LoginCacheFile.Write(UserNameField);
                 cacheStore.SetObjectCache(ObjectCacheStoreEnum.ActualUser, RequestCenter.GetUserByName(UserNameField).Id);
                 OutDatedNotif(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+                MissingCallNumber(RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)));
                 navigationStore.CurrentViewModel = new MainMenuViewModel(navigationStore, cacheStore);
             }
             else
@@ -65,10 +66,20 @@ namespace Projet_File_Rouge.Commands
             else
             {
                 Count += RequestCenter.GetRedWireNotifNumber(userId);
-                Count += RequestCenter.GetMissingCallUnreadNumber(userId);
                 if ((int)user.UserLevel >= (int)User.AccessLevel.SuperUser) { Count += RequestCenter.GetCommandListNotifNumber(); }
             }
+            Count += RequestCenter.GetMissingCallUnreadNumber(userId);
+
             cacheStore.SetObjectCache(ObjectCacheStoreEnum.notifNumber, Count);
+        }
+
+        /// <summary>
+        /// Checkout for missingCalls
+        /// </summary>
+        /// <param name="user"></param>
+        private void MissingCallNumber(User user)
+        {
+            cacheStore.SetObjectCache(ObjectCacheStoreEnum.missingCallNumber, RequestCenter.GetMissingCallsByUser(user.Id).Count);
         }
     }
 }

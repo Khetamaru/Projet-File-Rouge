@@ -5,7 +5,7 @@
   },
   "projects": {
     "F:\\PROJECTS\\Projet-File-Rouge\\API\\Red Wire API\\Red Wire API.csproj": {
-      "version": "1.2.3",
+      "version": "2.0.0",
       "restore": {
         "projectUniqueName": "F:\\PROJECTS\\Projet-File-Rouge\\API\\Red Wire API\\Red Wire API.csproj",
         "projectName": "Red Wire API",
@@ -40,6 +40,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.4, )"
+            },
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[6.0.6, )"
@@ -71,7 +75,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.304\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.305\\RuntimeIdentifierGraph.json"
         }
       }
     }

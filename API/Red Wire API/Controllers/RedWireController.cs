@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Local_API_Server.Models;
 using Projet_File_Rouge.Object;
 using System;
+using Red_Wire_API.Models;
 
 namespace Local_API_Server.Controllers
 {
@@ -23,14 +24,22 @@ namespace Local_API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWire()
         {
-            return await _context.RedWire.ToListAsync();
+            return await _context.RedWire
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .ToListAsync();
         }
 
         // GET: api/RedWire/page/0/0001-01-01T00:00:00/-1/-1/CM
         [HttpGet("page/{pageNumber}/{date}/{step}/{userId}/{clientName}")]
         public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWireFiltered(int pageNumber, DateTime date, int step, int userId, string clientName)
         {
-            IQueryable<RedWire> result = _context.RedWire.OrderByDescending(r => r.inChargeDate);
+            IQueryable<RedWire> result = _context.RedWire
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .OrderByDescending(r => r.inChargeDate);
 
             result = Filtering(result, date, step, userId, clientName);
 
@@ -43,7 +52,11 @@ namespace Local_API_Server.Controllers
         [HttpGet("page/old/{pageNumber}/{date}/{userId}/{clientName}")]
         public async Task<ActionResult<IEnumerable<RedWire>>> GetOldRedWireFiltered(int pageNumber, DateTime date, int userId, string clientName)
         {
-            IQueryable<RedWire> result = _context.RedWire.OrderByDescending(r => r.inChargeDate);
+            IQueryable<RedWire> result = _context.RedWire
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .OrderByDescending(r => r.inChargeDate);
 
             result = Filtering(result, date, userId, clientName);
 
@@ -56,11 +69,15 @@ namespace Local_API_Server.Controllers
         [HttpGet("page/noOld/{pageNumber}/{date}/{step}/{userId}/{clientName}")]
         public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWireFilteredNoOld(int pageNumber, DateTime date, int step, int userId, string clientName)
         {
-            IQueryable<RedWire> result = _context.RedWire.OrderByDescending(r => r.inChargeDate);
+            IQueryable<RedWire> result = _context.RedWire
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .OrderByDescending(r => r.inChargeDate);
 
             result = Filtering(result, date, step, userId, clientName);
 
-            result = result.Where(r => r.actualState != 11 && r.actualState != 14);
+            result = result.Where(r => r.actualState != 10 && r.actualState != 13);
 
             result = result.Skip(pageNumber * 10).Take(10);
 
@@ -97,7 +114,7 @@ namespace Local_API_Server.Controllers
 
             result = Filtering(result, date, step, userId, clientName);
 
-            result = result.Where(r => r.actualState != 11 && r.actualState != 14);
+            result = result.Where(r => r.actualState != 10 && r.actualState != 13);
 
             return result.Count();
         }
@@ -108,7 +125,7 @@ namespace Local_API_Server.Controllers
 
             if (step >= 0) { result = result.Where(r => r.actualState == step); }
 
-            if (userId >= 0) { result = result.Where(r => r.actualRepairMan == userId || (r.transfertTarget == userId && r.actualState == 7)); }
+            if (userId >= 0) { result = result.Where(r => r.actualRepairMan.id == userId || (r.transfertTarget.id == userId && r.actualState == 7)); }
 
             if (clientName != null && clientName != string.Empty && clientName != "*") { result = result.Where(r => r.clientName.Contains(clientName)); }
 
@@ -119,9 +136,9 @@ namespace Local_API_Server.Controllers
         {
             if (date != new DateTime()) { result = result.Where(r => r.inChargeDate.Day == date.Day); }
 
-            result = result.Where(r => r.actualState == 11 || r.actualState == 14);
+            result = result.Where(r => r.actualState == 10 || r.actualState == 13);
 
-            if (userId >= 0) { result = result.Where(r => r.actualRepairMan == userId || (r.transfertTarget == userId && r.actualState == 7)); }
+            if (userId >= 0) { result = result.Where(r => r.actualRepairMan.id == userId || (r.transfertTarget.id == userId && r.actualState == 7)); }
 
             if (clientName != null && clientName != string.Empty && clientName != "*") { result = result.Where(r => r.clientName.Contains(clientName)); }
 
@@ -132,7 +149,13 @@ namespace Local_API_Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<RedWire>> GetRedWire(int id)
         {
-            var RedWire = await _context.RedWire.FindAsync(id);
+            var RedWire = await _context.RedWire
+                .Where(c => c.id == id)
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .FirstOrDefaultAsync();
+
             if (RedWire == null)
             {
                 return NotFound();
@@ -146,7 +169,11 @@ namespace Local_API_Server.Controllers
         {
             IQueryable<RedWire> result = _context.RedWire;
             result = Filter(result, userId);
-            return await result.ToListAsync();
+            return await result
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .ToListAsync();
 
         }
 
@@ -156,7 +183,11 @@ namespace Local_API_Server.Controllers
         {
             IQueryable<RedWire> result = _context.RedWire;
             result = FilterAdmin(result);
-            return await result.ToListAsync();
+            return await result
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .ToListAsync();
         }
 
         // GET: api/RedWire/notifNumber/0
@@ -201,7 +232,11 @@ namespace Local_API_Server.Controllers
         {
             IQueryable<RedWire> result = _context.RedWire;
             result = PurgeFilter(result);
-            return await result.ToListAsync();
+            return await result
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .ToListAsync();
         }
 
         private IQueryable<RedWire> PurgeFilter(IQueryable<RedWire> result)
@@ -214,7 +249,7 @@ namespace Local_API_Server.Controllers
                 startPurgeDate = startPurgeDate.AddYears(-1);
             }
 
-            result = result.Where(r => r.actualState == 11
+            result = result.Where(r => r.actualState == 10
                                     && r.lastUpdate <= startPurgeDate);
 
             return result;
@@ -226,15 +261,15 @@ namespace Local_API_Server.Controllers
             r.actualState != 0
                                             && r.actualState != 5
                                             && r.actualState != 6
+                                            && r.actualState != 9
                                             && r.actualState != 10
-                                            && r.actualState != 11
+                                            && r.actualState != 12
                                             && r.actualState != 13
-                                            && r.actualState != 14
 
                                             &&
                                             (
-                                                r.actualRepairMan == userId
-                                                || (r.actualState == 7 && r.transfertTarget == userId)
+                                                r.actualRepairMan.id == userId
+                                                || (r.actualState == 7 && r.transfertTarget.id == userId)
                                             )
                                             && r.lastUpdate <= DateTime.Now.AddDays(-7)
                                        )
@@ -242,24 +277,32 @@ namespace Local_API_Server.Controllers
                                        || (
                                             r.repairStartDate <= DateTime.Now.AddMonths(-6)
                                             && r.actualState != 0
-                                            && r.actualState != 11
-                                            && r.actualState != 14
+                                            && r.actualState != 10
+                                            && r.actualState != 13
 
                                             &&
                                             (
-                                                r.actualRepairMan == userId
-                                                || (r.actualState == 7 && r.transfertTarget == userId)
+                                                r.actualRepairMan.id == userId
+                                                || (r.actualState == 7 && r.transfertTarget.id == userId)
                                             )
                                           )
 
                                        || (
                                             r.lastUpdate <= DateTime.Now.AddDays(-2)
-                                            && r.actualState == 15
+                                            && r.actualState == 14
 
                                             &&
                                             (
-                                                r.actualRepairMan == userId
-                                                || (r.actualState == 7 && r.transfertTarget == userId)
+                                                r.actualRepairMan.id == userId
+                                                || (r.actualState == 7 && r.transfertTarget.id == userId)
+                                            )
+                                          )
+                                       || (r.actualState == 7
+
+                                            &&
+                                            (
+                                                r.actualRepairMan.id == userId
+                                                || r.transfertTarget.id == userId
                                             )
                                           )
                                        );
@@ -272,24 +315,25 @@ namespace Local_API_Server.Controllers
             result = result.Where(r => (r.actualState != 0
                                      && r.actualState != 5
                                      && r.actualState != 6
+                                     && r.actualState != 9
                                      && r.actualState != 10
-                                     && r.actualState != 11
+                                     && r.actualState != 12
                                      && r.actualState != 13
-                                     && r.actualState != 14
                                      && r.lastUpdate <= DateTime.Now.AddDays(-7).AddDays(-3))
                                     || (r.repairStartDate <= DateTime.Now.AddMonths(-6).AddDays(-3)
                                      && r.actualState != 0
-                                     && r.actualState != 11
-                                     && r.actualState != 14)
-                                    || (r.actualState == 15
-                                     && r.lastUpdate <= DateTime.Now.AddDays(-2).AddDays(-3)));
+                                     && r.actualState != 10
+                                     && r.actualState != 13)
+                                    || (r.actualState == 14
+                                     && r.lastUpdate <= DateTime.Now.AddDays(-2).AddDays(-3))
+                                    || r.actualState == 7);
 
             return result;
         }
 
         public static IQueryable<RedWire> FilterPrividerWaiting(IQueryable<RedWire> result)
         {
-            result = result.Where(r => r.actualState == 15
+            result = result.Where(r => r.actualState == 14
                                      && r.lastUpdate <= DateTime.Now.AddDays(-2));
 
             return result;
@@ -301,6 +345,7 @@ namespace Local_API_Server.Controllers
         public async Task<ActionResult<RedWire>> PostRedWire(RedWire RedWire)
         {
             _context.RedWire.Add(RedWire);
+            RedWire.PostChild(_context);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetRedWire), new { id = RedWire.id }, RedWire);
         }
@@ -314,7 +359,8 @@ namespace Local_API_Server.Controllers
             {
                 return BadRequest();
             }
-            _context.Entry(RedWire).State = EntityState.Modified;
+            await DispatchPut(id, RedWire);
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -331,6 +377,45 @@ namespace Local_API_Server.Controllers
                 }
             }
             return Ok();
+        }
+
+        private async Task<IActionResult> DispatchPut(int id, RedWire RedWire)
+        {
+            RedWire bddRedWire = await _context.RedWire
+                .Where(r => r.id == id)
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .FirstOrDefaultAsync();
+
+            _context.ChangeTracker.Clear();
+            _context.Entry(RedWire).State = EntityState.Modified;
+
+            if (bddRedWire != null)
+            {
+                if ((bddRedWire.recorder != null && RedWire.recorder == null)
+                 || (bddRedWire.recorder == null && RedWire.recorder != null)
+                 || (bddRedWire.recorder != null && RedWire.recorder != null && bddRedWire.recorder.id != RedWire.recorder.id))
+                {
+                    _context.Entry(RedWire.recorder).State = EntityState.Modified;
+                    return Ok();
+                }
+                if ((bddRedWire.actualRepairMan != null && RedWire.actualRepairMan == null)
+                 || (bddRedWire.actualRepairMan == null && RedWire.actualRepairMan != null)
+                 || (bddRedWire.actualRepairMan != null && RedWire.actualRepairMan != null && bddRedWire.actualRepairMan.id != RedWire.actualRepairMan.id))
+                {
+                    _context.Entry(RedWire.actualRepairMan).State = EntityState.Modified;
+                    return Ok();
+                }
+                if ((bddRedWire.transfertTarget != null && RedWire.transfertTarget == null)
+                 || (bddRedWire.transfertTarget == null && RedWire.transfertTarget != null)
+                 || (bddRedWire.transfertTarget != null && RedWire.transfertTarget != null && bddRedWire.transfertTarget.id != RedWire.transfertTarget.id))
+                {
+                    _context.Entry(RedWire.transfertTarget).State = EntityState.Modified;
+                    return Ok();
+                }
+            }
+            return NotFound();
         }
 
         // DELETE: api/RedWire/5

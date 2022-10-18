@@ -40,31 +40,31 @@ namespace Projet_File_Rouge.ViewModel
 
         private void CommandMaj()
         {
-            RequestCenter.PutCommand(Command.Id, Command.JsonifyId());
+            RequestCenter.PutCommand(Command.Id, Command.Jsonify());
         }
 
         private void RedWireMaj()
         {
             if (Command.State == CommandList.CommandStatusEnum.annulé)
             {
-                RequestCenter.PostEvent(new Evenement(Command.RedWire.Id, Evenement.EventType.simpleText, Command.Name + " : La commande n'a pas aboutie.").Jsonify());
+                RequestCenter.PostEvent(new Evenement(Command.RedWire, Evenement.EventType.simpleText, Command.Name + " : La commande n'a pas aboutie.").Jsonify());
             }
             else if (Command.State == CommandList.CommandStatusEnum.livré)
             {
-                RequestCenter.PostEvent(new Evenement(Command.RedWire.Id, Evenement.EventType.simpleText, Command.Name + " : La commande a été livrée.").Jsonify());
+                RequestCenter.PostEvent(new Evenement(Command.RedWire, Evenement.EventType.simpleText, Command.Name + " : La commande a été livrée.").Jsonify());
             }
             else if (Command.State == CommandList.CommandStatusEnum.commande_en_attente)
             {
-                RequestCenter.PostEvent(new Evenement(Command.RedWire.Id, Evenement.EventType.simpleText, Command.Name + " : La commande a été effectuée. Date de livraison prévue : " + Command.DeliveryDateFormated).Jsonify());
+                RequestCenter.PostEvent(new Evenement(Command.RedWire, Evenement.EventType.simpleText, Command.Name + " : La commande a été effectuée. Date de délai dépassé prévue : " + Command.DeliveryDateFormated).Jsonify());
             }
             else if (Command.State == CommandList.CommandStatusEnum.livraison_en_cours)
             {
-                RequestCenter.PostEvent(new Evenement(Command.RedWire.Id, Evenement.EventType.simpleText, Command.Name + " : Date de livraison prévue passée à " + Command.DeliveryDateFormated).Jsonify());
+                RequestCenter.PostEvent(new Evenement(Command.RedWire, Evenement.EventType.simpleText, Command.Name + " : Date de délai dépassé prévue passée à " + Command.DeliveryDateFormated).Jsonify());
             }
             if (RequestCenter.GetCommandListRedWireNumber(Command.RedWire.Id))
             {
                 Command.RedWire.ActualState = RedWire.state.en_cours;
-                RequestCenter.PutRedWire(Command.RedWire.Id, Command.RedWire.JsonifyId());
+                RequestCenter.PutRedWire(Command.RedWire.Id, Command.RedWire.Jsonify());
             }
         }
 
@@ -167,6 +167,7 @@ namespace Projet_File_Rouge.ViewModel
         {
             Command.State = CommandList.CommandStatusEnum.livré;
             RequestCenter.PostLog(new Log("Commande arrivée : " + Command.Name, DateTime.Now, Log.LogTypeEnum.CommandList, actualUser).Jsonify());
+            RequestCenter.PostMissingCall(new MissingCall(ActualUser, Command.RedWire.ActualRepairMan, "Antho Bot", "La commande : " + Command.Name + " est arrivée.", false).Jsonify());
             CommandMaj();
             RedWireMaj();
             UIUpdate();

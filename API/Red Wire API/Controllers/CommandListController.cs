@@ -23,14 +23,22 @@ namespace Local_API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CommandList>>> GetCommandList()
         {
-            return await _context.CommandList.ToListAsync();
+            return await _context.CommandList
+                .Include(c => c.redWire)
+                .Include(c => c.redWire.recorder)
+                .ToListAsync();
         }
 
         // GET: api/CommandList/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CommandList>> GetCommandList(int id)
         {
-            var CommandList = await _context.CommandList.FindAsync(id);
+            var CommandList = await _context.CommandList
+                .Where(c => c.id == id)
+                .Include(c => c.redWire)
+                .Include(c => c.redWire.recorder)
+                .FirstOrDefaultAsync();
+
             if (CommandList == null)
             {
                 return NotFound();
@@ -42,7 +50,12 @@ namespace Local_API_Server.Controllers
         [HttpGet("redwire/{id}")]
         public async Task<ActionResult<IEnumerable<CommandList>>> GetCommandListByRedWire(int id)
         {
-            return await _context.CommandList.Where(c => c.redWire == id).OrderBy(d => d.id).ToListAsync();
+            return await _context.CommandList
+                .Where(c => c.redWire.id == id)
+                .Include(c => c.redWire)
+                .Include(c => c.redWire.recorder)
+                .OrderBy(d => d.id)
+                .ToListAsync();
         }
 
         // GET: api/CommandList/number
@@ -56,7 +69,12 @@ namespace Local_API_Server.Controllers
         [HttpGet("page/{pageNumber}")]
         public async Task<ActionResult<IEnumerable<CommandList>>> GetCommandListPage(int pageNumber)
         {
-            return await Filter(_context.CommandList).Skip(pageNumber * 10).Take(10).ToListAsync();
+            return await Filter(_context.CommandList)
+                .Include(c => c.redWire)
+                .Include(c => c.redWire.recorder)
+                .Skip(pageNumber * 10)
+                .Take(10)
+                .ToListAsync();
         }
 
         public static IQueryable<CommandList> Filter(IQueryable<CommandList> result)
@@ -70,7 +88,7 @@ namespace Local_API_Server.Controllers
         [HttpGet("redWireNumber/{id}")]
         public ActionResult<bool> GetCommandListNotifNumber(int id)
         {
-            if (_context.CommandList.Where(c => c.redWire == id && 
+            if (_context.CommandList.Where(c => c.redWire.id == id && 
                                           (c.state == 0 || 
                                            c.state == 1)).Count() == 0)
             {
@@ -83,7 +101,10 @@ namespace Local_API_Server.Controllers
         [HttpGet("notif")]
         public async Task<ActionResult<IEnumerable<CommandList>>> GetCommandListNotif()
         {
-            return await Filter().ToListAsync();
+            return await Filter()
+                .Include(c => c.redWire)
+                .Include(c => c.redWire.recorder)
+                .ToListAsync();
         }
 
         // GET: api/CommandList/notifNumber
@@ -106,6 +127,7 @@ namespace Local_API_Server.Controllers
         public async Task<ActionResult<CommandList>> PostCommandList(CommandList CommandList)
         {
             _context.CommandList.Add(CommandList);
+            CommandList.PostChild(_context);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetCommandList), new { id = CommandList.id }, CommandList);
         }
@@ -120,6 +142,7 @@ namespace Local_API_Server.Controllers
                 return BadRequest();
             }
             _context.Entry(CommandList).State = EntityState.Modified;
+            _context.Entry(CommandList.redWire).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
@@ -157,7 +180,7 @@ namespace Local_API_Server.Controllers
         [HttpDelete("redWire/{id}")]
         public async Task<IActionResult> DeleteCommandListByRedWire(int id)
         {
-            var CommandList = await _context.CommandList.Where(r => r.redWire == id).ToListAsync();
+            var CommandList = await _context.CommandList.Where(r => r.redWire.id == id).ToListAsync();
             foreach (CommandList command in CommandList)
             {
                 _context.CommandList.Remove(command);

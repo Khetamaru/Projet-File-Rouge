@@ -74,7 +74,8 @@ public enum ObjectCacheStoreEnum
     RedWireDetail,
     notifNumber,
     CommandListDetail,
-    MissingCallDetail
+    MissingCallDetail,
+    missingCallNumber
 }
 public enum InfoCacheStoreEnum
 {

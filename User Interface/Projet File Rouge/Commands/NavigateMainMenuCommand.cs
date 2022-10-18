@@ -23,18 +23,19 @@ namespace Projet_File_Rouge.Commands
 
         public override void Execute(object parameter)
         {
-            OutDatedNotif(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+            User user = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+            OutDatedNotif(user);
+            MissingCallNumber(user);
             navigationStore.CurrentViewModel = new MainMenuViewModel(navigationStore, cacheStore);
         }
 
         /// <summary>
         /// Checkout for notifs and switch page
         /// </summary>
-        /// <param name="userId"></param>
-        private void OutDatedNotif(int userId)
+        /// <param name="user"></param>
+        private void OutDatedNotif(User user)
         {
             int Count = 0;
-            User user = RequestCenter.GetUser(userId);
 
             if (user.UserLevel == User.AccessLevel.Admin)
             {
@@ -44,11 +45,21 @@ namespace Projet_File_Rouge.Commands
             }
             else
             {
-                Count += RequestCenter.GetRedWireNotifNumber(userId);
-                Count += RequestCenter.GetMissingCallUnreadNumber(userId);
+                Count += RequestCenter.GetRedWireNotifNumber(user.Id);
                 if ((int)user.UserLevel >= (int)User.AccessLevel.SuperUser) { Count += RequestCenter.GetCommandListNotifNumber(); }
             }
+            Count += RequestCenter.GetMissingCallUnreadNumber(user.Id);
+
             cacheStore.SetObjectCache(ObjectCacheStoreEnum.notifNumber, Count);
+        }
+
+        /// <summary>
+        /// Checkout for missingCalls
+        /// </summary>
+        /// <param name="user"></param>
+        private void MissingCallNumber(User user)
+        {
+            cacheStore.SetObjectCache(ObjectCacheStoreEnum.missingCallNumber, RequestCenter.GetMissingCallsByUser(user.Id).Count);
         }
     }
 }

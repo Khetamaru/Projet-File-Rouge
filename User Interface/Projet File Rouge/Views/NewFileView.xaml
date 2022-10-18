@@ -110,6 +110,7 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -126,8 +127,12 @@
                     <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
                     <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" TextChanged="SupportModel"/>
 
-                    <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Accessoires"/>
-                    <Grid Grid.Row="2" Grid.Column="2" VerticalAlignment="Center">
+                    <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Type de dossier"/>
+                    <Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
+                    <ComboBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding ActionTypeList}" SelectedItem="{Binding ActionType}"/>
+
+                    <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Accessoires"/>
+                    <Grid Grid.Row="3" Grid.Column="2" VerticalAlignment="Center">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -146,15 +151,15 @@
                         <TextBox  Grid.Column="5" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding OtherText, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
 
-                    <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Garantie"/>
-                    <CheckBox Grid.Row="3" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Sous Garanti" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Garantie"/>
+                    <CheckBox Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Sous Garanti" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
-                    <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Problème Constaté"/>
-                    <CheckBox Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Problème reproduit et/ou constaté" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Problème Constaté"/>
+                    <CheckBox Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Problème reproduit et/ou constaté" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
 
-                    <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Etat du matériel"/>
-                    <Label Grid.Row="5" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
-                    <TextBox Grid.Row="5" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" TextChanged="SupportState"/>
+                    <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Etat du matériel"/>
+                    <Label Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
+                    <TextBox Grid.Row="6" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" TextChanged="SupportState"/>
                     
                 </Grid>
             </TabItem>

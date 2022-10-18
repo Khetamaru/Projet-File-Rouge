@@ -1,39 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.Object
 {
     public class RedWire : BDDObject
     {
-        private readonly int? id;
+        [JsonIgnore]
+        [JsonProperty]
+        private readonly int id;
 
+        [JsonProperty]
         private DateTime lastUpdate;
+        [JsonProperty]
         private readonly DateTime inChargeDate;
+        [JsonProperty]
         private DateTime repairStartDate;
+        [JsonProperty]
         private DateTime repairEndDate;
 
+        [JsonProperty]
         private readonly string client;
+        [JsonProperty]
         private readonly string clientName;
 
+        [JsonProperty]
         private readonly User recorder;
+        [JsonProperty]
         private User actualRepairMan;
+        [JsonProperty]
         private User transfertTarget;
 
+        [JsonProperty]
         private state actualState;
 
+        [JsonProperty]
+        private Action actionType;
+
+        [JsonProperty]
         private EquipmentType type;
+        [JsonProperty]
         private readonly string model;
 
+        [JsonProperty]
         private readonly bool bag;
+        [JsonProperty]
         private readonly bool alimentation;
+        [JsonProperty]
         private readonly bool mouse;
+        [JsonProperty]
         private readonly bool battery;
+        [JsonProperty]
         private readonly bool other;
 
+        [JsonProperty]
         private bool warranty;
+        [JsonProperty]
         private readonly bool problemReproduced;
 
+        [JsonProperty]
         private readonly string equipmentState;
 
         public enum state
@@ -48,12 +74,19 @@ namespace Projet_File_Rouge.Object
             transit,
             fin_facture_OK,
             fin_appel_OK,
-            fin_payement_OK,
             fin,
             non_réparable_appel,
             non_réparable_rendu,
             abandon,
             attente_fournisseur
+        }
+
+        public enum Action
+        {
+            commande,
+            diag,
+            SAV,
+            presta
         }
 
         public enum EquipmentType
@@ -68,31 +101,33 @@ namespace Projet_File_Rouge.Object
             Autre
         }
 
-        public RedWire(int? _id, User _recorder, string _client, string _clientName, EquipmentType _type, string _model, string _equipmentState, bool _warranty, bool _problemReproduced, bool _bag, bool _alimentation, bool _mouse, bool _battery, bool _other)
+        [JsonConstructor]
+        public RedWire(int id, User recorder, string client, string clientName, Action actionType, EquipmentType type, string model, string equipmentState, bool warranty, bool problemReproduced, bool bag, bool alimentation, bool mouse, bool battery, bool other)
         {
-            id = _id;
-            recorder = _recorder;
-            client = _client;
-            clientName = _clientName;
+            this.id = id;
+            this.recorder = recorder;
+            this.client = client;
+            this.clientName = clientName;
 
-            type = _type;
-            model = _model;
-            equipmentState = _equipmentState;
-            warranty = _warranty;
-            problemReproduced = _problemReproduced;
-            bag = _bag;
-            alimentation = _alimentation;
-            mouse = _mouse;
-            battery = _battery;
-            other = _other;
+            this.actionType = actionType;
+            this.type = type;
+            this.model = model;
+            this.equipmentState = equipmentState;
+            this.warranty = warranty;
+            this.problemReproduced = problemReproduced;
+            this.bag = bag;
+            this.alimentation = alimentation;
+            this.mouse = mouse;
+            this.battery = battery;
+            this.other = other;
 
             inChargeDate = DateTime.Now;
             lastUpdate = DateTime.Now;
             actualState = state.libre;
         }
 
-        public RedWire(int? _id, DateTime _lastUpdate, DateTime _inChargeDate, DateTime _repairStartDate, DateTime _repairEndDate, string _client, string _clientName, User _recorder, User _actualRepairMan, User _transfertTarget, RedWire.state _actualState, EquipmentType _type, string _model, string _equipmentState, bool _warranty, bool _problemReproduced, bool _bag, bool _alimentation, bool _mouse, bool _battery, bool _other) 
-            : this(_id, _recorder, _client, _clientName, _type, _model, _equipmentState, _warranty, _problemReproduced, _bag, _alimentation, _mouse, _battery, _other)
+        public RedWire(int _id, DateTime _lastUpdate, DateTime _inChargeDate, DateTime _repairStartDate, DateTime _repairEndDate, string _client, string _clientName, User _recorder, User _actualRepairMan, User _transfertTarget, RedWire.state _actualState, Action actionType, EquipmentType _type, string _model, string _equipmentState, bool _warranty, bool _problemReproduced, bool _bag, bool _alimentation, bool _mouse, bool _battery, bool _other) 
+            : this(_id, _recorder, _client, _clientName, actionType, _type, _model, _equipmentState, _warranty, _problemReproduced, _bag, _alimentation, _mouse, _battery, _other)
         {
             inChargeDate = _inChargeDate;
             repairStartDate = _repairStartDate;
@@ -105,7 +140,7 @@ namespace Projet_File_Rouge.Object
 
         public void RedWireUpdate() { LastUpdate = DateTime.Now; }
 
-        public int Id { get => id == null ? -1 : (int)id; }
+        public int Id { get => id; }
         public DateTime LastUpdate { get => lastUpdate; set => lastUpdate = value; }
         public string LastUpdateFormated { get => LastUpdate.ToString("dd'/'MM'/'yy' 'HH':'mm"); }
         public DateTime InChargeDate { get => inChargeDate; }
@@ -127,32 +162,13 @@ namespace Projet_File_Rouge.Object
                 }
             }
         }
+
         public string Client { get => client; }
         public string ClientName { get => clientName; }
-        public User Recorder { get => recorder; }
         public User ActualRepairMan { get => actualRepairMan; set => actualRepairMan = value; }
         public User TransfertTarget { get => transfertTarget; set => transfertTarget = value; }
-
-        public string ActualRepairManId {
-            get {
-                if (ActualRepairMan == null) 
-                { 
-                    return "null"; 
-                }
-                return ActualRepairMan.Id.ToString();
-            }
-        }
-        public string TransfertTargetId
-        {
-            get {
-                if (TransfertTarget == null)
-                {
-                    return "null";
-                }
-                return TransfertTarget.Id.ToString();
-            }
-        }
         public state ActualState { get => actualState; set => actualState = value; }
+        public Action ActionType { get => actionType; set => actionType = value; }
         public EquipmentType Type { get => type; set => type = value; }
         public string Model { get => model; }
         public string EquipmentState { get => equipmentState; }
@@ -164,82 +180,9 @@ namespace Projet_File_Rouge.Object
         public bool Battery { get => battery; }
         public bool Other { get => other; }
 
-        public string JsonifyId()
-        {
-            return "{" +
-                   "\"" + RedWireEnum.id + "\" : " + Id + "," +
-                   "\"" + RedWireEnum.lastUpdate + "\" : \"" + LastUpdate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + RedWireEnum.inChargeDate + "\" : \"" + InChargeDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + RedWireEnum.repairStartDate + "\" : \"" + RepairStartDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + RedWireEnum.repairEndDate + "\" : \"" + RepairEndDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + RedWireEnum.client + "\" : \"" + Client + "\"," +
-                   "\"" + RedWireEnum.clientName + "\" : \"" + ClientName + "\"," +
-                   "\"" + RedWireEnum.recorder + "\" : " + Recorder.Id + "," +
-                   "\"" + RedWireEnum.actualRepairMan + "\" : " + ActualRepairManId + "," +
-                   "\"" + RedWireEnum.transfertTarget + "\" : " + TransfertTargetId + "," +
-                   "\"" + RedWireEnum.actualState + "\" : " + (int)ActualState + "," +
-                   "\"" + RedWireEnum.type + "\" : " + (int)Type + "," +
-                   "\"" + RedWireEnum.model + "\" : \"" + Model + "\"," +
-                   "\"" + RedWireEnum.equipmentState + "\" : \"" + EquipmentState + "\"," +
-                   "\"" + RedWireEnum.warranty + "\" : " + Warranty.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.problemReproduced + "\" : " + ProblemReproduced.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.bag + "\" : " + Bag.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.alimentation + "\" : " + Alimentation.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.mouse + "\" : " + Mouse.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.battery + "\" : " + Battery.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.other + "\" : " + Other.ToString().ToLower() +
-                   "}";
-        }
-
         public string Jsonify()
         {
-            return "{" +
-                   "\"" + RedWireEnum.lastUpdate + "\" : \"" + LastUpdate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + RedWireEnum.inChargeDate + "\" : \"" + InChargeDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + RedWireEnum.repairStartDate + "\" : \"" + RepairStartDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + RedWireEnum.repairEndDate + "\" : \"" + RepairEndDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + RedWireEnum.client + "\" : \"" + Client + "\"," +
-                   "\"" + RedWireEnum.clientName + "\" : \"" + ClientName + "\"," +
-                   "\"" + RedWireEnum.recorder + "\" : " + Recorder.Id + "," +
-                   "\"" + RedWireEnum.actualRepairMan + "\" : " + ActualRepairManId + "," +
-                   "\"" + RedWireEnum.transfertTarget + "\" : " + TransfertTargetId + "," +
-                   "\"" + RedWireEnum.actualState + "\" : " + ((int)ActualState) + "," +
-                   "\"" + RedWireEnum.type + "\" : " + ((int)Type) + "," +
-                   "\"" + RedWireEnum.model + "\" : \"" + Model + "\"," +
-                   "\"" + RedWireEnum.equipmentState + "\" : \"" + EquipmentState + "\"," +
-                   "\"" + RedWireEnum.warranty + "\" : " + Warranty.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.problemReproduced + "\" : " + ProblemReproduced.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.bag + "\" : " + Bag.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.alimentation + "\" : " + Alimentation.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.mouse + "\" : " + Mouse.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.battery + "\" : " + Battery.ToString().ToLower() + "," +
-                   "\"" + RedWireEnum.other + "\" : " + Other.ToString().ToLower() +
-                   "}";
+            return JsonConvert.SerializeObject(this);
         }
-    }
-
-    public enum RedWireEnum
-    {
-        id,
-        lastUpdate,
-        inChargeDate,
-        repairStartDate,
-        repairEndDate,
-        client,
-        clientName,
-        recorder,
-        actualRepairMan,
-        transfertTarget,
-        actualState,
-        type,
-        model,
-        equipmentState,
-        warranty,
-        problemReproduced,
-        bag,
-        alimentation,
-        mouse,
-        battery,
-        other
     }
 }

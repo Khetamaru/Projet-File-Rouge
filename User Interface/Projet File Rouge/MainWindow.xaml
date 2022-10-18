@@ -111,6 +111,14 @@
                 <views:MissingCallDetailsView/>
             </DataTemplate>
 
+            <DataTemplate DataType="{x:Type viewmodels:MissingCallSendViewModel}">
+                <views:MissingCallSendView/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewmodels:MissingCallSendDetailsViewModel}">
+                <views:MissingCallSendDetailsView/>
+            </DataTemplate>
+
         </ContentControl.Resources>
     </ContentControl>
 </Window>

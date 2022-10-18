@@ -22,14 +22,22 @@ namespace Local_API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DocumentList>>> GetDocumentList()
         {
-            return await _context.DocumentList.ToListAsync();
+            return await _context.DocumentList
+                .Include(d => d.redWire)
+                .Include(d => d.redWire.recorder)
+                .ToListAsync();
         }
 
         // GET: api/DocumentList/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DocumentList>> GetDocumentList(int id)
         {
-            var DocumentList = await _context.DocumentList.FindAsync(id);
+            var DocumentList = await _context.DocumentList
+                .Where(d => d.id == id)
+                .Include(d => d.redWire)
+                .Include(d => d.redWire.recorder)
+                .FirstOrDefaultAsync();
+
             if (DocumentList == null)
             {
                 return NotFound();
@@ -41,7 +49,12 @@ namespace Local_API_Server.Controllers
         [HttpGet("redwire/{id}")]
         public async Task<ActionResult<IEnumerable<DocumentList>>> GetDocumentListByRedWire(int id)
         {
-            return await _context.DocumentList.Where(d => d.redWire == id).OrderBy(d => d.id).ToListAsync();
+            return await _context.DocumentList
+                .Where(d => d.redWire.id == id)
+                .Include(d => d.redWire)
+                .Include(d => d.redWire.recorder)
+                .OrderBy(d => d.id)
+                .ToListAsync();
         }
 
         // POST: api/DocumentList
@@ -50,6 +63,7 @@ namespace Local_API_Server.Controllers
         public async Task<ActionResult<DocumentList>> PostDocumentList(DocumentList DocumentList)
         {
             _context.DocumentList.Add(DocumentList);
+            DocumentList.PostChild(_context);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetDocumentList), new { id = DocumentList.id }, DocumentList);
         }
@@ -64,6 +78,7 @@ namespace Local_API_Server.Controllers
                 return BadRequest();
             }
             _context.Entry(DocumentList).State = EntityState.Modified;
+            _context.Entry(DocumentList.redWire).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
@@ -101,7 +116,7 @@ namespace Local_API_Server.Controllers
         [HttpDelete("redWire/{id}")]
         public async Task<IActionResult> DeleteDocumentListByRedWire(int id)
         {
-            var DocumentList = await _context.DocumentList.Where(r => r.redWire == id).ToListAsync();
+            var DocumentList = await _context.DocumentList.Where(r => r.redWire.id == id).ToListAsync();
             foreach (DocumentList documentList in DocumentList)
             {
                 _context.DocumentList.Remove(documentList);

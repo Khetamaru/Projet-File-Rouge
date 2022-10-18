@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,12 @@ namespace Projet_File_Rouge.Object
 {
     public class DocumentList : BDDObject
     {
+        [JsonIgnore]
+        [JsonProperty]
         private readonly int id;
+        [JsonProperty]
         private readonly string document;
+        [JsonProperty]
         private readonly RedWire redWire;
 
         public DocumentList(string _document, RedWire _redWire)
@@ -18,38 +23,20 @@ namespace Projet_File_Rouge.Object
             redWire = _redWire;
         }
 
-        public DocumentList(int _id, string _document, RedWire _redWire) :
-            this(_document, _redWire)
+        [JsonConstructor]
+        public DocumentList(int id, string document, RedWire redWire) :
+            this(document, redWire)
         {
-            id = _id;
+            this.id = id;
         }
 
         public int Id { get => id; }
         public string Document { get => document; }
         public RedWire RedWire { get => redWire; }
 
-        public string JsonifyId()
-        {
-            return "{" +
-                   "\"" + DocumentListEnum.id + "\" : " + Id + "," +
-                   "\"" + DocumentListEnum.document + "\" : \"" + Document + "\"," +
-                   "\"" + DocumentListEnum.redWire + "\" : " + RedWire.Id +
-                   "}";
-        }
-
         public string Jsonify()
         {
-            return "{" +
-                   "\"" + DocumentListEnum.document + "\" : \"" + Document + "\"," +
-                   "\"" + DocumentListEnum.redWire + "\" : " + RedWire.Id +
-                   "}";
+            return JsonConvert.SerializeObject(this);
         }
-    }
-
-    public enum DocumentListEnum
-    {
-        id,
-        document,
-        redWire
     }
 }

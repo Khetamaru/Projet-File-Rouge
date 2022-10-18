@@ -29,7 +29,12 @@ namespace Local_API_Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MissingCall>> GetMissingCall(int id)
         {
-            var MissingCall = await _context.MissingCall.FindAsync(id);
+            var MissingCall = await _context.MissingCall
+                .Where(m => m.id == id)
+                .Include(m => m.author)
+                .Include(m => m.recipient)
+                .FirstOrDefaultAsync();
+
             if (MissingCall == null)
             {
                 return NotFound();
@@ -41,7 +46,31 @@ namespace Local_API_Server.Controllers
         [HttpGet("user/{id}")]
         public async Task<ActionResult<IEnumerable<MissingCall>>> GetMissingCallByUser(int id)
         {
-            var MissingCall = await _context.MissingCall.Where(m => m.recipient == id).OrderByDescending(m => m.id).ToListAsync();
+            var MissingCall = await _context.MissingCall
+                .Where(m => m.recipient.id == id)
+                .Include(m => m.author)
+                .Include(m => m.recipient)
+                .OrderByDescending(m => m.id)
+                .ToListAsync();
+
+            if (MissingCall == null)
+            {
+                return NotFound();
+            }
+            return MissingCall;
+        }
+
+        // GET: api/MissingCall/5
+        [HttpGet("user/send/{id}")]
+        public async Task<ActionResult<IEnumerable<MissingCall>>> GetMissingCallByUserSend(int id)
+        {
+            var MissingCall = await _context.MissingCall
+                .Where(m => m.author.id == id)
+                .Include(m => m.author)
+                .Include(m => m.recipient)
+                .OrderByDescending(m => m.id)
+                .ToListAsync();
+
             if (MissingCall == null)
             {
                 return NotFound();
@@ -53,7 +82,13 @@ namespace Local_API_Server.Controllers
         [HttpGet("unreadNumber/{id}")]
         public async Task<ActionResult<int>> GetMissingCallUnreadNumber(int id)
         {
-            var MissingCall = await _context.MissingCall.Where(m => m.recipient == id && m.read == false).OrderByDescending(m => m.id).ToListAsync();
+            var MissingCall = await _context.MissingCall
+                .Where(m => m.recipient.id == id && m.read == false)
+                .Include(m => m.author)
+                .Include(m => m.recipient)
+                .OrderByDescending(m => m.id)
+                .ToListAsync();
+
             if (MissingCall == null)
             {
                 return NotFound();
@@ -65,7 +100,13 @@ namespace Local_API_Server.Controllers
         [HttpGet("unread/{id}")]
         public async Task<ActionResult<IEnumerable<MissingCall>>> GetMissingCallUnread(int id)
         {
-            var MissingCall = await _context.MissingCall.Where(m => m.recipient == id && m.read == false).OrderByDescending(m => m.id).ToListAsync();
+            var MissingCall = await _context.MissingCall
+                .Where(m => m.recipient.id == id && m.read == false)
+                .Include(m => m.author)
+                .Include(m => m.recipient)
+                .OrderByDescending(m => m.id)
+                .ToListAsync();
+
             if (MissingCall == null)
             {
                 return NotFound();
@@ -79,6 +120,7 @@ namespace Local_API_Server.Controllers
         public async Task<ActionResult<MissingCall>> PostMissingCall(MissingCall MissingCall)
         {
             _context.MissingCall.Add(MissingCall);
+            MissingCall.PostChild(_context);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetMissingCall), new { id = MissingCall.id }, MissingCall);
         }
@@ -92,7 +134,9 @@ namespace Local_API_Server.Controllers
             {
                 return BadRequest();
             }
-            _context.Entry(MissingCall).State = EntityState.Modified;
+
+            await DispatchPut(id, MissingCall);
+
             try
             {
                 await _context.SaveChangesAsync();
@@ -109,6 +153,58 @@ namespace Local_API_Server.Controllers
                 }
             }
             return Ok();
+        }
+
+        private async Task<IActionResult> DispatchPut(int id, MissingCall MissingCall)
+        {
+            MissingCall bddMissingCall = await _context.MissingCall
+                .Where(r => r.id == id)
+                .Include(r => r.author)
+                .Include(r => r.recipient)
+                .FirstOrDefaultAsync();
+
+            _context.ChangeTracker.Clear();
+
+            _context.Entry(MissingCall).State = EntityState.Modified;
+
+            if (bddMissingCall != null)
+            {
+                if ((bddMissingCall.author != null && MissingCall.author == null)
+                 || (bddMissingCall.author == null && MissingCall.author != null)
+                 || (bddMissingCall.author != null && MissingCall.author != null && bddMissingCall.author.id != MissingCall.author.id))
+                {
+                    _context.Entry(MissingCall.author).State = EntityState.Modified;
+                    return Ok();
+                }
+                if ((bddMissingCall.recipient != null && MissingCall.recipient == null)
+                 || (bddMissingCall.recipient == null && MissingCall.recipient != null)
+                 || (bddMissingCall.recipient != null && MissingCall.recipient != null && bddMissingCall.recipient.id != MissingCall.recipient.id))
+                {
+                    _context.Entry(MissingCall.recipient).State = EntityState.Modified;
+                    return Ok();
+                }
+            }
+            return NotFound();
+        }
+
+        // PUT: api/MissingCall/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("author/{id}")]
+        public async Task<IActionResult> PutMissingCallAuthor(int id, MissingCall MissingCall)
+        {
+            _context.Entry(MissingCall.author).State = EntityState.Modified;
+
+            return await PutMissingCall(id, MissingCall);
+        }
+
+        // PUT: api/MissingCall/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("recipient/{id}")]
+        public async Task<IActionResult> PutMissingCallRecipient(int id, MissingCall MissingCall)
+        {
+            _context.Entry(MissingCall.recipient).State = EntityState.Modified;
+
+            return await PutMissingCall(id, MissingCall);
         }
 
         // DELETE: api/MissingCall/5

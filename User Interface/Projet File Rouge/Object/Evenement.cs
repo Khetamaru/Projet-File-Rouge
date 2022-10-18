@@ -2,72 +2,60 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace Projet_File_Rouge.Object
 {
     public class Evenement : BDDObject
     {
+        [JsonIgnore]
+        [JsonProperty]
         private readonly int id;
+        [JsonProperty]
         public readonly DateTime date;
-        public readonly int redWireId;
+        [JsonProperty]
+        public readonly RedWire redWire;
+        [JsonProperty]
         public readonly EventType type;
-        public readonly string log;
+        [JsonProperty]
+        public string log;
 
         public enum EventType
         {
             simpleText
         }
 
-        public Evenement(int _id, DateTime _date, int _redWireId, EventType _type, string _log)
-            : this(_redWireId, _type, _log)
+        [JsonConstructor]
+        public Evenement(int id, DateTime date, RedWire redWire, int type, string log)
+            : this(redWire, type, log)
         {
-            id = _id;
-            date = _date;
+            this.id = id;
+            this.date = date;
         }
 
-        public Evenement(int _redWire, EventType _type, string _log)
+        public Evenement(RedWire _redWire, int _type, string _log)
         {
             date = DateTime.Now;
-            redWireId = _redWire;
+            redWire = _redWire;
+            type = (EventType)_type;
+            log = _log;
+        }
+
+        public Evenement(RedWire _redWire, EventType _type, string _log)
+        {
+            date = DateTime.Now;
+            redWire = _redWire;
             type = _type;
             log = _log;
         }
 
-        public int Id { get => id; }
         public DateTime Date { get => date; }
-        public int RedWireId { get => redWireId; }
-        public EventType Type { get => type; }
         public string Log { get => log; }
-
-        public string JsonifyId()
-        {
-            return "{" +
-                   "\"" + EventEnum.id + "\" : " + Id + "," +
-                   "\"" + EventEnum.date + "\" : \"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + EventEnum.redWire + "\" : " + RedWireId + "," +
-                   "\"" + EventEnum.type + "\" : " + (int)Type + "," +
-                   "\"" + EventEnum.log + "\" : \"" + Log + "\"" +
-                   "}";
-        }
 
         public string Jsonify()
         {
-            return "{" +
-                   "\"" + EventEnum.date + "\" : \"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + EventEnum.redWire + "\" : " + RedWireId + "," +
-                   "\"" + EventEnum.type + "\" : " + (int)Type + "," +
-                   "\"" + EventEnum.log + "\" : \"" + Log + "\"" +
-                   "}";
+            return JsonConvert.SerializeObject(this);
         }
-    }
-
-    public enum EventEnum
-    {
-        id,
-        date,
-        redWire,
-        type,
-        log
     }
 }

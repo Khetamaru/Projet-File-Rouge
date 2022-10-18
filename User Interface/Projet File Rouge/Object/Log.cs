@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,16 @@ namespace Projet_File_Rouge.Object
 {
     public class Log : BDDObject
     {
+        [JsonIgnore]
+        [JsonProperty]
         private readonly int id;
+        [JsonProperty]
         private string text;
+        [JsonProperty]
         private DateTime date;
+        [JsonProperty]
         private LogTypeEnum type;
+        [JsonProperty]
         private readonly User user;
 
         public enum LogTypeEnum
@@ -22,55 +29,30 @@ namespace Projet_File_Rouge.Object
             Version
         }
 
-        public Log(int _id, string _text, DateTime _date, LogTypeEnum _type, User _user)
+        [JsonConstructor]
+        public Log(int id, string text, DateTime date, LogTypeEnum type, User user)
         {
-            id = _id;
-            text = _text;
-            date = _date;
-            type = _type;
-            user = _user;
+            this.id = id;
+            this.text = text;
+            this.date = date;
+            this.type = type;
+            this.user = user;
         }
 
         public Log(string _text, DateTime _date, LogTypeEnum _type, User _user)
-            : this(42, _text, _date, _type, _user)
+            : this(0, _text, _date, _type, _user)
         {
         }
 
         public int Id => id;
         public string Text => text;
         public DateTime Date => date;
-        public string DateFormated => Date.ToString("yyyy'-'MM'-'dd");
         public LogTypeEnum Type => type;
         public User User => user;
 
-        public string JsonifyId()
-        {
-            return "{" +
-                   "\"" + LogEnum.id + "\" : " + Id + "," +
-                   "\"" + LogEnum.text + "\" : \"" + Text + "\"," +
-                   "\"" + LogEnum.date + "\" : \"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + LogEnum.type + "\" : " + (int)Type + "," +
-                   "\"" + LogEnum.user + "\" : " + User.Id +
-                   "}";
-        }
-
         public string Jsonify()
         {
-            return "{" +
-                   "\"" + LogEnum.text + "\" : \"" + Text + "\"," +
-                   "\"" + LogEnum.date + "\" : \"" + Date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + LogEnum.type + "\" : " + (int)Type + "," +
-                   "\"" + LogEnum.user + "\" : " + User.Id +
-                   "}";
+            return JsonConvert.SerializeObject(this);
         }
-    }
-
-    public enum LogEnum
-    {
-        id,
-        text,
-        date,
-        type,
-        user
     }
 }

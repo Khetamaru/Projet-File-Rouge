@@ -30,6 +30,7 @@ namespace Projet_File_Rouge.ViewModel
         private string cellPhoneNumber;
         private string phoneNumber;
 
+        private RedWire.Action? actionType;
         private RedWire.EquipmentType? supportType;
         private string supportModel;
         private bool bag;
@@ -42,6 +43,8 @@ namespace Projet_File_Rouge.ViewModel
         private bool problemReproduced;
         private string supportState;
 
+        private User ActualUser;
+
         public NewFileViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
             // set up commands
@@ -49,6 +52,8 @@ namespace Projet_File_Rouge.ViewModel
 
             // set up view objects
             otherText = string.Empty;
+
+            ActualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
         }
 
         public void ChargeSaleDocument(object sender, RoutedEventArgs e, string[] strTab)
@@ -176,10 +181,11 @@ namespace Projet_File_Rouge.ViewModel
             (bool result, List<string> stringList) = FieldsVerification();
             if (result)
             {
-                RedWire redWire = new RedWire(null,
+                RedWire redWire = new RedWire(0,
                                               RequestCenter.GetUser(NavigateMainMenuCommand.cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)),
                                               SaleDocument.DocumentNumber,
                                               SaleDocument.InvoicingAddress_ThirdName,
+                                              (RedWire.Action)ActionType,
                                               (RedWire.EquipmentType)SupportType,
                                               SupportModel,
                                               SupportState,
@@ -223,7 +229,9 @@ namespace Projet_File_Rouge.ViewModel
             else { stringList.Add("Matériel non garantie"); }
             if (ProblemReproduced) { stringList.Add("Problème reproduit avec le client lors de la prise en charge"); }
             else { stringList.Add("ATTENTION : Problème non reproduit avec le client lors de la prise en charge"); }
+            if (ActionType != null) { stringList.Add("Type de dossier : " + ActionType); }
             if (SupportModel != null) { stringList.Add("Model de l'appareil : " + SupportModel); }
+            stringList.Add("Dossier pris en charge par : " + ActualUser.Name);
         }
 
         /// <summary>
@@ -251,6 +259,11 @@ namespace Projet_File_Rouge.ViewModel
                 else { OptionDocument = temp; }
 
                 stringList.Add("Facture de diag : " + OptionEBP);
+            }
+            if (actionType == null)
+            {
+                PopUpCenter.MessagePopup("Erreur : Selectionnez le type de dossier pris en charge.");
+                return (false, null);
             }
 
             if (supportType == null)
@@ -317,19 +330,19 @@ namespace Projet_File_Rouge.ViewModel
                     List<string> strTab = line.DescriptionClear.Split("\\r\\n").ToList();
                     foreach(string str in strTab)
                     {
-                        Evenement temp = new Evenement(redWire.Id, Evenement.EventType.simpleText, str);
+                        Evenement temp = new Evenement(redWire, Evenement.EventType.simpleText, str);
                         RequestCenter.PostEvent(temp.Jsonify());
                     }
                 }
                 else
                 {
-                    Evenement temp = new Evenement(redWire.Id, Evenement.EventType.simpleText, line.DescriptionClear);
+                    Evenement temp = new Evenement(redWire, Evenement.EventType.simpleText, line.DescriptionClear);
                     RequestCenter.PostEvent(temp.Jsonify());
                 }
             }
             foreach (string line in stringList)
             {
-                Evenement temp = new Evenement(redWire.Id, Evenement.EventType.simpleText, line);
+                Evenement temp = new Evenement(redWire, Evenement.EventType.simpleText, line);
 
                 RequestCenter.PostEvent(temp.Jsonify());
             }
@@ -436,6 +449,26 @@ namespace Projet_File_Rouge.ViewModel
                 country = value;
                 OnPropertyChanged("Country");
             }
+        }
+
+        public List<RedWire.Action> ActionTypeList
+        {
+            get
+            {
+                List<RedWire.Action> vs = new List<RedWire.Action>();
+                foreach (RedWire.Action actionType in Enum.GetValues<RedWire.Action>())
+                {
+                    vs.Add(actionType);
+                }
+
+                return vs;
+            }
+        }
+
+        public RedWire.Action? ActionType
+        {
+            get { return actionType; }
+            set { actionType = value; }
         }
 
         public List<RedWire.EquipmentType> SupportTypeList 

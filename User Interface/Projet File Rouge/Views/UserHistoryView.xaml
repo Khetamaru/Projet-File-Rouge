@@ -24,8 +24,8 @@
                                 <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Margin="12" Padding="5" FontSize="20" Text="{Binding User.Name}"/>
-                            <TextBlock Grid.Row="1" Margin="12" Padding="5" FontSize="20" Text="{Binding TimeFormated}"/>
+                            <TextBox Grid.Row="0" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding User.Name, Mode=OneWay}"/>
+                            <TextBox Grid.Row="1" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding TimeFormated, Mode=OneWay}"/>
                             <Border Grid.Row="2" Height="1" Background="ForestGreen"/>
                         </Grid>
                     </DataTemplate>

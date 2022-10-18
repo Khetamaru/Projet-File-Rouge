@@ -1,59 +1,38 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace Projet_File_Rouge.Object
 {
     public class UserHistory : BDDObject
     {
-        private readonly int? id;
+        [JsonIgnore]
+        [JsonProperty]
+        private readonly int id;
 
+        [JsonProperty]
         private readonly DateTime time;
 
+        [JsonProperty]
         private readonly User user;
 
+        [JsonProperty]
         private readonly RedWire redWire;
 
-        public UserHistory(DateTime _time, User _user, RedWire _redWire) : this(null, _time, _user, _redWire) { }
+        public UserHistory(DateTime _time, User _user, RedWire _redWire) : this(0, _time, _user, _redWire) { }
 
-        public UserHistory(int? _id, DateTime _time, User _user, RedWire _redWire) {
+        [JsonConstructor]
+        public UserHistory(int id, DateTime time, User user, RedWire redWire) {
 
-            id = _id;
-            time = _time;
-            user = _user;
-            redWire = _redWire;
-        }
-
-        public int Id { get => id != null ? (int)id : -1; }
-        public DateTime Time { get => time; }
-        public string TimeFormated { get => Time.ToString("dd'/'MM'/'yy' 'HH':'mm"); }
-        public User User { get => user; }
-        public RedWire RedWire { get => redWire; }
-
-        public string JsonifyId()
-        {
-            return "{" +
-                   "\"" + UserHistoryEnum.id + "\" : " + Id + "," +
-                   "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + UserHistoryEnum.user + "\" : " + User.Id + "," +
-                   "\"" + UserHistoryEnum.redWire + "\" : " + RedWire.Id +
-                   "}";
+            this.id = id;
+            this.time = time;
+            this.user = user;
+            this.redWire = redWire;
         }
 
         public string Jsonify()
         {
-            return "{" +
-                   "\"" + UserHistoryEnum.time + "\" : \"" + Time.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + UserHistoryEnum.user + "\" : " + User.Id + "," +
-                   "\"" + UserHistoryEnum.redWire + "\" : " + RedWire.Id +
-                   "}";
+            return JsonConvert.SerializeObject(this);
         }
-    }
-
-    public enum UserHistoryEnum
-    {
-        id,
-        time,
-        user,
-        redWire
     }
 }

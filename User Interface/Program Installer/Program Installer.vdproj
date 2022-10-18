@@ -219,15 +219,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:RG File Rouge"
-        "ProductCode" = "8:{B98A26D5-C4DD-4BC8-B01F-8FEDB940891C}"
-        "PackageCode" = "8:{16795831-2082-42BB-9C48-47A4DA75A1A7}"
+        "ProductCode" = "8:{15B4F7F1-CDBC-44E7-9FAB-2322BE0E5B5F}"
+        "PackageCode" = "8:{A2D70B51-7FC3-42E5-A70B-C8501829BD5B}"
         "UpgradeCode" = "8:{45C3F2BD-ABFE-4628-B520-D439614F123E}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.2.3"
+        "ProductVersion" = "8:2.0.1"
         "Manufacturer" = "8:RG Depanage"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -755,7 +755,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_A01F4D2FC77B4ED0A20FAF70D07DFC1C"
             {
-            "SourcePath" = "8:..\\Projet File Rouge\\obj\\Release\\net6.0-windows10.0.17763.0\\apphost.exe"
+            "SourcePath" = "8:..\\Projet File Rouge\\obj\\Debug\\net6.0-windows10.0.17763.0\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_E3569418D08848119E7AE8F3BDABE040"

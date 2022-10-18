@@ -22,14 +22,22 @@ namespace Local_API_Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Evenement>>> GetEvent()
         {
-            return await _context.Evenement.ToListAsync();
+            return await _context.Evenement
+                .Include(e => e.redWire)
+                .Include(e => e.redWire.recorder)
+                .ToListAsync();
         }
 
         // GET: api/Event/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Evenement>> GetEvent(int id)
         {
-            var Event = await _context.Evenement.FindAsync(id);
+            var Event = await _context.Evenement
+                .Where(e => e.id == id)
+                .Include(e => e.redWire)
+                .Include(e => e.redWire.recorder)
+                .FirstOrDefaultAsync();
+
             if (Event == null)
             {
                 return NotFound();
@@ -41,7 +49,12 @@ namespace Local_API_Server.Controllers
         [HttpGet("redwire/{id}")]
         public async Task<ActionResult<IEnumerable<Evenement>>> GetEventByRedWire(int id)
         {
-            return await _context.Evenement.Where(e => e.redWire == id).OrderByDescending(e => e.id).ToListAsync();
+            return await _context.Evenement
+                .Where(e => e.redWire.id == id)
+                .Include(e => e.redWire)
+                .Include(e => e.redWire.recorder)
+                .OrderByDescending(e => e.id)
+                .ToListAsync();
         }
 
         // POST: api/Event
@@ -50,6 +63,7 @@ namespace Local_API_Server.Controllers
         public async Task<ActionResult<Evenement>> PostEvent(Evenement Event)
         {
             _context.Evenement.Add(Event);
+            Event.PostChild(_context);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetEvent), new { id = Event.id }, Event);
         }
@@ -59,11 +73,8 @@ namespace Local_API_Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEvent(int id, Evenement Event)
         {
-            if (id != Event.id)
-            {
-                return BadRequest();
-            }
             _context.Entry(Event).State = EntityState.Modified;
+            _context.Entry(Event.redWire).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
@@ -101,7 +112,7 @@ namespace Local_API_Server.Controllers
         [HttpDelete("redWire/{id}")]
         public async Task<IActionResult> DeleteEventByRedWire(int id)
         {
-            var Event = await _context.Evenement.Where(r => r.redWire == id).ToListAsync();
+            var Event = await _context.Evenement.Where(r => r.redWire.id == id).ToListAsync();
             foreach (Evenement evenement in Event)
             {
                 _context.Evenement.Remove(evenement);

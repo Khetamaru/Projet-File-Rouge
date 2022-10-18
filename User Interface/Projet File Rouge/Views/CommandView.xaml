@@ -32,7 +32,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nom de la commande"/>
-                <TextBlock Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Command.Name}"/>
+                <TextBox Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding Command.Name, Mode=OneWay}"/>
             </Grid>
 
             <Grid Grid.Row="1" HorizontalAlignment="Center">
@@ -55,7 +55,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de livraison prévue"/>
+                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de délai dépassé prévue"/>
                 <TextBlock Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Command.DeliveryDateFormated}"/>
             </Grid>
 
@@ -111,7 +111,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de livraison prévue"/>
+                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de délai dépassé prévue"/>
                             <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" SelectedDate="{Binding CommandDoneDateField, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
 
@@ -166,7 +166,7 @@
                 </Border>
             </Popup>
 
-            <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Mise à jour date de livraison" Click="OpenDeliveryDateUpdatePopUp">
+            <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Mise à jour date de délai dépassé" Click="OpenDeliveryDateUpdatePopUp">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -190,7 +190,7 @@
                         </Grid.RowDefinitions>
 
                         <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="DeliveryDateUpdateNoButton"/>
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="La date de livraison prévue doit être mise à jour ?"/>
+                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="La date de délai dépassé prévue doit être mise à jour ?"/>
 
                         <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
@@ -198,7 +198,7 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de livraison prévue"/>
+                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de délai dépassé prévue"/>
                             <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" SelectedDate="{Binding DeliveryDateUpdateField, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                         

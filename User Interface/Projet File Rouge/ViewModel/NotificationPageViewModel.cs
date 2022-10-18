@@ -55,7 +55,18 @@ namespace Projet_File_Rouge.ViewModel
             List<RedWire> redWireList = RequestCenter.GetRedWireNotif(user.Id);
             foreach (RedWire redWire in redWireList)
             {
-                if (redWire.RepairStartDate <= DateTime.Now.AddMonths(-6))
+                if (redWire.ActualState == RedWire.state.transit)
+                {
+                    stackPanelContent.Add("\n" +
+                                          "Utilisateur actuel : " + redWire.ActualRepairMan.Name + "\n" +
+                                          "Utilisateur ciblé : " + redWire.TransfertTarget.Name + "\n" +
+                                          "Nom du client : " + redWire.ClientName + "\n" +
+                                          "Dernière action sur le dossier : " + redWire.LastUpdateFormated + "\n" +
+                                          "Etat actuel : " + redWire.ActualState.ToString() + "\n\n" +
+                                          "Un transit entre deux techniciens est en cours sur ce dossier." +
+                                          "\n");
+                }
+                else if (redWire.RepairStartDate <= DateTime.Now.AddMonths(-6))
                 {
                     stackPanelContent.Add("\n" +
                                           "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +
@@ -146,7 +157,18 @@ namespace Projet_File_Rouge.ViewModel
             List<RedWire> redWireList = RequestCenter.GetRedWireNotifAdmin();
             foreach (RedWire redWire in redWireList)
             {
-                if (redWire.RepairStartDate <= DateTime.Now.AddMonths(-6))
+                if (redWire.ActualState == RedWire.state.transit)
+                {
+                    stackPanelContent.Add("\n" +
+                                          "Utilisateur actuel : " + redWire.ActualRepairMan.Name + "\n" +
+                                          "Utilisateur ciblé : " + redWire.TransfertTarget.Name + "\n" +
+                                          "Nom du client : " + redWire.ClientName + "\n" +
+                                          "Dernière action sur le dossier : " + redWire.LastUpdateFormated + "\n" +
+                                          "Etat actuel : " + redWire.ActualState.ToString() + "\n\n" +
+                                          "Un transit entre deux techniciens est en cours sur ce dossier." +
+                                          "\n");
+                }
+                else if (redWire.RepairStartDate <= DateTime.Now.AddMonths(-6))
                 {
                     stackPanelContent.Add("\n" +
                                           "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +

@@ -59,7 +59,7 @@ namespace Projet_File_Rouge.ViewModel
 
         private void CalculPageNumber(int nbr)
         {
-            pageNumber = (int)(nbr / Math.Pow(10, 1) % 10);
+            pageNumber = (int)(nbr / 10);
 
             if (nbr % 10 != 0)
             {

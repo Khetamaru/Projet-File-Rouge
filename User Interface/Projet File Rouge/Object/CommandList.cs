@@ -1,23 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Projet_File_Rouge.Object
 {
     public class CommandList : BDDObject
     {
+        [JsonIgnore]
+        [JsonProperty]
         private readonly int id;
+        [JsonProperty]
         private DateTime deliveryDate;
+        [JsonProperty]
         private string name;
+        [JsonProperty]
         private readonly RedWire redWire;
+        [JsonProperty]
         private CommandStatusEnum state;
+        [JsonProperty]
         private string url;
 
         public CommandList(RedWire _redWire, DateTime _deliveryDate, string _name, string _url)
         {
-            id = 42;
             state = CommandStatusEnum.commande_en_attente;
             deliveryDate = new DateTime();
             redWire = _redWire;
@@ -25,12 +28,13 @@ namespace Projet_File_Rouge.Object
             url = _url;
         }
 
-        public CommandList(int _id, CommandStatusEnum _state, RedWire _redWire, DateTime _deliveryDate, string _name, string _url)
-            : this (_redWire, _deliveryDate, _name, _url)
+        [JsonConstructor]
+        public CommandList(int id, CommandStatusEnum state, RedWire redWire, DateTime deliveryDate, string name, string url)
+            : this (redWire, deliveryDate, name, url)
         {
-            id = _id;
-            state = _state;
-            deliveryDate = _deliveryDate;
+            this.id = id;
+            this.state = state;
+            this.deliveryDate = deliveryDate;
         }
 
         public enum CommandStatusEnum
@@ -61,38 +65,10 @@ namespace Projet_File_Rouge.Object
         }
         public string Name { get => name; set => name = value; }
         public string Url { get => url; set => url = value; }
-        public Uri UrlUri { get => new Uri(url); }
 
-        public string JsonifyId()
-        {
-            return "{" +
-                   "\"" + CommandListEnum.id + "\" : " + Id + "," +
-                   "\"" + CommandListEnum.redWire + "\" : " + RedWire.Id + "," +
-                   "\"" + CommandListEnum.state + "\" : " + (int)State + "," +
-                   "\"" + CommandListEnum.deliveryDate + "\" : \"" + DeliveryDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + CommandListEnum.name + "\" : \"" + Name + "\"," +
-                   "\"" + CommandListEnum.url + "\" : \"" + Url + "\"" +
-                   "}";
-        }
         public string Jsonify()
         {
-            return "{" +
-                   "\"" + CommandListEnum.redWire + "\" : " + RedWire.Id + "," +
-                   "\"" + CommandListEnum.state + "\" : " + (int)State + "," +
-                   "\"" + CommandListEnum.deliveryDate + "\" : \"" + DeliveryDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "\"," +
-                   "\"" + CommandListEnum.name + "\" : \"" + Name + "\"," +
-                   "\"" + CommandListEnum.url + "\" : \"" + Url + "\"" +
-                   "}";
+            return JsonConvert.SerializeObject(this);
         }
-    }
-
-    public enum CommandListEnum
-    {
-        id, 
-        redWire, 
-        state,
-        deliveryDate, 
-        name, 
-        url
     }
 }

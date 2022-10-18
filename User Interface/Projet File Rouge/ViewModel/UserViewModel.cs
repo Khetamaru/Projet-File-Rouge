@@ -57,7 +57,7 @@ namespace Projet_File_Rouge.ViewModel
         /// </summary>
         public void MajUser()
         {
-            RequestCenter.PutUser(User.Id, User.JsonifyId());
+            RequestCenter.PutUser(User.Id, User.Jsonify());
         }
 
         public User User
@@ -105,7 +105,7 @@ namespace Projet_File_Rouge.ViewModel
         public string ChangeNameField { get => changeNameField; set { changeNameField = value; OnPropertyChanged(nameof(changeNameField)); } }
         public void ChangeNameYesButton()
         {
-            if (ChangeNameField == null)
+            if (ChangeNameField != null)
             {
                 if (ChangeNameField.Length < 45)
                 {

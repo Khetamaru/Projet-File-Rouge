@@ -40,7 +40,7 @@
         <DataGrid Grid.Row="2" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding CommandList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*" Header="Nom de la commande" Binding="{Binding Name}"/>
-                <DataGridTextColumn Width="*" Header="Date de livraison prévue" Binding="{Binding DeliveryDateFormated}"/>
+                <DataGridTextColumn Width="*" Header="Date de délai dépassé" Binding="{Binding DeliveryDateFormated}"/>
                 <DataGridTextColumn Width="*" Header="Status de la commande" Binding="{Binding State}"/>
             </DataGrid.Columns>
         </DataGrid>

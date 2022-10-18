@@ -32,7 +32,7 @@ namespace Projet_File_Rouge.ViewModel
             if (!MissingCall.Read)
             {
                 MissingCall.Read = true;
-                RequestCenter.PutMissingCall(MissingCall.Id, MissingCall.JsonifyId());
+                RequestCenter.PutMissingCall(MissingCall.Id, MissingCall.Jsonify());
             }
         }
 

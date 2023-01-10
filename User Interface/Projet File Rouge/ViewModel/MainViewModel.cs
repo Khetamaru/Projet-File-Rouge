@@ -11,17 +11,20 @@ namespace Projet_File_Rouge.ViewModel
     {
         private readonly NavigationStore navigationStore;
 
+        public ViewModelBase NavBar => navigationStore.NavBarViewModel;
         public ViewModelBase CurrentViewModel => navigationStore.CurrentViewModel;
 
         public MainViewModel(NavigationStore _navigationStore)
         {
             navigationStore = _navigationStore;
 
+            navigationStore.NavBarViewModelChanged += OnCurrentViewModelChanged;
             navigationStore.CurrentViewModelChanged += OnCurrentViewModelChanged;
         }
 
         private void OnCurrentViewModelChanged()
         {
+            OnPropertyChanged(nameof(NavBar));
             OnPropertyChanged(nameof(CurrentViewModel));
         }
     }

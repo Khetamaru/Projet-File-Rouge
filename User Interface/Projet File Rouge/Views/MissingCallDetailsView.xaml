@@ -7,6 +7,32 @@
              xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MissingCallDetailsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,7 +40,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Retour" Command="{Binding NavigateMissingCallPersoCommand}"/>
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" MinWidth="200" FontSize="20" Content="Retour" Command="{Binding NavigateMissingCallPersoCommand}" Style="{StaticResource ReturnButtonStyle}"/>
 
         <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Name="TopGrid">
             <Grid.RowDefinitions>
@@ -28,13 +54,16 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date"/>
+            <Image Grid.Row="0" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/date.png"/>
             <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding MissingCall.Date, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-            <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nom du technicien témoin"/>
+
+            <Image Grid.Row="1" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/tech.png"/>
             <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding MissingCall.Author.Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Auteur du message"/>
+
+            <Image Grid.Row="2" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/author.png"/>
             <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding MissingCall.Caller, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-            <TextBlock Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Message"/>
+
+            <Image Grid.Row="3" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/message.png"/>
             <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" TextWrapping="WrapWithOverflow" Text="{Binding MissingCall.Message, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
         </Grid>
 

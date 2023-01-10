@@ -36,6 +36,7 @@ namespace Projet_File_Rouge.Commands
             if (RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)).UserLevel >= User.AccessLevel.SuperUser)
             {
                 navigationStore.CurrentViewModel = new CommandViewModel(navigationStore, cacheStore);
+                navigationStore.NavBarViewModel = new NavBarViewModel(navigationStore, cacheStore);
             }
         }
     }

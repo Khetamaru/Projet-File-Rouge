@@ -51,6 +51,7 @@ namespace Projet_File_Rouge.Object
         }
 
         public DateTime Date { get => date; }
+        public string DateFormated => Date.ToString("dd'-'MM'-'yyyy");
         public string Log { get => log; }
 
         public string Jsonify()

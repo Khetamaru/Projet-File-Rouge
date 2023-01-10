@@ -27,5 +27,10 @@ namespace Projet_File_Rouge.Views
         {
             InitializeComponent();
         }
+
+        private void DeleteFile(object sender, RoutedEventArgs e)
+        { 
+            (DataContext as DocumentViewModel).DeleteFile();
+        }
     }
 }

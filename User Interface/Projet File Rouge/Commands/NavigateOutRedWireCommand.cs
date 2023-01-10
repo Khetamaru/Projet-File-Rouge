@@ -47,7 +47,10 @@ namespace Projet_File_Rouge.Commands
 
             else if (value == PageNameEnum.CommandView.ToString()) { navigationStore.CurrentViewModel = new CommandViewModel(navigationStore, cacheStore); }
 
+            else if (value == PageNameEnum.ReturnFolder.ToString()) { navigationStore.CurrentViewModel = new ReturnFolderViewModel(navigationStore, cacheStore); }
+
             else { PopUpCenter.MessagePopup("Le codeur sait pas coder"); }
+            navigationStore.NavBarViewModel = new NavBarViewModel(navigationStore, cacheStore);
         }
     }
 }

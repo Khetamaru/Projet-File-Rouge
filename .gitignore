@@ -10,3 +10,41 @@ User Interface/Projet File Rouge/bin/Release/net6.0-windows10.0.17763.0/
 User Interface/Projet File Rouge/obj/Release/net6.0-windows10.0.17763.0/
 
 *.v2
+
+*.editorconfig
+
+*.cache
+
+*.BuildWithSkipAnalyzers
+
+User Interface/Projet File Rouge/obj/Debug/net6.0-windows10.0.17763.0/
+
+*.targets
+
+User Interface/Projet File Rouge/obj/
+
+*.dll
+
+*.sentinel
+
+*.pdb
+
+API/Red Wire API/obj/Debug/net6.0/
+
+API/Red Wire API/obj/
+
+*.vdproj
+
+*.vsidx
+
+*.v1
+
+API/Red Wire API/.vs/Red Wire API/v17/
+
+API/Red Wire API/bin/Debug/net6.0/
+
+API/Red Wire API/bin/Release/net6.0/
+
+User Interface/Projet File Rouge/bin/Debug/net6.0-windows10.0.17763.0/
+
+*.user

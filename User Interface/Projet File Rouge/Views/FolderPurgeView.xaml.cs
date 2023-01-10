@@ -1,19 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Projet_File_Rouge.ViewModel;
 
 namespace Projet_File_Rouge.Views
@@ -28,9 +14,17 @@ namespace Projet_File_Rouge.Views
             InitializeComponent();
         }
 
+        private void PasswordBox_FTPPasswordField(object sender, RoutedEventArgs e)
+        {
+            if (DataContext != null) { ((dynamic)DataContext as FolderPurgeViewModel).FTPPasswordField = ((PasswordBox)sender).Password; }
+        }
+
         private void LaunchPurge(object sender, RoutedEventArgs e)
         {
             (DataContext as FolderPurgeViewModel).LaunchPurge();
         }
+
+        private void FTPYesButton(object sender, RoutedEventArgs e) { (DataContext as FolderPurgeViewModel).FTPYesButton(); }
+        private void FTPNoButton(object sender, RoutedEventArgs e) { (DataContext as FolderPurgeViewModel).FTPNoButton(); }
     }
 }

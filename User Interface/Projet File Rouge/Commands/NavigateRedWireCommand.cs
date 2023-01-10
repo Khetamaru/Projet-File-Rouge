@@ -11,7 +11,7 @@ namespace Projet_File_Rouge.Commands
 {
     public class NavigateRedWireCommand : CommandBase
     {
-        private readonly NavigationStore navigationStore;
+        public NavigationStore navigationStore;
         public CacheStore cacheStore;
 
         public NavigateRedWireCommand(NavigationStore navigationStore, CacheStore cacheStore)
@@ -29,6 +29,7 @@ namespace Projet_File_Rouge.Commands
         public override void Execute(object parameter)
         {
             navigationStore.CurrentViewModel = new RedWireViewModel(navigationStore, cacheStore);
+            navigationStore.NavBarViewModel = new NavBarViewModel(navigationStore, cacheStore);
         }
     }
 }

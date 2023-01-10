@@ -12,6 +12,11 @@ namespace Projet_File_Rouge.Views
             InitializeComponent();
         }
 
+        private void PasswordBox_FTPPasswordField(object sender, RoutedEventArgs e)
+        {
+            if (DataContext != null) { ((dynamic)DataContext as RedWireViewModel).FTPPasswordField = ((PasswordBox)sender).Password; }
+        }
+
         private void InsertTextEnterKey(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -109,5 +114,21 @@ namespace Projet_File_Rouge.Views
         private void OpenEndProviderCallPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenEndProviderCallPopUp(); }
         private void EndProviderCallYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).EndProviderCallYesButton(); }
         private void EndProviderCallNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).EndProviderCallNoButton(); }
+
+        private void OpenAddFTPPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenAddFTPPopUp(); }
+        private void OpenFileAddFTP(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenFileAddFTP(); }
+        private void AddFTPYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AddFTPYesButton(); }
+        private void AddFTPNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).AddFTPNoButton(); }
+
+        private void OpenFTPPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenFTPPopUp(); }
+        private void FTPYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).FTPYesButton(); }
+        private void FTPNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).FTPNoButton(); }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e) { if (DataContext != null) { (DataContext as RedWireViewModel).FinPayementCheckBox = true; } }
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e) { if (DataContext != null) { (DataContext as RedWireViewModel).FinPayementCheckBox = false; } }
+
+        private void OpenDelayedPayementPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenDelayedPayementPopUp(); }
+        private void DelayedPayementYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).DelayedPayementYesButton(); }
+        private void DelayedPayementNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).DelayedPayementNoButton(); }
     }
 }

@@ -8,41 +8,77 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <ResourceDictionary>
-            <Image x:Key="left" Source="../Img/arrow_left.png"/>
-            <Image x:Key="right" Source="../Img/arrow_right.png"/>
-        </ResourceDictionary>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+        
+        <Image x:Key="left" Source="../Img/arrow_left.png"/>
+        <Image x:Key="right" Source="../Img/arrow_right.png"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ArrowStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource GlobalBackground}" Background="{StaticResource GlobalBackground}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Command="{Binding NavigateMainMenuCommand}"/>
+        <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" MinWidth="200" FontSize="20" Command="{Binding NavigateMainMenuCommand}" Style="{StaticResource ReturnButtonStyle}"/>
 
-        <Grid Grid.Row="1" HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-
-            <Button Grid.Column="0" Width="40" Height="40" Content="{StaticResource left}" Background="Transparent" BorderBrush="Transparent" Click="ArrowLeft"/>
-
-            <TextBlock Grid.Column="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" Text="{Binding Pagination, UpdateSourceTrigger=PropertyChanged}"/>
-
-            <Button Grid.Column="2" Width="40" Height="40" Content="{StaticResource right}" Background="Transparent" BorderBrush="Transparent" Click="ArrowRight"/>
-        </Grid>
-
-        <DataGrid Grid.Row="2" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding CommandList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
+        <DataGrid Grid.Row="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding CommandList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*" Header="Nom de la commande" Binding="{Binding Name}"/>
                 <DataGridTextColumn Width="*" Header="Date de délai dépassé" Binding="{Binding DeliveryDateFormated}"/>
                 <DataGridTextColumn Width="*" Header="Status de la commande" Binding="{Binding State}"/>
             </DataGrid.Columns>
         </DataGrid>
+        
+        <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Width="40" Height="40" Content="{StaticResource left}" Background="Transparent" BorderBrush="Transparent" Click="ArrowLeft" Style="{StaticResource ArrowStyle}"/>
+
+            <TextBlock Grid.Column="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" Text="{Binding Pagination, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <Button Grid.Column="2" Width="40" Height="40" Content="{StaticResource right}" Background="Transparent" BorderBrush="Transparent" Click="ArrowRight" Style="{StaticResource ArrowStyle}"/>
+        </Grid>
     </Grid>
 </UserControl>

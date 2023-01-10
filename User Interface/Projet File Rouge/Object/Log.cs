@@ -26,7 +26,8 @@ namespace Projet_File_Rouge.Object
             User,
             RedWire,
             CommandList,
-            Version
+            Version,
+            BDD
         }
 
         [JsonConstructor]
@@ -47,6 +48,7 @@ namespace Projet_File_Rouge.Object
         public int Id => id;
         public string Text => text;
         public DateTime Date => date;
+        public string DateFormated => Date.ToString("dd'-'MM'-'yyyy");
         public LogTypeEnum Type => type;
         public User User => user;
 

@@ -26,6 +26,7 @@ namespace Projet_File_Rouge.Commands
             if (RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)).UserLevel >= User.AccessLevel.User)
             {
                 navigationStore.CurrentViewModel = new ChangePasswordViewModel(navigationStore, cacheStore);
+                navigationStore.NavBarViewModel = new NavBarViewModel(navigationStore, cacheStore);
             }
         }
     }

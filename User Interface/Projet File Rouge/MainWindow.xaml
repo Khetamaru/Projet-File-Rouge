@@ -4,121 +4,587 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewmodels="clr-namespace:Projet_File_Rouge.ViewModel"
-        xmlns:views="clr-namespace:Projet_File_Rouge.Views"
+        xmlns:views="clr-namespace:Projet_File_Rouge.Views" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
-    <ContentControl Content="{Binding CurrentViewModel}">
-        <ContentControl.Resources>
+    <Window.Resources>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989B4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
 
-            <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
-                <views:LoginView/>
-            </DataTemplate>
+        <Image x:Key="dateImage" Source="../Img/date.png" MaxHeight="30" MaxWidth="30"/>
 
-            <DataTemplate DataType="{x:Type viewmodels:NotificationPageViewModel}">
-                <views:NotificationPageView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColor}" Background="{StaticResource MainColor}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:MainMenuViewModel}">
-                <views:MainMenuView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type PasswordBox}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type PasswordBox}">
+                        <Border 
+                            Background="{StaticResource MainBackGround}" 
+                            BorderBrush="{StaticResource MainBackGround}"
+                            BorderThickness="2" 
+                            CornerRadius="8">
+                            <ScrollViewer Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="Width" Value="Auto">
+                                <Setter Property="MinWidth" Value="100"/>
+                            </Trigger>
+                            <Trigger Property="Height" Value="Auto">
+                                <Setter Property="MinHeight" Value="37"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:NewFileViewModel}">
-                <views:NewFileView/>
-            </DataTemplate>
+        <Style x:Key="ComboBoxTextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <Border CornerRadius="8,0,0,8"
+                                    BorderThickness="2,0,0,0"
+                                    Padding="5"
+                                    Background="{StaticResource MainBackGround}"
+                                    BorderBrush="{StaticResource MainBackGround}">
+                                <ScrollViewer/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:GlobalCenterViewModel}">
-                <views:GlobalCenterView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border CornerRadius="0,8,8,0"
+                                BorderThickness="0,2,2,2"
+                                Padding="5"
+                                Background="{StaticResource MainBackGround}"
+                                BorderBrush="{StaticResource MainBackGround}">
+                            <ContentPresenter />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:PersoSpaceViewModel}">
-                <views:PersoSpaceView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="MinHeight" Value="37"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ComboBox}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition MaxWidth="18"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Name="PART_EditableTextBox"
+                                 HorizontalContentAlignment="Center"
+                                 Style="{StaticResource ComboBoxTextBoxStyle}"
+                                 Padding="0,0,0,0"
+                                 Height="{TemplateBinding Height}"
+                                 Foreground="{StaticResource TextColor}"/>
+                            <ToggleButton Grid.Column="1" Margin="0"
+                                     Height="{TemplateBinding Height}"
+                                     Foreground="{StaticResource TextColor}"
+                                     Focusable="False"
+                                     IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                      ClickMode="Press">
+                                <Path Grid.Column="1"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  Data="M 0 0 L 4 4 L 8 0 Z"
+                                  Fill="{StaticResource MainColor}"/>
+                            </ToggleButton>
+                            <ContentPresenter Name="ContentSite"
+                                      Content="{TemplateBinding SelectionBoxItem}"
+                                      ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                      ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"
+                                      Margin="15,0,0,0"/>
+                            <Popup Name="Popup"
+                               Placement="Bottom"
+                               IsOpen="{TemplateBinding IsDropDownOpen}"
+                               AllowsTransparency="True" 
+                               Focusable="False"
+                               PopupAnimation="Slide">
+                                <Grid Name="DropDown"
+                                  SnapsToDevicePixels="True"                
+                                  MinWidth="{TemplateBinding ActualWidth}"
+                                  MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border 
+                                    x:Name="DropDownBorder"
+                                    BorderThickness="2"
+                                    CornerRadius="8"
+                                    Padding="5"
+                                    Background="{StaticResource MainBackGround}"
+                                    BorderBrush="{StaticResource MainColor}"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                <Setter Property="IsDropDownOpen" Value="True"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:OldFolderViewModel}">
-                <views:OldFolderView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border 
+                            Background="{StaticResource MainBackGround}" 
+                            BorderBrush="{StaticResource MainBackGround}"
+                            BorderThickness="2" 
+                            CornerRadius="8">
+                            <ScrollViewer Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="Width" Value="Auto">
+                                <Setter Property="MinWidth" Value="100"/>
+                            </Trigger>
+                            <Trigger Property="Height" Value="Auto">
+                                <Setter Property="MinHeight" Value="37"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:FreeFolderViewModel}">
-                <views:FreeFolderView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:RedWireViewModel}">
-                <views:RedWireView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:CommandViewModel}">
-                <views:CommandView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type DatePicker}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="IsTodayHighlighted" Value="True"/>
+            <Setter Property="SelectedDateFormat" Value="Short"/>
+            <Setter Property="Background" Value="{StaticResource MainBackGround}"/>
+            <Setter Property="Padding" Value="2"/>
+            <Setter Property="BorderBrush" Value="{StaticResource MainBackGround}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="MaxHeight" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DatePicker}">
+                        <Border 
+                            Background="{StaticResource MainBackGround}" 
+                            BorderBrush="{StaticResource MainBackGround}"
+                            BorderThickness="2" 
+                            CornerRadius="8">
+                            <Grid x:Name="PART_Root" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <Grid.Resources>
+                                    <SolidColorBrush x:Key="DisabledBrush" Color="#A5FFFFFF"/>
+                                    <ControlTemplate x:Key="DropDownButtonTemplate" TargetType="{x:Type Button}">
+                                        <Button Content="{StaticResource dateImage}" Background="Transparent" BorderBrush="Transparent" BorderThickness="0"/>
+                                    </ControlTemplate>
+                                </Grid.Resources>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Viewbox Grid.Column="1" HorizontalAlignment="Left" Margin="3,0,3,0" Grid.Row="0" VerticalAlignment="Top">
+                                    <Button x:Name="PART_Button"  Focusable="False" Foreground="{TemplateBinding Foreground}"  Template="{StaticResource DropDownButtonTemplate}" />
+                                </Viewbox>
 
-            <DataTemplate DataType="{x:Type viewmodels:CommandCenterViewModel}">
-                <views:CommandCenterView/>
-            </DataTemplate>
+                                <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" Focusable="false" HorizontalContentAlignment="Stretch" Grid.Row="0" VerticalContentAlignment="Center" Foreground="{StaticResource TextColor}" FontWeight="DemiBold"/>
+                                <Grid x:Name="PART_DisabledVisual" Grid.ColumnSpan="2" Grid.Column="0" IsHitTestVisible="False" Opacity="0" Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Rectangle Grid.Column="0" Fill="#A5FFFFFF" RadiusX="1" RadiusY="1" Grid.Row="0"/>
+                                    <Rectangle Grid.Column="1" Fill="#A5FFFFFF" Height="18" Margin="3,0,3,0" RadiusX="1" RadiusY="1" Grid.Row="0" Width="19"/>
+                                    <Popup x:Name="PART_Popup" AllowsTransparency="True" Placement="Bottom" PlacementTarget="{Binding ElementName=PART_TextBox}" StaysOpen="False"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Source={x:Static SystemParameters.HighContrast}}" Value="false">
+                                <Setter Property="Foreground" TargetName="PART_TextBox" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/>
+                            </DataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:ParameterMenuViewModel}">
-                <views:ParameterMenuView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type TabItem}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Grid Name="Panel">
+                            <Border 
+                                Name="Border"
+                                CornerRadius="8" 
+                                BorderBrush="{StaticResource MainColor}" 
+                                Background="{StaticResource MainColor}" 
+                                BorderThickness="2" 
+                                Padding="5"/>
+                            <ContentPresenter 
+                                x:Name="ContentSite"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                ContentSource="Header"
+                                Margin="10,2"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource TextColor}" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:UserCreationViewModel}">
-                <views:UserCreationView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid ClipToBounds="True" SnapsToDevicePixels="True" KeyboardNavigation.TabNavigation="Local">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Name="ColumnDefinition0" />
+                                <ColumnDefinition Width="0" Name="ColumnDefinition1" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" Name="RowDefinition0" />
+                                <RowDefinition Height="*" Name="RowDefinition1" />
+                            </Grid.RowDefinitions>
 
-            <DataTemplate DataType="{x:Type viewmodels:UserCenterViewModel}">
-                <views:UserCenterView/>
-            </DataTemplate>
+                            <Border
+                                BorderBrush="Transparent" 
+                                BorderThickness="1" 
+                                CornerRadius="8" 
+                                Background="Transparent">
+                                <TabPanel IsItemsHost="True"
+                                    Name="HeaderPanel" 
+                                    Panel.ZIndex="1" 
+                                    KeyboardNavigation.TabIndex="1"
+                                    Grid.Column="0" 
+                                    Grid.Row="0" 
+                                />
+                            </Border>
 
-            <DataTemplate DataType="{x:Type viewmodels:UserViewModel}">
-                <views:UserView/>
-            </DataTemplate>
+                            <Grid Name="ContentPanel" 
+                          KeyboardNavigation.TabIndex="2" 
+                          KeyboardNavigation.TabNavigation="Local" 
+                          KeyboardNavigation.DirectionalNavigation="Contained" 
+                          Grid.Column="0" 
+                          Grid.Row="1">
+                                <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                                    <ContentPresenter Content="{TemplateBinding SelectedContent}" 
+                                              ContentTemplate="{TemplateBinding SelectedContentTemplate}" 
+                                              ContentStringFormat="{TemplateBinding SelectedContentStringFormat}" 
+                                              ContentSource="SelectedContent" 
+                                              Name="PART_SelectedContentHost" 
+                                              Margin="2" 
+                                              SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" 
+                            />
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:ChangePasswordViewModel}">
-                <views:ChangePasswordView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type CheckBox}">
+            <Setter Property="Cursor" Value="Hand"></Setter>
+            <Setter Property="Content" Value=""></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Ellipse x:Name="outerEllipse" Width="30" Height="30" HorizontalAlignment="Right" Margin="5">
+                                <Ellipse.Fill>
+                                    <RadialGradientBrush>
+                                        <GradientStop Offset="1" Color="#4a2121"/>
+                                        <GradientStop Offset="0" Color="#9e4747"/>
+                                        <GradientStop Offset="0.88" Color="#eb6a6a"/>
+                                    </RadialGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Ellipse x:Name="highlightCircle" Width="30" Height="30" HorizontalAlignment="Right" Margin="5">
+                                <Ellipse.Fill >
+                                    <LinearGradientBrush>
+                                        <GradientStop Offset="1" Color="#265426"/>
+                                        <GradientStop Offset="0" Color="#49a349"/>
+                                        <GradientStop Offset="0.5" Color="#67e667"/>
+                                    </LinearGradientBrush>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <ContentPresenter Grid.Column="1" x:Name="content" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="highlightCircle" Property="Fill">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0.3,0" EndPoint="0.7,1">
+                                            <GradientStop Offset="1" Color="#265426"/>
+                                            <GradientStop Offset="0" Color="#49a349"/>
+                                            <GradientStop Offset="0.5" Color="#67e667"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="outerEllipse" Property="Fill">
+                                    <Setter.Value>
+                                        <RadialGradientBrush>
+                                            <GradientStop Offset="1" Color="#265426"/>
+                                            <GradientStop Offset="0" Color="#49a349"/>
+                                            <GradientStop Offset="0.88" Color="#67e667"/>
+                                        </RadialGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="highlightCircle" Property="Fill">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0.3,0" EndPoint="0.7,1">
+                                            <GradientStop Offset="1" Color="#4a2121"/>
+                                            <GradientStop Offset="0" Color="#9e4747"/>
+                                            <GradientStop Offset="0.5" Color="#eb6a6a"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <DataTemplate DataType="{x:Type viewmodels:FolderPurgeViewModel}">
-                <views:FolderPurgeView/>
-            </DataTemplate>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Background" Value="{StaticResource GlobalBackground}"/>
+            <Setter Property="RowDetailsVisibilityMode" Value="VisibleWhenSelected"/>
+            <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+            <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
+            <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="AlternatingRowBackground" Value="{StaticResource GlobalBackground}"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource GlobalBackground}"/>
+            <Setter Property="VerticalGridLinesBrush" Value="{StaticResource GlobalBackground}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGrid}">
+                        <Border x:Name="Border" BorderBrush="Transparent" BorderThickness="2" CornerRadius="8" Background="{StaticResource MainColor}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="DG_ScrollViewer" Focusable="false">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <DataGridColumnHeadersPresenter x:Name="PART_ColumnHeadersPresenter" Grid.Column="1" Visibility="{Binding HeadersVisibility, ConverterParameter={x:Static DataGridHeadersVisibility.Column}, Converter={x:Static DataGrid.HeadersVisibilityConverter}, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" CanContentScroll="{TemplateBinding CanContentScroll}" Grid.ColumnSpan="2" Grid.Row="1"/>
+                                            <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Column="2" Maximum="{TemplateBinding ScrollableHeight}" Orientation="Vertical" Grid.Row="1" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportHeight}"/>
+                                            <Grid Grid.Column="1" Grid.Row="2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="{Binding NonFrozenColumnsViewportHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <ScrollBar x:Name="PART_HorizontalScrollBar" Grid.Column="1" Maximum="{TemplateBinding ScrollableWidth}" Orientation="Horizontal" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" Value="{Binding HorizontalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ViewportSize="{TemplateBinding ViewportWidth}"/>
+                                            </Grid>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
 
-            <DataTemplate DataType="{x:Type viewmodels:DocumentCenterViewModel}">
-                <views:DocumentCenterView/>
-            </DataTemplate>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsGrouping" Value="true">
+                    <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
-            <DataTemplate DataType="{x:Type viewmodels:DocumentViewModel}">
-                <views:DocumentView/>
-            </DataTemplate>
+    <Grid Background="{StaticResource GlobalBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <DataTemplate DataType="{x:Type viewmodels:UserHistoryViewModel}">
-                <views:UserHistoryView/>
-            </DataTemplate>
+        <ContentControl Grid.Row="0" Content="{Binding NavBar}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewmodels:NavBarViewModel}">
+                    <views:NavBarView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
 
-            <DataTemplate DataType="{x:Type viewmodels:LogCenterViewModel}">
-                <views:LogCenterView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewmodels:MissingCallMenuViewModel}">
-                <views:MissingCallMenuView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewmodels:MissingCallCreationViewModel}">
-                <views:MissingCallCreationView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewmodels:MissingCallPersoViewModel}">
-                <views:MissingCallPersoView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewmodels:MissingCallDetailsViewModel}">
-                <views:MissingCallDetailsView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewmodels:MissingCallSendViewModel}">
-                <views:MissingCallSendView/>
-            </DataTemplate>
-
-            <DataTemplate DataType="{x:Type viewmodels:MissingCallSendDetailsViewModel}">
-                <views:MissingCallSendDetailsView/>
-            </DataTemplate>
-
-        </ContentControl.Resources>
-    </ContentControl>
+        <ContentControl Grid.Row="1" Content="{Binding CurrentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewmodels:LoginViewModel}">
+                    <views:LoginView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:NotificationPageViewModel}">
+                    <views:NotificationPageView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:MainMenuViewModel}">
+                    <views:MainMenuView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:NewFileViewModel}">
+                    <views:NewFileView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:GlobalCenterViewModel}">
+                    <views:GlobalCenterView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:PersoSpaceViewModel}">
+                    <views:PersoSpaceView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:OldFolderViewModel}">
+                    <views:OldFolderView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:FreeFolderViewModel}">
+                    <views:FreeFolderView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:RedWireViewModel}">
+                    <views:RedWireView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:CommandViewModel}">
+                    <views:CommandView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:CommandCenterViewModel}">
+                    <views:CommandCenterView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:ParameterMenuViewModel}">
+                    <views:ParameterMenuView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:UserCreationViewModel}">
+                    <views:UserCreationView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:UserCenterViewModel}">
+                    <views:UserCenterView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:UserViewModel}">
+                    <views:UserView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:ChangePasswordViewModel}">
+                    <views:ChangePasswordView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:FolderPurgeViewModel}">
+                    <views:FolderPurgeView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:DocumentCenterViewModel}">
+                    <views:DocumentCenterView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:DocumentFTPCenterViewModel}">
+                    <views:DocumentFTPCenterView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:DocumentViewModel}">
+                    <views:DocumentView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:UserHistoryViewModel}">
+                    <views:UserHistoryView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:LogCenterViewModel}">
+                    <views:LogCenterView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:ReturnFolderViewModel}">
+                    <views:ReturnFolderView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:MissingCallMenuViewModel}">
+                    <views:MissingCallMenuView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:MissingCallCreationViewModel}">
+                    <views:MissingCallCreationView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:MissingCallPersoViewModel}">
+                    <views:MissingCallPersoView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:MissingCallDetailsViewModel}">
+                    <views:MissingCallDetailsView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:MissingCallSendViewModel}">
+                    <views:MissingCallSendView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:MissingCallSendDetailsViewModel}">
+                    <views:MissingCallSendDetailsView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:DataSaveViewModel}">
+                    <views:DataSaveView/>
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+    </Grid>
 </Window>

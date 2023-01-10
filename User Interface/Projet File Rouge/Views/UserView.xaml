@@ -7,6 +7,32 @@
              xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:UserViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,7 +40,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Retour" Command="{Binding NavigateUserCenterCommand}"/>
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" MinWidth="200" FontSize="20" Content="Retour" Command="{Binding NavigateUserCenterCommand}" Style="{StaticResource ReturnButtonStyle}"/>
 
         <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Name="TopGrid">
             <Grid.RowDefinitions>
@@ -27,11 +53,13 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nom de l'utilisateur"/>
+            <Image Grid.Row="0" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/tech.png"/>
             <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding User.Name, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-            <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Niveau d'accès"/>
+
+            <Image Grid.Row="1" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/access_level.png"/>
             <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding User.UserLevel, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
-            <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Activé"/>
+
+            <Image Grid.Row="2" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/statut.png"/>
             <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding User.Activated, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"/>
         </Grid>
 
@@ -45,123 +73,135 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Changer Nom Utilisateur" Click="OpenChangeNamePopUp"/>
-
-            <Popup IsOpen="{Binding ChangeNamePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
-                <Border Background="LightGreen">
+            <Popup IsOpen="{Binding ChangeNamePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="ChangeNameNoButton"/>
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="ChangeNameNoButton"/>
 
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nouveau nom de l'utilisateur ?"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nouveau nom de l'utilisateur ?"/>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nouveau Nom"/>
-                            <TextBox Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding ChangeNameField, UpdateSourceTrigger=PropertyChanged}"/>
-                        </Grid>
+                                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nouveau Nom"/>
+                                <TextBox Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding ChangeNameField, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
 
-                        <Grid Grid.Row="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="ChangeNameYesButton"/>
-                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="ChangeNameNoButton"/>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="ChangeNameYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="ChangeNameNoButton"/>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Border>
             </Popup>
 
             <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Remise à zéro mot de passe" Click="OpenResetPasswordPopUp"/>
-
-            <Popup IsOpen="{Binding ResetPasswordPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
-                <Border Background="LightGreen">
+            <Popup IsOpen="{Binding ResetPasswordPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="ResetPasswordNoButton"/>
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Vous êtes sûr de vouloir remettre à zéro le mot de passe de l'utilisateur ?"/>
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="ResetPasswordNoButton"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Vous êtes sûr de vouloir remettre à zéro le mot de passe de l'utilisateur ?"/>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="ResetPasswordYesButton"/>
-                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="ResetPasswordNoButton"/>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="ResetPasswordYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="ResetPasswordNoButton"/>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Border>
             </Popup>
 
             <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Changement Niveau d'accès" Click="OpenChangeAccessLevelPopUp"/>
-
-            <Popup IsOpen="{Binding ChangeAccessLevelPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
-                <Border Background="LightGreen">
+            <Popup IsOpen="{Binding ChangeAccessLevelPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="ChangeAccessLevelNoButton"/>
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Quel est le nouveau niveau d'accès de l'utilisateur ?"/>
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="ChangeAccessLevelNoButton"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Quel est le nouveau niveau d'accès de l'utilisateur ?"/>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Niveau d'accès"/>
-                            <Grid Grid.Column="1" HorizontalAlignment="Stretch">
+                            <Grid Grid.Row="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Column="0" Margin="12" Padding="5" FontSize="20" Text="Aucune Selection">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Visibility" Value="Visible"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ListVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <ComboBox Grid.Column="1" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding ChangeAccessLevelField, UpdateSourceTrigger=PropertyChanged}"/>
-                            </Grid>
-                        </Grid>
-                        
-                        <Grid Grid.Row="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Niveau d'accès"/>
+                                <Grid Grid.Column="1" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="ChangeAccessLevelYesButton"/>
-                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="ChangeAccessLevelNoButton"/>
+                                    <TextBlock Grid.Column="0" Margin="12" Padding="5" FontSize="20" Text="Aucune Selection">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ListVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <ComboBox Grid.Column="1" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding ChangeAccessLevelField, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Grid>
+                            </Grid>
+
+                            <Grid Grid.Row="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="ChangeAccessLevelYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="ChangeAccessLevelNoButton"/>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Border>
@@ -170,6 +210,19 @@
             <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Désactivation Utilisateur" Click="OpenDesablePopUp">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColor}" Background="{StaticResource MainColor}" BorderThickness="2" Padding="5">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding DesableButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -179,27 +232,31 @@
                     </Style>
                 </Button.Style>
             </Button>
-
-            <Popup IsOpen="{Binding DesablePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
-                <Border Background="LightGreen">
+            <Popup IsOpen="{Binding DesablePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="DesableNoButton"/>
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Êtes-vous sûr que l'utilisateur doit être désactivé ?"/>
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="DesableNoButton"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Êtes-vous sûr que l'utilisateur doit être désactivé ?"/>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="DesableYesButton"/>
-                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="DesableNoButton"/>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="DesableYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="DesableNoButton"/>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Border>
@@ -208,6 +265,19 @@
             <Button Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Réactivation Utilisateur" Click="OpenUnablePopUp">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                            <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColor}" Background="{StaticResource MainColor}" BorderThickness="2" Padding="5">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding UnableButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -217,27 +287,31 @@
                     </Style>
                 </Button.Style>
             </Button>
-
-            <Popup IsOpen="{Binding UnablePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
-                <Border Background="LightGreen">
+            <Popup IsOpen="{Binding UnablePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="UnableNoButton"/>
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Vous voulez remettre en fonctionnement l'utilisateur ?"/>
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="UnableNoButton"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Vous voulez remettre en fonctionnement l'utilisateur ?"/>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="UnableYesButton"/>
-                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="UnableNoButton"/>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="UnableYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="UnableNoButton"/>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Border>

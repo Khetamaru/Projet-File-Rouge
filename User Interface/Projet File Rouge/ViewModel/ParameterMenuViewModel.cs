@@ -8,7 +8,6 @@ namespace Projet_File_Rouge.ViewModel
     /// </summary>
     public class ParameterMenuViewModel : ViewModelBase
     {
-
         public ParameterMenuViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
             // set up commands
@@ -18,6 +17,7 @@ namespace Projet_File_Rouge.ViewModel
             NavigateChangePasswordCommand = new NavigateChangePasswordCommand(navigationStore, cacheStore);
             NavigateFolderPurgeCommand = new NavigateFolderPurgeCommand(navigationStore, cacheStore);
             NavigateLogCenterCommand = new NavigateLogCenterCommand(navigationStore, cacheStore);
+            NavigateDataSaveCommand = new NavigateDataSaveCommand(navigationStore, cacheStore);
         }
 
         /// <summary>
@@ -29,5 +29,6 @@ namespace Projet_File_Rouge.ViewModel
         public NavigateChangePasswordCommand NavigateChangePasswordCommand { get; }
         public NavigateFolderPurgeCommand NavigateFolderPurgeCommand { get; }
         public NavigateLogCenterCommand NavigateLogCenterCommand { get; }
+        public NavigateDataSaveCommand NavigateDataSaveCommand { get; }
     }
 }

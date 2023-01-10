@@ -23,6 +23,10 @@ namespace Projet_File_Rouge.ViewModel
 
         private DateTime startPurgeDate;
 
+        KeyValuePair<NavigationStore, CacheStore> Cache;
+
+        FTPCenter client;
+
         public FolderPurgeViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
             // set up commands
@@ -32,6 +36,13 @@ namespace Projet_File_Rouge.ViewModel
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
             purgeFolderNumber = RequestCenter.GetRedWirePurgeNumber();
             nonPurgeFolderNumber = RequestCenter.GetRedWireNumber(new DateTime(), -1, -1, "") - purgeFolderNumber;
+
+            Cache = new KeyValuePair<NavigationStore, CacheStore>(navigationStore, cacheStore);
+
+            (bool trigger, KeyValuePair<string, string> keyValuePair) = Cache.Value.GetFTPCache();
+
+            if (trigger) client = new FTPCenter(keyValuePair.Key, keyValuePair.Value);
+            else client = null;
 
             // set up view objects
             DateTime purgeDate = DateTime.Now.AddYears(-3);
@@ -50,34 +61,47 @@ namespace Projet_File_Rouge.ViewModel
         /// </summary>
         public void LaunchPurge()
         {
-            ActualIndex = 0;
-            PurgeDetails = "Initialisation de la purge";
-            PurgePopUpIsOpen = true;
-            List<RedWire> redWires = RequestCenter.GetRedWirePurge();
-
-            foreach (RedWire redWire in redWires)
+            if (client != null && client.Connected && client.Authenticated)
             {
-                ActualIndex++;
+                ActualIndex = 0;
+                PurgeDetails = "Initialisation de la purge";
+                PurgePopUpIsOpen = true;
+                List<RedWire> redWires = RequestCenter.GetRedWirePurge();
 
-                PurgeDetails = "Suppression des commandes liées";
-                RequestCenter.DeleteCommandListByRedWire(redWire.Id);
+                foreach (RedWire redWire in redWires)
+                {
+                    ActualIndex++;
 
-                PurgeDetails = "Suppression des documents liées";
-                RequestCenter.DeleteDocumentListByRedWire(redWire.Id);
+                    PurgeDetails = "Suppression des commandes liées";
+                    RequestCenter.DeleteCommandListByRedWire(redWire.Id);
 
-                PurgeDetails = "Suppression des évènements liès";
-                RequestCenter.DeleteEvenementByRedWire(redWire.Id);
+                    PurgeDetails = "Suppression des documents EBP liées";
+                    RequestCenter.DeleteDocumentListByRedWire(redWire.Id);
 
-                PurgeDetails = "Suppression de l'historique";
-                RequestCenter.DeleteUserHistoryListByRedWire(redWire.Id);
+                    PurgeDetails = "Suppression des documents FTP liées";
+                    RequestCenter.DeleteDocumentFTPByRedWire(redWire.Id);
 
-                PurgeDetails = "Suppression du suivi de dossier";
-                RequestCenter.DeleteRedWire(redWire.Id);
+                    PurgeDetails = "Suppression des documents FTP côté NAS";
+                    DeleteFTPFiles(redWire.Id);
+
+                    PurgeDetails = "Suppression des évènements liès";
+                    RequestCenter.DeleteEvenementByRedWire(redWire.Id);
+
+                    PurgeDetails = "Suppression de l'historique";
+                    RequestCenter.DeleteUserHistoryListByRedWire(redWire.Id);
+
+                    PurgeDetails = "Suppression du suivi de dossier";
+                    RequestCenter.DeleteRedWire(redWire.Id);
+                }
+                PurgePopUpIsOpen = false;
+                RequestCenter.PostLog(new Log("Purge dossiers effectiuée. Nombre de dossiers purgés : " + PurgeFolderNumber + " / " + (nonPurgeFolderNumber + PurgeFolderNumber), DateTime.Now, Log.LogTypeEnum.RedWire, actualUser).Jsonify());
+                PurgeFolderNumber = 0;
+                PopUpCenter.MessagePopup("Purge dossiers terminée.");
             }
-            PurgePopUpIsOpen = false;
-            RequestCenter.PostLog(new Log("Purge dossiers effectiuée. Nombre de dossiers purgés : " + PurgeFolderNumber + " / " + (nonPurgeFolderNumber + PurgeFolderNumber), DateTime.Now, Log.LogTypeEnum.RedWire, actualUser).Jsonify());
-            PurgeFolderNumber = 0;
-            PopUpCenter.MessagePopup("Purge dossiers terminée.");
+            else
+            {
+                OpenFTPPopUp();
+            }
         }
 
         /// <summary>
@@ -92,6 +116,52 @@ namespace Projet_File_Rouge.ViewModel
                 return null;
             }), null);
             Dispatcher.PushFrame(frame);
+        }
+
+        public bool fTPPopUpIsOpen;
+        public bool FTPPopUpIsOpen
+        {
+            get => fTPPopUpIsOpen;
+            set
+            {
+                fTPPopUpIsOpen = value;
+                OnPropertyChanged(nameof(FTPPopUpIsOpen));
+            }
+        }
+        public void OpenFTPPopUp() => FTPPopUpIsOpen = true;
+        public void CloseFTPPopUp() => FTPPopUpIsOpen = false;
+
+        public string fTPLoginField;
+        public string FTPLoginField { get => fTPLoginField; set { fTPLoginField = value; OnPropertyChanged(nameof(FTPLoginField)); } }
+        public string fTPPasswordField;
+        public string FTPPasswordField { get => fTPPasswordField; set { fTPPasswordField = value; OnPropertyChanged(nameof(FTPPasswordField)); } }
+        public void FTPYesButton()
+        {
+            if (FTPLoginField != null && FTPLoginField != string.Empty && FTPPasswordField != null && FTPPasswordField != string.Empty)
+            {
+                CloseFTPPopUp();
+                client = new FTPCenter(FTPLoginField, FTPPasswordField);
+
+                if (client.IsConnected() && client.IsAuthenticated())
+                {
+                    CacheMaj();
+                    LaunchPurge();
+                }
+                else OpenFTPPopUp();
+            }
+        }
+        public void FTPNoButton()
+        {
+            CloseFTPPopUp();
+        }
+
+        private void DeleteFTPFiles(int id)
+        {
+            List<DocumentFTP> documentFTPs = RequestCenter.GetDocumentFTPByRedWire(id);
+            foreach(DocumentFTP documentFTP in documentFTPs)
+            {
+                client.DataDroping(documentFTP.UploadString());
+            }
         }
 
         public bool PurgePopUpIsOpen
@@ -152,9 +222,16 @@ namespace Projet_File_Rouge.ViewModel
             get => startPurgeDate.ToString("dd'/'MM'/'yyyy");
         }
 
+        private void CacheMaj()
+        {
+            Cache.Value.SetFTPCache(FTPLoginField, FTPPasswordField);
+
+            NavigateParameterMenuCommand = new NavigateParameterMenuCommand(Cache.Key, Cache.Value);
+        }
+
         /// <summary>
         /// Commands
         /// </summary>
-        public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }
+        public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; set; }
     }
 }

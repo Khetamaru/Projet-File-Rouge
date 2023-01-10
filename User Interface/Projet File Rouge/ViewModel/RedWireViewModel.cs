@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Win32;
 using Projet_File_Rouge.Commands;
 using Projet_File_Rouge.EBPObject;
 using Projet_File_Rouge.Object;
@@ -17,6 +18,7 @@ namespace Projet_File_Rouge.ViewModel
         private List<Evenement> redWireEvents;
         private SaleDocument saleDocument;
         private List<DocumentList> documentList;
+        private List<DocumentFTP> documentFTP;
         private User actualUser;
         private List<string> userList;
 
@@ -30,6 +32,7 @@ namespace Projet_File_Rouge.ViewModel
         private bool finPopUpIsOpen;
         private bool finAppelPopUpIsOpen;
         private bool finPayementPopUpIsOpen;
+        private bool delayedPayementPopUpIsOpen;
         private bool nonReparablePopUpIsOpen;
         private bool nonReparableAppelPopUpIsOpen;
         private bool nonReparableRenduPopUpIsOpen;
@@ -40,6 +43,10 @@ namespace Projet_File_Rouge.ViewModel
         private bool giveUpPopUpIsOpen;
         private bool providerCallPopUpIsOpen;
         private bool endProviderCallPopUpIsOpen;
+        private bool addFTPPopUpIsOpen;
+        private bool fTPPopUpIsOpen;
+
+        KeyValuePair<NavigationStore, CacheStore> Cache;
 
         public RedWireViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
@@ -47,12 +54,16 @@ namespace Projet_File_Rouge.ViewModel
             NavigateOutRedWireCommand = new NavigateOutRedWireCommand(navigationStore, cacheStore);
             NavigateDocumentCenterCommand = new NavigateDocumentCenterCommand(navigationStore, cacheStore);
             NavigateUserHistoryCommand = new NavigateUserHistoryCommand(navigationStore, cacheStore);
+            NavigateDocumentFTPCenterCommand = new NavigateDocumentFTPCenterCommand(navigationStore, cacheStore);
+
+            Cache = new KeyValuePair<NavigationStore, CacheStore>(navigationStore, cacheStore);
 
             // set up BDD objects
             redWire = RequestCenter.GetRedWire(cacheStore.GetObjectCache(ObjectCacheStoreEnum.RedWireDetail));
             actualUser = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
             saleDocument = RequestCenter.GetSaleDocument(redWire.Client);
             documentList = RequestCenter.GetDocumentList(redWire.Id);
+            documentFTP = RequestCenter.GetDocumentFTPByRedWire(redWire.Id);
 
             // set up view objects
             ReloadEvents();
@@ -98,6 +109,7 @@ namespace Projet_File_Rouge.ViewModel
         private void UIUpdate()
         {
             OnPropertyChanged(nameof(DocumentListButtonVisibility));
+            OnPropertyChanged(nameof(DocumentFTPButtonVisibility));
             OnPropertyChanged(nameof(PriseEnChargeButtonVisibility));
             OnPropertyChanged(nameof(CommandePieceButtonVisibility));
             OnPropertyChanged(nameof(ProblemeQuestionButtonVisibility));
@@ -107,6 +119,7 @@ namespace Projet_File_Rouge.ViewModel
             OnPropertyChanged(nameof(FinButtonVisibility));
             OnPropertyChanged(nameof(FinAppelButtonVisibility));
             OnPropertyChanged(nameof(FinPayementButtonVisibility));
+            OnPropertyChanged(nameof(DelayedPayementButtonVisibility));
             OnPropertyChanged(nameof(NonReparableButtonVisibility));
             OnPropertyChanged(nameof(NonReparableAppelButtonVisibility));
             OnPropertyChanged(nameof(ReopeningButtonVisibility));
@@ -119,6 +132,7 @@ namespace Projet_File_Rouge.ViewModel
             OnPropertyChanged(nameof(AjoutDocumentButtonVisibility));
             OnPropertyChanged(nameof(ProviderCallButtonVisibility));
             OnPropertyChanged(nameof(EndProviderCallButtonVisibility));
+            OnPropertyChanged(nameof(AddFTPButtonVisibility));
         }
 
         /// <summary>
@@ -177,6 +191,7 @@ namespace Projet_File_Rouge.ViewModel
 
         public SaleDocument SaleDocument { get => saleDocument; }
         public List<DocumentList> DocumentList { get => documentList; }
+        public List<DocumentFTP> DocumentFTP { get => documentFTP; }
         public User ActualUser { get => actualUser; }
         public List<string> UserList { get => userList; }
 
@@ -184,6 +199,11 @@ namespace Projet_File_Rouge.ViewModel
         /// Document List Button Logic
         /// </summary>
         public bool DocumentListButtonVisibility { get => DocumentList.Count <= 0; }
+
+        /// <summary>
+        /// Document FTP Button Logic
+        /// </summary>
+        public bool DocumentFTPButtonVisibility { get => DocumentFTP.Count <= 0; }
 
         /// <summary>
         /// In Charge Button Logic
@@ -532,7 +552,9 @@ namespace Projet_File_Rouge.ViewModel
                 RedWire.RepairEndDate = DateTime.Now;
                 RedWireMaj();
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Facture finale faite : " + FinField));
-                AddDocument(new DocumentList(FinField, RedWire));
+                DocumentList document = new DocumentList(FinField, RedWire);
+                AddDocument(document);
+                DocumentList.Add(document);
                 UIUpdate();
                 CloseFinPopUp();
             }
@@ -659,20 +681,61 @@ namespace Projet_File_Rouge.ViewModel
                 OnPropertyChanged(nameof(FinPayementPopUpIsOpen));
             }
         }
+        public bool finPayementCheckBox = true;
+        public bool FinPayementCheckBox { get => finPayementCheckBox; set { finPayementCheckBox = value; OnPropertyChanged(nameof(FinAppelField)); } }
         public void OpenFinPayementPopUp() => FinPayementPopUpIsOpen = true;
         public void CloseFinPayementPopUp() => FinPayementPopUpIsOpen = false;
         public void FinPayementYesButton()
         {
-            RedWire.ActualState = RedWire.state.fin;
+            if (FinPayementCheckBox)
+            {
+                RedWire.ActualState = RedWire.state.fin;
+                AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Facture payée et matériel rendu"));
+                AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier cloturé"));
+            }
+            else
+            {
+                RedWire.ActualState = RedWire.state.payement_différé;
+                AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Matériel rendu"));
+                AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier en attente de règlement")); 
+                FinPayementCheckBox = true;
+            }
             RedWireMaj();
-            AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Facture payée et matériel rendu"));
-            AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier cloturé"));
             UIUpdate();
             CloseFinPayementPopUp();
         }
         public void FinPayementNoButton()
         {
             CloseFinPayementPopUp();
+        }
+
+        /// <summary>
+        /// Delay Pay Button Logic
+        /// </summary>
+        public bool DelayedPayementButtonVisibility { get => RedWire.ActualState != RedWire.state.payement_différé || !(ActualUser.UserLevel >= User.AccessLevel.User); }
+        public bool DelayedPayementPopUpIsOpen
+        {
+            get => delayedPayementPopUpIsOpen;
+            set
+            {
+                delayedPayementPopUpIsOpen = value;
+                OnPropertyChanged(nameof(DelayedPayementPopUpIsOpen));
+            }
+        }
+        public void OpenDelayedPayementPopUp() => DelayedPayementPopUpIsOpen = true;
+        public void CloseDelayedPayementPopUp() => DelayedPayementPopUpIsOpen = false;
+        public void DelayedPayementYesButton()
+        {
+            RedWire.ActualState = RedWire.state.fin;
+            AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Facture payée"));
+            AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier cloturé"));
+            RedWireMaj();
+            UIUpdate();
+            CloseDelayedPayementPopUp();
+        }
+        public void DelayedPayementNoButton()
+        {
+            CloseDelayedPayementPopUp();
         }
 
         /// <summary>
@@ -996,6 +1059,113 @@ namespace Projet_File_Rouge.ViewModel
         }
 
         /// <summary>
+        /// Add FTP Document Button Logic
+        /// </summary>
+        public bool AddFTPButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool AddFTPPopUpIsOpen
+        {
+            get => addFTPPopUpIsOpen;
+            set
+            {
+                addFTPPopUpIsOpen = value;
+                OnPropertyChanged(nameof(AddFTPPopUpIsOpen));
+            }
+        }
+        public void OpenAddFTPPopUp() => AddFTPPopUpIsOpen = true;
+        public void CloseAddFTPPopUp() => AddFTPPopUpIsOpen = false;
+        public string addFTPField;
+        public string AddFTPField { get => addFTPField; set { addFTPField = value; OnPropertyChanged(nameof(AddFTPField)); } }
+        public string addFTPNameField;
+        public string AddFTPNameField { get => addFTPNameField; set { addFTPNameField = value; OnPropertyChanged(nameof(AddFTPNameField)); } }
+        public void OpenFileAddFTP()
+        {
+            CloseAddFTPPopUp();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true) AddFTPField = openFileDialog.FileName;
+            OpenAddFTPPopUp();
+        }
+        public void AddFTPYesButton()
+        {
+            if (AddFTPField != null && AddFTPField != string.Empty && AddFTPNameField != null && AddFTPNameField != string.Empty)
+            {
+                DocumentFTP documentFTP;
+
+                if (AddFTPProcess(out documentFTP))
+                {
+                    OutFTPProcess(documentFTP);
+                }
+                else
+                {
+                    OpenFTPPopUp();
+                }
+                CloseAddFTPPopUp();
+            }
+        }
+        public void AddFTPNoButton()
+        {
+            AddFTPField = string.Empty;
+            CloseAddFTPPopUp();
+        }
+        private bool AddFTPProcess(out DocumentFTP documentFTP)
+        {
+            bool success;
+            KeyValuePair<string, string> keyValuePair;
+            documentFTP = null;
+
+            (success, keyValuePair) = Cache.Value.GetFTPCache();
+
+            if (success && TryFTPLaunch(keyValuePair, out documentFTP)) return true;
+            return false;
+        }
+        private bool TryFTPLaunch(KeyValuePair<string, string> keyValuePair, out DocumentFTP documentFTP)
+        {
+            FTPCenter client = new FTPCenter(keyValuePair.Key, keyValuePair.Value);
+            documentFTP = client.DataPacking(AddFTPField, AddFTPNameField, RedWire);
+            return client.DataSending(AddFTPField, documentFTP);
+        }
+        public bool FTPPopUpIsOpen
+        {
+            get => fTPPopUpIsOpen;
+            set
+            {
+                fTPPopUpIsOpen = value;
+                OnPropertyChanged(nameof(FTPPopUpIsOpen));
+            }
+        }
+        public void OpenFTPPopUp() => FTPPopUpIsOpen = true;
+        public void CloseFTPPopUp() => FTPPopUpIsOpen = false;
+        public string fTPLoginField;
+        public string FTPLoginField { get => fTPLoginField; set { fTPLoginField = value; OnPropertyChanged(nameof(FTPLoginField)); } }
+        public string fTPPasswordField;
+        public string FTPPasswordField { get => fTPPasswordField; set { fTPPasswordField = value; OnPropertyChanged(nameof(FTPPasswordField)); } }
+        public void FTPYesButton()
+        {
+            CloseFTPPopUp();
+            DocumentFTP documentFTP;
+
+            if (TryFTPLaunch(new KeyValuePair<string, string>(FTPLoginField, FTPPasswordField), out documentFTP))
+            {
+                CacheMaj();
+                OutFTPProcess(documentFTP);
+            }
+            else OpenFTPPopUp();
+        }
+
+        public void FTPNoButton()
+        {
+            CloseFTPPopUp();
+        }
+
+        private void OutFTPProcess(DocumentFTP documentFTP)
+        {
+            RedWireMaj();
+            RequestCenter.PostDocumentFTP(documentFTP.Jsonify());
+            DocumentFTP.Add(documentFTP);
+            AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Document FTP créé : " + documentFTP.DocumentName));
+            UIUpdate();
+        }
+
+        /// <summary>
         /// You need to do a call to provider
         /// </summary>
         public bool ProviderCallButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
@@ -1077,11 +1247,22 @@ namespace Projet_File_Rouge.ViewModel
             CloseEndProviderCallPopUp();
         }
 
+        private void CacheMaj()
+        {
+            Cache.Value.SetFTPCache(FTPLoginField, FTPPasswordField);
+
+            NavigateDocumentCenterCommand = new NavigateDocumentCenterCommand(Cache.Key, Cache.Value);
+            NavigateOutRedWireCommand = new NavigateOutRedWireCommand(Cache.Key, Cache.Value);
+            NavigateUserHistoryCommand = new NavigateUserHistoryCommand(Cache.Key, Cache.Value);
+            NavigateDocumentFTPCenterCommand = new NavigateDocumentFTPCenterCommand(Cache.Key, Cache.Value);
+        }
+
         /// <summary>
         /// Commands
         /// </summary>
-        public NavigateDocumentCenterCommand NavigateDocumentCenterCommand { get; }
-        public NavigateOutRedWireCommand NavigateOutRedWireCommand { get; }
-        public NavigateUserHistoryCommand NavigateUserHistoryCommand { get; }
+        public NavigateDocumentCenterCommand NavigateDocumentCenterCommand { get; set; }
+        public NavigateOutRedWireCommand NavigateOutRedWireCommand { get; set; }
+        public NavigateUserHistoryCommand NavigateUserHistoryCommand { get; set; }
+        public NavigateDocumentFTPCenterCommand NavigateDocumentFTPCenterCommand { get; set; }
     }
 }

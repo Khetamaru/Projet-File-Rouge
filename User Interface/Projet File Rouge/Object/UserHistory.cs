@@ -30,6 +30,11 @@ namespace Projet_File_Rouge.Object
             this.redWire = redWire;
         }
 
+        public DateTime Time => time;
+        public string TimeFormated => Time.ToString("dd'-'MM'-'yyyy");
+        public User User => user;
+        public RedWire RedWire => redWire;
+
         public string Jsonify()
         {
             return JsonConvert.SerializeObject(this);

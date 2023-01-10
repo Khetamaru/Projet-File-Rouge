@@ -21,6 +21,7 @@ namespace Projet_File_Rouge.Commands
             if (RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)).UserLevel >= User.AccessLevel.Admin)
             {
                 navigationStore.CurrentViewModel = new FolderPurgeViewModel(navigationStore, cacheStore);
+                navigationStore.NavBarViewModel = new NavBarViewModel(navigationStore, cacheStore);
             }
         }
     }

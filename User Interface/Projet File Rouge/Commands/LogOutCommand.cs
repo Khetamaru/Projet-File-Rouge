@@ -16,8 +16,9 @@ namespace Projet_File_Rouge.Commands
 
         public override void Execute(object parameter)
         {
-            cacheStore.CleanObjectCache(ObjectCacheStoreEnum.ActualUser);
+            cacheStore = new CacheStore(cacheStore.CloseEvent);
             navigationStore.CurrentViewModel = new LoginViewModel(navigationStore, cacheStore);
+            navigationStore.NavBarViewModel = null;
         }
     }
 }

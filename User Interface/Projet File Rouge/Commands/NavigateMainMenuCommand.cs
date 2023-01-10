@@ -27,6 +27,7 @@ namespace Projet_File_Rouge.Commands
             OutDatedNotif(user);
             MissingCallNumber(user);
             navigationStore.CurrentViewModel = new MainMenuViewModel(navigationStore, cacheStore);
+            navigationStore.NavBarViewModel = new NavBarViewModel(navigationStore, cacheStore);
         }
 
         /// <summary>
@@ -42,6 +43,9 @@ namespace Projet_File_Rouge.Commands
                 Count += RequestCenter.GetRedWireNotifAdminNumber();
                 Count += RequestCenter.GetCommandListNotifNumber();
                 Count += RequestCenter.GetRedWirePurgeNumber();
+
+                DbSave dbSave = RequestCenter.GetDbSaveLast();
+                if (dbSave == null || dbSave.date <= DateTime.Now.AddDays(-7)) Count++;
             }
             else
             {

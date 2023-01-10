@@ -7,27 +7,63 @@
              xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:UserHistoryViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Command="{Binding NavigateRedWireCommand}"/>
+        <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" MinWidth="200" Padding="5" FontSize="20" Command="{Binding NavigateRedWireCommand}" Style="{StaticResource ReturnButtonStyle}"/>
         <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Auto">
-            <ItemsControl BorderThickness="2" BorderBrush="ForestGreen" ItemsSource="{Binding StackPanelContent}">
+            <ItemsControl ItemsSource="{Binding StackPanelContent}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <TextBox Grid.Row="0" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding User.Name, Mode=OneWay}"/>
-                            <TextBox Grid.Row="1" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding TimeFormated, Mode=OneWay}"/>
-                            <Border Grid.Row="2" Height="1" Background="ForestGreen"/>
-                        </Grid>
+                        <Border BorderBrush="{StaticResource MainColor}" BorderThickness="6" CornerRadius="20" Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Grid.Row="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/tech.png"/>
+                                <TextBox Grid.Column="1" Grid.Row="0" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding User.Name, Mode=OneWay}"/>
+
+                                <Image Grid.Column="0" Grid.Row="1" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/date.png"/>
+                                <TextBox Grid.Column="1" Grid.Row="1" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding TimeFormated, Mode=OneWay}"/>
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

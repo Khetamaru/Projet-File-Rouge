@@ -19,6 +19,7 @@ namespace Projet_File_Rouge.Commands
         public override void Execute(object parameter)
         {
             navigationStore.CurrentViewModel = new DocumentCenterViewModel(navigationStore, cacheStore);
+            navigationStore.NavBarViewModel = new NavBarViewModel(navigationStore, cacheStore);
         }
     }
 }

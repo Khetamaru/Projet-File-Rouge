@@ -7,13 +7,38 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Command="{Binding NavigateMissingCallMenuCommand}"/>
+        <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" MinWidth="200" FontSize="20" Command="{Binding NavigateMissingCallMenuCommand}" Style="{StaticResource ReturnButtonStyle}"/>
 
         <DataGrid Grid.Row="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding MissingCallList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
             <DataGrid.RowStyle>

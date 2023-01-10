@@ -26,6 +26,8 @@ namespace Local_API_Server.Controllers
             return await _context.CommandList
                 .Include(c => c.redWire)
                 .Include(c => c.redWire.recorder)
+                .Include(c => c.redWire.actualRepairMan)
+                .Include(c => c.redWire.transfertTarget)
                 .ToListAsync();
         }
 
@@ -37,6 +39,8 @@ namespace Local_API_Server.Controllers
                 .Where(c => c.id == id)
                 .Include(c => c.redWire)
                 .Include(c => c.redWire.recorder)
+                .Include(c => c.redWire.actualRepairMan)
+                .Include(c => c.redWire.transfertTarget)
                 .FirstOrDefaultAsync();
 
             if (CommandList == null)
@@ -54,6 +58,8 @@ namespace Local_API_Server.Controllers
                 .Where(c => c.redWire.id == id)
                 .Include(c => c.redWire)
                 .Include(c => c.redWire.recorder)
+                .Include(c => c.redWire.actualRepairMan)
+                .Include(c => c.redWire.transfertTarget)
                 .OrderBy(d => d.id)
                 .ToListAsync();
         }
@@ -72,6 +78,8 @@ namespace Local_API_Server.Controllers
             return await Filter(_context.CommandList)
                 .Include(c => c.redWire)
                 .Include(c => c.redWire.recorder)
+                .Include(c => c.redWire.actualRepairMan)
+                .Include(c => c.redWire.transfertTarget)
                 .Skip(pageNumber * 10)
                 .Take(10)
                 .ToListAsync();
@@ -104,6 +112,8 @@ namespace Local_API_Server.Controllers
             return await Filter()
                 .Include(c => c.redWire)
                 .Include(c => c.redWire.recorder)
+                .Include(c => c.redWire.actualRepairMan)
+                .Include(c => c.redWire.transfertTarget)
                 .ToListAsync();
         }
 

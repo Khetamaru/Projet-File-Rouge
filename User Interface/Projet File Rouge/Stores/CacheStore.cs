@@ -16,6 +16,10 @@ namespace Projet_File_Rouge.Stores
         /// Others infos
         /// </summary>
         private Dictionary<InfoCacheStoreEnum, string> infoCache;
+        /// <summary>
+        /// FTP infos
+        /// </summary>
+        private KeyValuePair<string, string> FTPCache;
 
         public readonly Action CloseEvent;
 
@@ -23,6 +27,7 @@ namespace Projet_File_Rouge.Stores
         {
             objectCache = new Dictionary<ObjectCacheStoreEnum, int>();
             infoCache = new Dictionary<InfoCacheStoreEnum, string>();
+            FTPCache = default(KeyValuePair<string, string>);
 
             this.CloseEvent = CloseEvent;
         }
@@ -32,12 +37,14 @@ namespace Projet_File_Rouge.Stores
         /// </summary>
         public int GetObjectCache(ObjectCacheStoreEnum cacheKey) { return objectCache.GetValueOrDefault(cacheKey); }
         public string GetInfoCache(InfoCacheStoreEnum cacheKey) { return infoCache.GetValueOrDefault(cacheKey); }
+        public (bool, KeyValuePair<string, string>) GetFTPCache() { return DoesCacheFTPExist() ? (true, FTPCache) : (false, default(KeyValuePair<string, string>)); }
 
         /// <summary>
         /// Check if Key info have an existing value
         /// </summary>
         public bool DoesObjectCacheExist(ObjectCacheStoreEnum cacheKey) { return objectCache.TryGetValue(cacheKey, out _); }
         public bool DoesInfoCacheExist(InfoCacheStoreEnum cacheKey) { return infoCache.TryGetValue(cacheKey, out _); }
+        public bool DoesCacheFTPExist() { return !FTPCache.Equals(default(KeyValuePair<string, string>)); }
 
         /// <summary>
         /// Set infos by Key/Value combo
@@ -52,6 +59,10 @@ namespace Projet_File_Rouge.Stores
             if (DoesInfoCacheExist(cacheKey)) { infoCache.Remove(cacheKey); }
             infoCache.Add(cacheKey, cacheValue);
         }
+        public void SetFTPCache(string cacheKey, string cacheValue)
+        {
+            FTPCache = new KeyValuePair<string, string>(cacheKey, cacheValue);
+        }
 
         /// <summary>
         /// Remove Value by Key
@@ -64,6 +75,10 @@ namespace Projet_File_Rouge.Stores
         {
             infoCache.Remove(cacheKey);
         }
+        public void CleanFTPCache(InfoCacheStoreEnum cacheKey)
+        {
+            FTPCache = default(KeyValuePair<string, string>);
+        }
     }
 }
 
@@ -75,7 +90,8 @@ public enum ObjectCacheStoreEnum
     notifNumber,
     CommandListDetail,
     MissingCallDetail,
-    missingCallNumber
+    missingCallNumber,
+    DocumentListDetail
 }
 public enum InfoCacheStoreEnum
 {
@@ -88,5 +104,6 @@ public enum PageNameEnum
     FreeFolder,
     PersoSpace,
     OldFolder,
-    CommandView
+    CommandView,
+    ReturnFolder
 }

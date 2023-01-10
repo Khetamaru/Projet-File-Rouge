@@ -53,11 +53,19 @@ namespace Projet_File_Rouge.ViewModel
         {
             string lvn = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
             lvn = lvn.Remove(lvn.Length - 2, 2);
+
+            bool urgent = Boolean.Parse(ConfigurationManager.AppSettings["urgent"]);
+
             Object.Version svn = RequestCenter.GetVersion();
 
             if (string.Compare(lvn, svn.VersionNumber) < 0)
             {
-                if (DateTime.Now.AddDays(-3) < svn.Date)
+                if (svn.Ugent)
+                {
+                    PopUpCenter.MessagePopup("Mise à jour urgente en attente.\nVeuillez contacter votre technicien pour mise à jour.\n\nVersion actuelle : " + lvn + "\nVersion nécéssaire : " + svn.VersionNumber);
+                    CloseEvent.Invoke();
+                }
+                else if (DateTime.Now.AddDays(-3) < svn.Date)
                 {
                     PopUpCenter.MessagePopup("Votre version du logiciel n'est plus à jour.\nVous avez jusqu'à 3 jours après le " + svn.Date.ToString("dd'-'mm'-'yy' 'HH'H'mm") + "\n\nVersion actuelle : " + lvn + "\nVersion nécéssaire : " + svn.VersionNumber);
                 }
@@ -69,7 +77,7 @@ namespace Projet_File_Rouge.ViewModel
             }
             if (string.Compare(lvn, svn.VersionNumber) > 0)
             {
-                RequestCenter.PostVersion(new Object.Version(lvn, DateTime.Now).Jsonify());
+                RequestCenter.PostVersion(new Object.Version(lvn, DateTime.Now, urgent).Jsonify());
             }
         }
 
@@ -90,8 +98,10 @@ namespace Projet_File_Rouge.ViewModel
             { 
                 passwordField = value;
                 connectionCommand = ConnectionCommand;
+                OnPropertyChanged(nameof(PasswordFieldVisibility));
             }
         }
+        public bool PasswordFieldVisibility { get => PasswordField.Length > 0; }
 
         /// <summary>
         /// Commands

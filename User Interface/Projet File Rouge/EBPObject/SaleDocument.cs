@@ -74,7 +74,7 @@ namespace Projet_File_Rouge.EBPObject
                    "Téléphone : " + InvoicingContact_Phone + "\n" +
                    "Portable : " + InvoicingContact_CellPhone + "\n" +
                    "Mail : " + InvoicingContact_Email + "\n" +
-                   "Addresse : " + DeliveryAddress_Address1 + "\n" +
+                   "Adresse : " + DeliveryAddress_Address1 + "\n" +
                    DeliveryAddress_City + " - " + DeliveryAddress_ZipCode + " - " + DeliveryAddress_State;
         }
 

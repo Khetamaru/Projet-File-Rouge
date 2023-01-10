@@ -5,6 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:UserCreationViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -12,7 +38,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Retour" Command="{Binding NavigateParameterMenuCommand}"/>
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" MinWidth="200" FontSize="20" Content="Retour" Command="{Binding NavigateParameterMenuCommand}" Style="{StaticResource ReturnButtonStyle}"/>
 
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="12">
             <Grid.RowDefinitions>
@@ -26,18 +52,31 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nom de l'utilisateur"/>
-            <TextBox   Grid.Row="0" Grid.Column="1" Margin="12" Padding="5" FontSize="20" Text="{Binding UserNameField, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Niveau d'accès de l'utilisateur"/>
+            <Image Grid.Row="0" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/tech.png"/>
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="12" Padding="5" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="{Binding UserNameField, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Nom de l'utilisateur" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UserNameFieldVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
+
+            <Image Grid.Row="1" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/access_level.png"/>
             <Grid      Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" Margin="12" Padding="5" FontSize="20" Text="Aucune Selection">
-                    <TextBlock.Style>
-                        <Style TargetType="{x:Type TextBlock}">
+                <ComboBox Grid.Column="1" Margin="12" Padding="5" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevelField, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Niveau d'accès de l'utilisateur" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
                             <Setter Property="Visibility" Value="Visible"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding ListVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -45,13 +84,13 @@
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TextBlock.Style>
-                </TextBlock>
-                <ComboBox Grid.Column="1" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevelField, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Label.Style>
+                </Label>
             </Grid>
-            <TextBlock Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Mot de Passe Admin">
-                <TextBlock.Style>
-                    <Style TargetType="{x:Type TextBlock}">
+            
+            <Image Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" MaxHeight="60" Source="../Img/statut.png">
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding AdminVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -59,12 +98,39 @@
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
-                </TextBlock.Style>
-            </TextBlock>
-            <TextBox   Grid.Row="2" Grid.Column="1" Margin="12" Padding="5" FontSize="20" Text="{Binding AdminPasswordField, UpdateSourceTrigger=PropertyChanged}">
+                </Image.Style>
+            </Image>
+            <TextBox Grid.Row="2" Grid.Column="1" Margin="12" Padding="5" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="{Binding AdminPasswordField, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.Style>
                     <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
                         <Setter Property="Visibility" Value="Visible"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TextBox}">
+                                    <Border 
+                                        Background="{StaticResource MainBackGround}" 
+                                        BorderBrush="{StaticResource MainBackGround}"
+                                        BorderThickness="2" 
+                                        CornerRadius="8">
+                                        <ScrollViewer Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsEnabled" Value="False">
+                                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                                        </Trigger>
+                                        <Trigger Property="Width" Value="Auto">
+                                            <Setter Property="MinWidth" Value="100"/>
+                                        </Trigger>
+                                        <Trigger Property="Height" Value="Auto">
+                                            <Setter Property="MinHeight" Value="37"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding AdminVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
                                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -73,6 +139,18 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
+            <Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Mot de Passe Admin" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding AdminHintVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
         </Grid>
 
         <Button Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Créer l'utilisateur" Click="UserCreation"/>

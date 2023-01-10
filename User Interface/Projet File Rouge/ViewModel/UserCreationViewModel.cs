@@ -44,16 +44,17 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (FieldCheck())
             {
+                string version = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).FileVersion;
                 // Check permissions
                 if (AccessLevelField == (int)User.AccessLevel.Admin)
                 {
                     // user admin creation
-                    RequestCenter.PostUser(new User(UserNameField, AdminPasswordField, (User.AccessLevel)AccessLevelField).JsonifyLogIn());
+                    RequestCenter.PostUser(new User(UserNameField, AdminPasswordField, (User.AccessLevel)AccessLevelField, version).JsonifyLogIn());
                 }
                 else
                 {
                     // user creation
-                    RequestCenter.PostUser(new User(UserNameField, string.Empty, (User.AccessLevel)AccessLevelField).JsonifyLogIn());
+                    RequestCenter.PostUser(new User(UserNameField, string.Empty, (User.AccessLevel)AccessLevelField, version).JsonifyLogIn());
                 }
                 PopUpCenter.MessagePopup("L'utilisateur " + UserNameField + " a bien été crééer avec le niveau d'accès : " + ((User.AccessLevel)AccessLevelField).ToString());
                 RequestCenter.PostLog(new Log("Création de l'utilisateur " + UserNameField + " => " + AccessLevelField, DateTime.Now, Log.LogTypeEnum.User, actualUser).Jsonify());
@@ -98,8 +99,10 @@ namespace Projet_File_Rouge.ViewModel
             {
                 userNameField = value;
                 OnPropertyChanged(nameof(UserNameField));
+                OnPropertyChanged(nameof(UserNameFieldVisibility));
             }
         }
+        public bool UserNameFieldVisibility => UserNameField != null && UserNameField.Length > 0;
 
         public List<string> AccessLevelList
         {
@@ -114,6 +117,7 @@ namespace Projet_File_Rouge.ViewModel
                 OnPropertyChanged(nameof(AccessLevelField));
                 OnPropertyChanged(nameof(ListVisibility));
                 OnPropertyChanged(nameof(AdminVisibility));
+                OnPropertyChanged(nameof(AdminHintVisibility));
             }
         }
 
@@ -124,9 +128,11 @@ namespace Projet_File_Rouge.ViewModel
             {
                 adminPasswordField = value;
                 OnPropertyChanged(nameof(AdminPasswordField));
+                OnPropertyChanged(nameof(AdminHintVisibility));
             }
         }
         public bool AdminVisibility => AccessLevelField != (int)User.AccessLevel.Admin;
+        public bool AdminHintVisibility => AdminVisibility || (AdminPasswordField != null && AdminPasswordField.Length > 0);
 
         public bool ListVisibility
         {

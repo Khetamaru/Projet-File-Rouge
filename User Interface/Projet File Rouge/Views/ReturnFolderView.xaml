@@ -1,0 +1,144 @@
+﻿<UserControl x:Class="Projet_File_Rouge.Views.ReturnFolderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Projet_File_Rouge.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Image x:Key="left" Source="../Img/arrow_left.png"/>
+        <Image x:Key="right" Source="../Img/arrow_right.png"/>
+
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ArrowStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource GlobalBackground}" Background="{StaticResource GlobalBackground}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" MinWidth="200" FontSize="20" Command="{Binding NavigateMainMenuCommand}" Style="{StaticResource ReturnButtonStyle}"/>
+        
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/date.png"/>
+                <DatePicker Grid.Row="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+
+            <Grid Grid.Column="1" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/tech.png"/>
+                <ComboBox Grid.Row="1" Margin="12" Padding="5" HorizontalContentAlignment="Center" FontSize="20" ItemsSource="{Binding UserList}" SelectedIndex="{Binding UserId, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Aucune Selection" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="Visibility" Value="Visible"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UserListNullVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
+            </Grid>
+
+            <Grid Grid.Column="2" VerticalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/client.png"/>
+                <TextBox Grid.Row="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Stretch" Text="{Binding ClientName, UpdateSourceTrigger=PropertyChanged}"/>
+            </Grid>
+
+            <Button Grid.Column="3" Margin="12" Padding="5" MinHeight="60" FontSize="20" VerticalAlignment="Center" Content="Filtrer" Click="Filter"/>
+            <Button Grid.Column="4" Margin="12" Padding="5" MinHeight="60" FontSize="20" VerticalAlignment="Center" Content="Annuler Filtre" Click="AntiFilter"/>
+        </Grid>
+
+        <DataGrid Grid.Row="2" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" MinRowHeight="40" AutoGenerateColumns="False" CanUserResizeColumns="True" IsReadOnly="True" ItemsSource="{Binding RedWireList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="GoDetails">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="Prise en charge" Binding="{Binding InChargeDateFormated}"/>
+                <DataGridTextColumn Width="*" Header="Début réparation" Binding="{Binding RepairStartDateFormated}"/>
+                <DataGridTextColumn Width="*" Header="Fin réparation" Binding="{Binding RepairEndDateFormated}"/>
+                <DataGridTextColumn Width="*" Header="Numéro Prise en Charge" Binding="{Binding Client}"/>
+                <DataGridTextColumn Width="*" Header="Type de Support" Binding="{Binding Type}"/>
+                <DataGridTextColumn Width="*" Header="Model du Support" Binding="{Binding Model}"/>
+                <DataGridTextColumn Width="*" Header="Réparateur" Binding="{Binding ActualRepairMan.Name}"/>
+                <DataGridTextColumn Width="*" Header="Nom Client" Binding="{Binding ClientName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Width="40" Height="40" Content="{StaticResource left}" Background="Transparent" BorderBrush="Transparent" Click="ArrowLeft" Style="{StaticResource ArrowStyle}"/>
+            <TextBlock Grid.Column="1" Margin="12" Padding="5" FontSize="20" HorizontalAlignment="Center" Text="{Binding Pagination, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Grid.Column="2" Width="40" Height="40" Content="{StaticResource right}" Background="Transparent" BorderBrush="Transparent" Click="ArrowRight" Style="{StaticResource ArrowStyle}"/>
+
+        </Grid>
+    </Grid>
+</UserControl>

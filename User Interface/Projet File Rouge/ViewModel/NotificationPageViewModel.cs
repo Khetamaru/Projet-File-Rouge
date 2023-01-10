@@ -32,6 +32,7 @@ namespace Projet_File_Rouge.ViewModel
                 RedWireNotifEditAdmin(user);
                 CommandListNotifEdit();
                 PurgeNotifAdmin();
+                SaveDataAdmin();
             }
             else
             {
@@ -44,6 +45,23 @@ namespace Projet_File_Rouge.ViewModel
             }
             MissingCallNotifEdit(user.Id);
             warningText = WarningTextEdit(user);
+        }
+
+        private void SaveDataAdmin()
+        {
+            DbSave dbSave = RequestCenter.GetDbSaveLast();
+            if (dbSave == null || dbSave.date <= DateTime.Now.AddDays(-7))
+            {
+                if (dbSave != null) stackPanelContent.Add("\n" +
+                                          "Date de la dernière sauvegarde : " + dbSave.date + "\n\n" +
+                                          "Une sauvegarde de la base de données doit être effectuée." +
+                                          "\n");
+
+                else stackPanelContent.Add("\n" +
+                                          "Aucune sauvegarde effectuée\n\n" +
+                                          "Une sauvegarde de la base de données doit être effectuée." +
+                                          "\n");
+            }
         }
 
         /// <summary>
@@ -203,6 +221,17 @@ namespace Projet_File_Rouge.ViewModel
                                               "Le fournisseur a été contacté depuis plus de 5 jours sans réponse." +
                                               "\n");
                     }
+                }
+                else if (redWire.ActualState == RedWire.state.payement_différé)
+                {
+                    stackPanelContent.Add("\n" +
+                                          "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +
+                                          "Nom du client : " + redWire.ClientName + "\n" +
+                                          "Dernière action sur le dossier : " + redWire.LastUpdateFormated + "\n" +
+                                          "Nombre de jours sans action : " + Math.Round((DateTime.Now - redWire.LastUpdate).TotalDays, 1) + "\n" +
+                                          "Etat actuel : " + redWire.ActualState.ToString() + "\n\n" +
+                                          "Payement différé en attente de règlement." +
+                                          "\n");
                 }
                 else
                 {

@@ -16,6 +16,7 @@ namespace Projet_File_Rouge
             NavigationStore navigationStore = new NavigationStore();
             CacheStore cacheStore = new CacheStore(CloseApp);
 
+            navigationStore.NavBarViewModel = null;
             navigationStore.CurrentViewModel = new LoginViewModel(navigationStore, cacheStore);
 
             MainWindow = new MainWindow()
@@ -32,7 +33,7 @@ namespace Projet_File_Rouge
 
         private void CloseApp()
         {
-            OnExit(new EventArgs() as ExitEventArgs);
+            Shutdown();
         }
     }
 }

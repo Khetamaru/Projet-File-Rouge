@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using Projet_File_Rouge.Commands;
 using Projet_File_Rouge.Object;
 using Projet_File_Rouge.Stores;
@@ -26,13 +28,32 @@ namespace Projet_File_Rouge.ViewModel
             NavigatePersoSpaceCommand = new NavigatePersoSpaceCommand(navigationStore, cacheStore);
             NavigateOldFolderCommand = new NavigateOldFolderCommand(navigationStore, cacheStore);
             NavigateFreeFolderCommand = new NavigateFreeFolderCommand(navigationStore, cacheStore);
+            NavigateReturnFolderCommand = new NavigateReturnFolderCommand(navigationStore, cacheStore);
             NavigateCommandCenterCommand = new NavigateCommandCenterCommand(navigationStore, cacheStore);
             NavigateParameterMenuCommand = new NavigateParameterMenuCommand(navigationStore, cacheStore);
 
             // set up BDD objects
-            userName = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)).Name;
+            User user = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+            userName = user.Name;
             notifNumber = cacheStore.GetObjectCache(ObjectCacheStoreEnum.notifNumber);
             missingCallNumber = cacheStore.GetObjectCache(ObjectCacheStoreEnum.missingCallNumber);
+
+            // patch note
+            string versionNumber = RequestCenter.GetVersion().VersionNumber;
+            if (versionNumber != user.VersionSynced)
+            {
+                ShowPatchNote(user.VersionSynced, versionNumber);
+                user.VersionSynced = versionNumber;
+                RequestCenter.PutUser(user.Id, user.Jsonify());
+            }
+        }
+
+        private void ShowPatchNote(string versionSynced, string versionNumber)
+        {
+            PopUpCenter.MessagePopup("PATCH NOTE\n\n" +
+                                     "Ancienne Version : " + versionSynced + "\n" +
+                                     "Nouvelle Version : " + versionNumber + "\n\n" +
+                                     "Description : \n" + ConfigurationManager.AppSettings["patch_note"]);
         }
 
         public string UserName => userName;
@@ -57,5 +78,6 @@ namespace Projet_File_Rouge.ViewModel
         public NavigateFreeFolderCommand NavigateFreeFolderCommand { get; }
         public NavigateCommandCenterCommand NavigateCommandCenterCommand { get; }
         public NavigateParameterMenuCommand NavigateParameterMenuCommand { get; }
+        public NavigateReturnFolderCommand NavigateReturnFolderCommand { get; }
     }
 }

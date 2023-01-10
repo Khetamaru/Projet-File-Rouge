@@ -3,9 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Projet_File_Rouge.Views" xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:NewFileViewModel}"
+             xmlns:local="clr-namespace:Projet_File_Rouge.Views" xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:NewFileViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
 
         <Grid.RowDefinitions>
@@ -15,39 +42,56 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Button  Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Command="{Binding NavigateMainMenuCommand}"/>
+        <Button  Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" MinWidth="200" FontSize="20" Command="{Binding NavigateMainMenuCommand}" Style="{StaticResource ReturnButtonStyle}"/>
 
-        <TabControl x:Name="newFileTabsForm" Grid.Row="1" HorizontalAlignment="Stretch"  Margin="12" Padding="5" FontSize="20">
+        <TabControl x:Name="newFileTabsForm" Grid.Row="1" HorizontalAlignment="Stretch"  Margin="12" Padding="5" FontSize="20" Background="Transparent">
             
             <TabItem Header="Prise en Charge" Visibility="Visible">
-                <Grid>
+                <Border BorderBrush="{StaticResource GlobalBackground}" Background="Transparent" CornerRadius="8" BorderThickness="2">
+                    <Grid>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="N° Prise en Charge EBP"/>
-                    <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
-                    <Grid Grid.Row="0" Grid.Column="2" VerticalAlignment="Center">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <TextBox Grid.Row="0" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding InChargeNumber}"/>
-                        <Button Grid.Row="1" Content="Import Infos" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Click="CMSaleDocument"/>
+
+                        <Grid Grid.Row="0" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBox Grid.Row="0" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding InChargeNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="N° Prise en Charge EBP *" Focusable="False" Foreground="Red" Opacity="0.5" IsHitTestVisible="False">
+                                <Label.Style>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding InChargeNumberVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                            <Button Grid.Row="1" Content="Import Infos" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" MinHeight="60" FontSize="20" Click="CMSaleDocument"/>
+                        </Grid>
+
+                        <TextBox Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding OptionEBP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="N° Facture/Devis initial EBP" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                            <Label.Style>
+                                <Style TargetType="{x:Type Label}">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OptionEBPVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+
                     </Grid>
-
-                    <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="N° Facture EBP"/>
-                    <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding OptionEBP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                </Grid>
+                </Border>
             </TabItem>
 
             <TabItem Header="Client" Visibility="Visible">
@@ -59,44 +103,41 @@
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    
+
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Nom du Client"/>
+                    <Image Grid.Row="0" Grid.Column="0" Source="../Img/client.png" MaxHeight="40" MaxWidth="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding ClientName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Numéro de Téléphone"/>
+                    <Image Grid.Row="1" Grid.Column="0" Source="../Img/cellphone.png" MaxHeight="40" MaxWidth="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding PhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Numéro de Portable"/>
+                    <Image Grid.Row="2" Grid.Column="0" Source="../Img/smartphone.png" MaxHeight="40" MaxWidth="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding CellPhoneNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Email"/>
+                    <Image Grid.Row="3" Grid.Column="0" Source="../Img/mail.png" MaxHeight="40" MaxWidth="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
                     <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Addresse"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Addresse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Image Grid.Row="0" Grid.Column="2" Source="../Img/adress.png" MaxHeight="40" MaxWidth="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Addresse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Ville"/>
-                    <TextBlock Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Image Grid.Row="1" Grid.Column="2" Source="../Img/city.png" MaxHeight="40" MaxWidth="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding City, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Code Postal"/>
-                    <TextBlock Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding CP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Image Grid.Row="2" Grid.Column="2" Source="../Img/postal_code.png" MaxHeight="40" MaxWidth="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding CP, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Row="7" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Département"/>
-                    <TextBlock Grid.Row="7" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Image Grid.Row="3" Grid.Column="2" Source="../Img/department.png" MaxHeight="40" MaxWidth="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <Label Grid.Row="8" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Pays"/>
-                    <TextBlock Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
+                    <Image Grid.Row="4" Grid.Column="2" Source="../Img/country.png" MaxHeight="40" MaxWidth="40" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+                    <TextBlock Grid.Row="4" Grid.Column="3" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Country, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </TabItem>
 
@@ -113,26 +154,49 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
+                    <ComboBox Grid.Row="0" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding SupportTypeList}" SelectedItem="{Binding SupportType, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Type du support *" Foreground="Red" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SupportTypeVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
 
-                    <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Type du support"/>
-                    <Label Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
-                    <ComboBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding SupportTypeList}" SelectedItem="{Binding SupportType}"/>
+                    <TextBox Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" TextChanged="SupportModel"/>
+                    <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Modèle de l'appareil *" Foreground="Red" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SupportModelVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
 
-                    <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Modèle de l'appareil"/>
-                    <Label Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
-                    <TextBox Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" TextChanged="SupportModel"/>
+                    <ComboBox Grid.Row="2" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding ActionTypeList}" SelectedItem="{Binding ActionType, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Type de dossier *" Foreground="Red" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ActionTypeVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
 
-                    <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Type de dossier"/>
-                    <Label Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
-                    <ComboBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" ItemsSource="{Binding ActionTypeList}" SelectedItem="{Binding ActionType}"/>
-
-                    <Label Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Accessoires"/>
-                    <Grid Grid.Row="3" Grid.Column="2" VerticalAlignment="Center">
+                    <Grid Grid.Row="3" VerticalAlignment="Center">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -140,34 +204,61 @@
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="2*" />
                         </Grid.ColumnDefinitions>
 
-                        <CheckBox Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Sacoche" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                        <CheckBox Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Chargeur" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                        <CheckBox Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Souris" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                        <CheckBox Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Batterie" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                        <CheckBox Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Autre" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
-                        <TextBox  Grid.Column="5" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding OtherText, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label    Grid.Column="0" Margin="12" Padding="5" FontSize="20" Content="Accessoires :"/>
+                        <CheckBox Grid.Column="1" FontSize="20" Content="Sacoche" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <CheckBox Grid.Column="2" FontSize="20" Content="Chargeur" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <CheckBox Grid.Column="3" FontSize="20" Content="Souris" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <CheckBox Grid.Column="4" FontSize="20" Content="Batterie" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                        <Grid Grid.Column="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" FontSize="20" Content="Autre" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                            <TextBox Grid.Column="1" HorizontalContentAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding OtherText, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
                     </Grid>
 
-                    <Label Grid.Row="4" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Garantie"/>
-                    <CheckBox Grid.Row="4" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Sous Garanti" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    <Grid Grid.Row="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Garantie :"/>
+                        <CheckBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Sous Garanti" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    </Grid>
 
-                    <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Problème Constaté"/>
-                    <CheckBox Grid.Row="5" Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Problème reproduit et/ou constaté" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    <Grid Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Problème Constaté :"/>
+                        <CheckBox Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Problème reproduit et/ou constaté" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+                    </Grid>
 
-                    <Label Grid.Row="6" Grid.Column="0" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" Content="Etat du matériel"/>
-                    <Label Grid.Row="6" Grid.Column="1" HorizontalAlignment="Center" Margin="12" Padding="5" FontSize="20" VerticalAlignment="Center" FontStyle="Italic" Foreground="Red" Content="(*)"/>
-                    <TextBox Grid.Row="6" Grid.Column="2" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" TextChanged="SupportState"/>
-                    
+                    <TextBox Grid.Row="6" Grid.Column="2" HorizontalContentAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" TextChanged="SupportState"/>
+                    <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Etat du matériel *" Foreground="Red" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                        <Label.Style>
+                            <Style TargetType="{x:Type Label}">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SupportStateVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
                 </Grid>
             </TabItem>
-
         </TabControl>
 
-        <Label Grid.Row="2" Content="(*) Champ à remplir Obligatoirement" FontStyle="Italic" Foreground="Red" Margin="12" Padding="5" FontSize="20"/>
-        <Button Grid.Row="3" Content="Validation" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Click="RedWireCreation"/>
+        <Label Grid.Row="2" Content="(*) Champ à remplir Obligatoirement" Margin="12" Padding="5" FontSize="20" Foreground="Red" Opacity="0.5"/>
+        <Button Grid.Row="3" Content="Validation" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="60" Margin="12" Padding="5" FontSize="20" Click="RedWireCreation"/>
 
     </Grid>
 </UserControl>

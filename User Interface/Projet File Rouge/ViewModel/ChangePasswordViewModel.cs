@@ -70,20 +70,35 @@ namespace Projet_File_Rouge.ViewModel
         public string OldPassword
         {
             get => oldPassword;
-            set => oldPassword = value;
+            set 
+            {
+                oldPassword = value;
+                OnPropertyChanged(nameof(OldPasswordVisibility));
+            }
         }
+        public bool OldPasswordVisibility => OldPassword != null && OldPassword.Length > 0;
 
         public string NewPassword
         {
             get => newPassword;
-            set => newPassword = value;
+            set
+            {
+                newPassword = value;
+                OnPropertyChanged(nameof(NewPasswordVisibility));
+            }
         }
+        public bool NewPasswordVisibility => NewPassword != null && NewPassword.Length > 0;
 
         public string NewPasswordConfirm
         {
             get => newPasswordConfirm;
-            set => newPasswordConfirm = value;
+            set
+            {
+                newPasswordConfirm = value;
+                OnPropertyChanged(nameof(NewPasswordConfirmVisibility));
+            }
         }
+        public bool NewPasswordConfirmVisibility => NewPasswordConfirm != null && NewPasswordConfirm.Length > 0;
 
         /// <summary>
         /// Commands

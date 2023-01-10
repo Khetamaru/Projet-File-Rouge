@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Projet_File_Rouge.ExternalInfoFile;
 using Projet_File_Rouge.Object;
 using Projet_File_Rouge.Stores;
@@ -44,6 +45,7 @@ namespace Projet_File_Rouge.Commands
                 OutDatedNotif(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
                 MissingCallNumber(RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser)));
                 navigationStore.CurrentViewModel = new MainMenuViewModel(navigationStore, cacheStore);
+                navigationStore.NavBarViewModel = new NavBarViewModel(navigationStore, cacheStore);
             }
             else
             {
@@ -62,6 +64,9 @@ namespace Projet_File_Rouge.Commands
                 Count += RequestCenter.GetRedWireNotifAdminNumber();
                 Count += RequestCenter.GetCommandListNotifNumber();
                 Count += RequestCenter.GetRedWirePurgeNumber();
+
+                DbSave dbSave = RequestCenter.GetDbSaveLast();
+                if (dbSave == null || dbSave.date <= DateTime.Now.AddDays(-7)) Count++;
             }
             else
             {

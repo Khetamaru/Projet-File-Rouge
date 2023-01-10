@@ -19,7 +19,7 @@ namespace Projet_File_Rouge.Views
         private void GoDetails(object sender, MouseButtonEventArgs e)
         {
             DocumentList Document = (sender as DataGrid).SelectedItem as DocumentList;
-            ((dynamic)DataContext as DocumentCenterViewModel).NavigateDocumentCommand.SetSaleDocumentCacheInfo(Document.Document);
+            ((dynamic)DataContext as DocumentCenterViewModel).NavigateDocumentCommand.SetSaleDocumentCacheInfo(Document.Document, Document.Id);
             ((dynamic)DataContext as DocumentCenterViewModel).NavigateDocumentCommand.Execute(null);
         }
     }

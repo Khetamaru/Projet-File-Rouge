@@ -145,8 +145,13 @@ namespace Projet_File_Rouge.ViewModel
         public string InChargeNumber
         {
             get { return inChargeNumber; }
-            set { inChargeNumber = value; }
+            set 
+            { 
+                inChargeNumber = value;
+                OnPropertyChanged(nameof(InChargeNumberVisibility));
+            }
         }
+        public bool InChargeNumberVisibility { get => InChargeNumber != null && InChargeNumber.Length > 0; }
 
         public SaleDocument SaleDocument
         {
@@ -161,8 +166,13 @@ namespace Projet_File_Rouge.ViewModel
         public string OptionEBP
         {
             get { return optionEBP; }
-            set { optionEBP = value; }
+            set 
+            { 
+                optionEBP = value;
+                OnPropertyChanged(nameof(OptionEBPVisibility));
+            }
         }
+        public bool OptionEBPVisibility { get => OptionEBP != null && OptionEBP.Length > 0; }
 
         public SaleDocument OptionDocument
         {
@@ -231,7 +241,7 @@ namespace Projet_File_Rouge.ViewModel
             else { stringList.Add("ATTENTION : Problème non reproduit avec le client lors de la prise en charge"); }
             if (ActionType != null) { stringList.Add("Type de dossier : " + ActionType); }
             if (SupportModel != null) { stringList.Add("Model de l'appareil : " + SupportModel); }
-            stringList.Add("Dossier pris en charge par : " + ActualUser.Name);
+            stringList.Add("Dossier créé par : " + ActualUser.Name);
         }
 
         /// <summary>
@@ -258,7 +268,7 @@ namespace Projet_File_Rouge.ViewModel
                 }
                 else { OptionDocument = temp; }
 
-                stringList.Add("Facture de diag : " + OptionEBP);
+                stringList.Add("Facture de diag/devis initial : " + OptionEBP);
             }
             if (actionType == null)
             {
@@ -468,8 +478,11 @@ namespace Projet_File_Rouge.ViewModel
         public RedWire.Action? ActionType
         {
             get { return actionType; }
-            set { actionType = value; }
+            set { actionType = value;
+                OnPropertyChanged(nameof(ActionTypeVisibility));
+            }
         }
+        public bool ActionTypeVisibility { get => ActionType != null; }
 
         public List<RedWire.EquipmentType> SupportTypeList 
         {
@@ -488,14 +501,20 @@ namespace Projet_File_Rouge.ViewModel
         public RedWire.EquipmentType? SupportType
         {
             get { return supportType; }
-            set { supportType = value; }
+            set { supportType = value;
+                OnPropertyChanged(nameof(SupportTypeVisibility));
+            }
         }
+        public bool SupportTypeVisibility { get => SupportType != null; }
 
         public string SupportModel
         {
             get { return supportModel; }
-            set { supportModel = value; }
+            set { supportModel = value;
+                OnPropertyChanged(nameof(SupportModelVisibility));
+            }
         }
+        public bool SupportModelVisibility { get => SupportModel != null && SupportModel.Length > 0; }
 
         private bool Bag
         {
@@ -548,8 +567,11 @@ namespace Projet_File_Rouge.ViewModel
         public string SupportState
         {
             get { return supportState; }
-            set { supportState = value; }
+            set { supportState = value;
+                OnPropertyChanged(nameof(SupportStateVisibility));
+            }
         }
+        public bool SupportStateVisibility { get => SupportState != null && SupportState.Length > 0; }
 
         /// <summary>
         /// Commands

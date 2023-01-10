@@ -9,6 +9,7 @@ namespace Projet_File_Rouge.Object
         public int id { get; set; }
         public string versionNumber { get; set; }
         public DateTime date { get; set; }
+        public bool urgent { get; set; }
 
         public void PostChild(DbContext dbContext) { }
 

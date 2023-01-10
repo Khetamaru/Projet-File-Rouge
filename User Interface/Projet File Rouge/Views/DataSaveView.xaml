@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="Projet_File_Rouge.Views.DataSaveView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Projet_File_Rouge.Views" 
+             xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:DataSaveViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="1280">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" MinWidth="200" FontSize="20" Content="Retour" Command="{Binding NavigateParameterMenuCommand}" Style="{StaticResource ReturnButtonStyle}"/>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Name="TopGrid">
+
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Sauvegarde de la base de données"/>
+
+            <Popup IsOpen="{Binding FTPPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
+                    <Grid>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="FTPNoButton"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Connexion au service FTP"/>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nom d'utilisateur : "/>
+                                <TextBox Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding FTPLoginField, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+
+                            <Grid Grid.Row="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Mot de passe : "/>
+                                <PasswordBox x:Name="Password"  Grid.Column="1" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" PasswordChanged="PasswordBox_FTPPasswordField"/>
+                            </Grid>
+
+                            <Grid Grid.Row="4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="FTPYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="FTPNoButton"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Popup>
+        </Grid>
+
+        <Button Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" MinHeight="60" FontSize="20" Content="Confirmer" Click="LaunchSave"/>
+    </Grid>
+</UserControl>

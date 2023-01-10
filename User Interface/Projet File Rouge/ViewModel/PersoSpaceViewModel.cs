@@ -57,9 +57,9 @@ namespace Projet_File_Rouge.ViewModel
         /// </summary>
         private void PageInit()
         {
-            int redWireTotal = RequestCenter.GetRedWireNumberNoOld(date, step, userId, clientName);
+            int redWireTotal = RequestCenter.GetRedWireNumberPerso(date, step, userId, clientName);
 
-            redWireList = RequestCenter.GetRedWirePageWithoutOld(0, date, step, userId, clientName);
+            redWireList = RequestCenter.GetRedWirePagePerso(0, date, step, userId, clientName);
 
             CalculPageNumber(redWireTotal);
 
@@ -129,7 +129,7 @@ namespace Projet_File_Rouge.ViewModel
             if (actualPage > 1)
             {
                 actualPage--;
-                RedWireList = RequestCenter.GetRedWirePageWithoutOld(actualPage - 1, date, step, userId, clientName);
+                RedWireList = RequestCenter.GetRedWirePagePerso(actualPage - 1, date, step, userId, clientName);
                 OnPropertyChanged(nameof(Pagination));
             }
         }
@@ -139,15 +139,15 @@ namespace Projet_File_Rouge.ViewModel
             if (actualPage < pageNumber)
             {
                 actualPage++;
-                RedWireList = RequestCenter.GetRedWirePageWithoutOld(actualPage - 1, date, step, userId, clientName);
+                RedWireList = RequestCenter.GetRedWirePagePerso(actualPage - 1, date, step, userId, clientName);
                 OnPropertyChanged(nameof(Pagination));
             }
         }
 
         public void Filter()
         {
-            RedWireList = RequestCenter.GetRedWirePageWithoutOld(actualPage - 1, date, step, userId, clientName);
-            CalculPageNumber(RequestCenter.GetRedWireNumber(date, step, userId, clientName));
+            RedWireList = RequestCenter.GetRedWirePagePerso(actualPage - 1, date, step, userId, clientName);
+            CalculPageNumber(RequestCenter.GetRedWireNumberPerso(date, step, userId, clientName));
             actualPage = 1;
             OnPropertyChanged(nameof(Pagination));
         }
@@ -155,8 +155,8 @@ namespace Projet_File_Rouge.ViewModel
         public void AntiFilter()
         {
             FilterInit();
-            RedWireList = RequestCenter.GetRedWirePageWithoutOld(actualPage - 1, date, step, userId, clientName);
-            CalculPageNumber(RequestCenter.GetRedWireNumber(date, step, userId, clientName));
+            RedWireList = RequestCenter.GetRedWirePagePerso(actualPage - 1, date, step, userId, clientName);
+            CalculPageNumber(RequestCenter.GetRedWireNumberPerso(date, step, userId, clientName));
             actualPage = 1;
             OnPropertyChanged(nameof(Pagination));
             OnPropertyChanged(nameof(Date));

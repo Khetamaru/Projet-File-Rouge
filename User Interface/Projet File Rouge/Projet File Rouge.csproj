@@ -6,9 +6,10 @@
     <RootNamespace>Projet_File_Rouge</RootNamespace>
     <UseWPF>true</UseWPF>
     <StartupObject>Projet_File_Rouge.App</StartupObject>
-    <ApplicationIcon>logo final.ico</ApplicationIcon>
+    <ApplicationIcon>Img\logo_simple.ico</ApplicationIcon>
     <Version>$(VersionPrefix)</Version>
-	<VersionPrefix>2.0.1</VersionPrefix>
+	<VersionPrefix>3.1.0</VersionPrefix>
+	<ApplicationManifest>app.manifest</ApplicationManifest>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
   </PropertyGroup>
 
@@ -17,22 +18,83 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Img\access_level.png" />
+    <None Remove="Img\adress.png" />
     <None Remove="Img\arrow_left.png" />
     <None Remove="Img\arrow_right.png" />
+    <None Remove="Img\author.png" />
+    <None Remove="Img\cellphone.png" />
+    <None Remove="Img\city.png" />
+    <None Remove="Img\client.png" />
+    <None Remove="Img\command_name.png" />
+    <None Remove="Img\country.png" />
+    <None Remove="Img\date.png" />
+    <None Remove="Img\department.png" />
+    <None Remove="Img\login_button.png" />
+    <None Remove="Img\logo.png" />
+    <None Remove="Img\logo_simple.png" />
+    <None Remove="Img\log_out_logo.png" />
+    <None Remove="Img\mail.png" />
+    <None Remove="Img\message.png" />
+    <None Remove="Img\new_password.png" />
+    <None Remove="Img\old_password.png" />
+    <None Remove="Img\parameter_logo.png" />
+    <None Remove="Img\popup_background.png" />
+    <None Remove="Img\postal_code.png" />
+    <None Remove="Img\smartphone.png" />
+    <None Remove="Img\statut.png" />
+    <None Remove="Img\tech.png" />
+    <None Remove="Img\url.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Img\logo_simple.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Img\access_level.png" />
+    <Resource Include="Img\adress.png" />
     <Resource Include="Img\arrow_left.png" />
     <Resource Include="Img\arrow_right.png" />
+    <Resource Include="Img\author.png" />
+    <Resource Include="Img\cellphone.png" />
+    <Resource Include="Img\city.png" />
+    <Resource Include="Img\client.png" />
+    <Resource Include="Img\command_name.png" />
+    <Resource Include="Img\country.png" />
+    <Resource Include="Img\date.png" />
+    <Resource Include="Img\department.png" />
+    <Resource Include="Img\login_button.png" />
+    <Resource Include="Img\logo.png" />
+    <Resource Include="Img\logo_simple.png" />
+    <Resource Include="Img\log_out_logo.png" />
+    <Resource Include="Img\mail.png" />
+    <Resource Include="Img\message.png" />
+    <Resource Include="Img\new_password.png" />
+    <Resource Include="Img\old_password.png" />
+    <Resource Include="Img\parameter_logo.png" />
+    <Resource Include="Img\popup_background.png" />
+    <Resource Include="Img\postal_code.png" />
+    <Resource Include="Img\smartphone.png" />
+    <Resource Include="Img\statut.png" />
+    <Resource Include="Img\tech.png" />
+    <Resource Include="Img\url.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="MvvmCross" Version="9.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="FluentFTP" Version="42.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="MvvmCross" Version="9.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\DocumentFTPCenterView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\DataSaveView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\FolderPurgeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -48,6 +110,9 @@
     <Compile Update="Views\LogCenterView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\NavBarView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\MissingCallSendDetailsView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -61,6 +126,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\MissingCallPersoView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ReturnFolderView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\UserHistoryView.xaml.cs">
@@ -93,6 +161,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="Views\DocumentFTPCenterView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DataSaveView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Update="Views\FolderPurgeView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -113,6 +190,10 @@
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\NavBarView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\MissingCallSendDetailsView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
@@ -130,6 +211,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\MissingCallPersoView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ReturnFolderView.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>

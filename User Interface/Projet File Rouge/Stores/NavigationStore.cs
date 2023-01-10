@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Projet_File_Rouge.ViewModel;
 
 namespace Projet_File_Rouge.Stores
@@ -12,10 +8,20 @@ namespace Projet_File_Rouge.Stores
     /// </summary>
     public class NavigationStore
     {
+        public event Action NavBarViewModelChanged;
+        private ViewModelBase navBarViewModel;
+        public ViewModelBase NavBarViewModel
+        {
+
+            get => navBarViewModel;
+            set
+            {
+                navBarViewModel = value;
+                OnCurrentViewModelChanged();
+            }
+        }
         public event Action CurrentViewModelChanged;
-
         private ViewModelBase currentViewModel;
-
         public ViewModelBase CurrentViewModel {
 
             get => currentViewModel;
@@ -28,6 +34,7 @@ namespace Projet_File_Rouge.Stores
 
         private void OnCurrentViewModelChanged()
         {
+            NavBarViewModelChanged?.Invoke();
             CurrentViewModelChanged?.Invoke();
         }
     }

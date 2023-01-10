@@ -60,6 +60,12 @@ namespace Red_Wire_API
             services.AddDbContext<MissingCallContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
 
+            services.AddDbContext<DocumentFTPContext>(opt =>
+                opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
+
+            services.AddDbContext<DbSaveContext>(opt =>
+                opt.UseMySql(redWireConnectionString.GetConnectionString(), ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
+
             services.AddDbContext<SaleDocumentContext>(opt =>
                 opt.UseSqlServer(ebpConnectionString.GetConnectionString() + ";Encrypt=true;TrustServerCertificate=true;", providerOptions => providerOptions.EnableRetryOnFailure()));
 
@@ -76,6 +82,7 @@ namespace Red_Wire_API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseHttpLogging();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

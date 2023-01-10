@@ -7,6 +7,32 @@
              xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:CommandViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="1280">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,8 +40,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Retour" Command="{Binding NavigateCommandCenterCommand}"/>
-        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Suivi de dossier" Command="{Binding NavigateRedWireCommand}"/>
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" MinWidth="200" FontSize="20" Content="Retour" Command="{Binding NavigateCommandCenterCommand}" Style="{StaticResource ReturnButtonStyle}"/>
+        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12" Padding="5" MinWidth="200" FontSize="20" Content="Suivi de dossier" Command="{Binding NavigateRedWireCommand}"/>
 
         <Grid Grid.Row="1" HorizontalAlignment="Center" Name="TopGrid">
             <Grid.RowDefinitions>
@@ -25,49 +51,26 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Nom de la commande"/>
-                <TextBox Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding Command.Name, Mode=OneWay}"/>
-            </Grid>
+            <Image Grid.Row="0" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/command_name.png"/>
+            <TextBox Grid.Row="0" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" IsReadOnly="True" BorderThickness="0" Text="{Binding Command.Name, Mode=OneWay}"/>
 
-            <Grid Grid.Row="1" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <Image Grid.Row="1" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/url.png"/>
+            <TextBlock Grid.Row="1"  Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20">  
+                <Hyperlink RequestNavigate="HyperlinkRequest" NavigateUri="{Binding Command.Url}">  
+                    <TextBlock Text="{Binding Command.Url}"/>
+                </Hyperlink>
+            </TextBlock>
 
-                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="URL de la commande"/>
-                <TextBlock  Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20">  
-                    <Hyperlink RequestNavigate="HyperlinkRequest" NavigateUri="{Binding Command.Url}">  
-                        <TextBlock Text="{Binding Command.Url}"/>
-                    </Hyperlink>
-                </TextBlock>
-            </Grid>
+            <Image Grid.Row="2" Grid.Column="0" Margin="12" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/date.png"/>
+            <TextBlock Grid.Row="2" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Command.DeliveryDateFormated}"/>
 
-            <Grid Grid.Row="2" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de délai dépassé prévue"/>
-                <TextBlock Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Command.DeliveryDateFormated}"/>
-            </Grid>
-
-            <Grid Grid.Row="3" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Etat de la commande"/>
-                <TextBlock Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Command.State}"/>
-            </Grid>
+            <Image Grid.Row="3" Grid.Column="0" HorizontalAlignment="Center" MaxHeight="60" Source="../Img/statut.png"/>
+            <TextBlock Grid.Row="3" Grid.Column="1"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding Command.State}"/>
         </Grid>
 
         <Grid Grid.Row="2" HorizontalAlignment="Center">
@@ -78,9 +81,22 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Commander" Click="OpenCommandDonePopUp">
+            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" MinHeight="60" FontSize="20" Content="Commander" Click="OpenCommandDonePopUp">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColor}" Background="{StaticResource MainColor}" BorderThickness="2" Padding="5">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding CommandDoneButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -90,47 +106,64 @@
                     </Style>
                 </Button.Style>
             </Button>
-
-            <Popup IsOpen="{Binding CommandDonePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
-                <Border Background="LightGreen">
+            <Popup IsOpen="{Binding CommandDonePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CommandDoneNoButton"/>
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CommandDoneNoButton"/>
 
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Vous commandez l'article ?"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Vous commandez l'article ?"/>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de délai dépassé prévue"/>
-                            <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" SelectedDate="{Binding CommandDoneDateField, UpdateSourceTrigger=PropertyChanged}"/>
-                        </Grid>
+                                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de délai dépassé prévue"/>
+                                <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" SelectedDate="{Binding CommandDoneDateField, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
 
-                        <Grid Grid.Row="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CommandDoneYesButton"/>
-                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CommandDoneNoButton"/>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CommandDoneYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CommandDoneNoButton"/>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Border>
             </Popup>
 
-            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Commande arrivée" Click="OpenCommandArrivedPopUp">
+            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" MinHeight="60" FontSize="20" Content="Commande arrivée" Click="OpenCommandArrivedPopUp">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColor}" Background="{StaticResource MainColor}" BorderThickness="2" Padding="5">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding CommandArrivedButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -140,35 +173,52 @@
                     </Style>
                 </Button.Style>
             </Button>
-
-            <Popup IsOpen="{Binding CommandArrivedPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
-                <Border Background="LightGreen">
+            <Popup IsOpen="{Binding CommandArrivedPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CommandArrivedNoButton"/>
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Le matériel a été livré ?"/>
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CommandArrivedNoButton"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Le matériel a été livré ?"/>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CommandArrivedYesButton"/>
-                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CommandArrivedNoButton"/>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CommandArrivedYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CommandArrivedNoButton"/>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Border>
             </Popup>
 
-            <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Mise à jour date de délai dépassé" Click="OpenDeliveryDateUpdatePopUp">
+            <Button Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" MinHeight="60" FontSize="20" Content="Mise à jour date de délai dépassé" Click="OpenDeliveryDateUpdatePopUp">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColor}" Background="{StaticResource MainColor}" BorderThickness="2" Padding="5">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding DeliveryDateUpdateButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -178,46 +228,63 @@
                     </Style>
                 </Button.Style>
             </Button>
-
-            <Popup IsOpen="{Binding DeliveryDateUpdatePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
-                <Border Background="LightGreen">
+            <Popup IsOpen="{Binding DeliveryDateUpdatePopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="DeliveryDateUpdateNoButton"/>
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="La date de délai dépassé prévue doit être mise à jour ?"/>
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="DeliveryDateUpdateNoButton"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="La date de délai dépassé prévue doit être mise à jour ?"/>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de délai dépassé prévue"/>
-                            <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" SelectedDate="{Binding DeliveryDateUpdateField, UpdateSourceTrigger=PropertyChanged}"/>
-                        </Grid>
-                        
-                        <Grid Grid.Row="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Date de délai dépassé prévue"/>
+                                <DatePicker Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" SelectedDate="{Binding DeliveryDateUpdateField, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
 
-                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="DeliveryDateUpdateYesButton"/>
-                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="DeliveryDateUpdateNoButton"/>
+                            <Grid Grid.Row="3">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="DeliveryDateUpdateYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="DeliveryDateUpdateNoButton"/>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Border>
             </Popup>
 
-            <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Annulation commande" Click="OpenCancelCommandPopUp">
+            <Button Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" MinHeight="60" FontSize="20" Content="Annulation commande" Click="OpenCancelCommandPopUp">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColor}" Background="{StaticResource MainColor}" BorderThickness="2" Padding="5">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                         <Setter Property="Visibility" Value="Visible"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding CancelCommandButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
@@ -227,27 +294,31 @@
                     </Style>
                 </Button.Style>
             </Button>
-
-            <Popup IsOpen="{Binding CancelCommandPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center">
-                <Border Background="LightGreen">
+            <Popup IsOpen="{Binding CancelCommandPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
 
-                        <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CancelCommandNoButton"/>
-                        <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="La commande est annulée ?"/>
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CancelCommandNoButton"/>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="La commande est annulée ?"/>
 
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CancelCommandYesButton"/>
-                            <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CancelCommandNoButton"/>
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CancelCommandYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CancelCommandNoButton"/>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Border>

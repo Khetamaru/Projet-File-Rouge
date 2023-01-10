@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Projet_File_Rouge.Commands;
 using Projet_File_Rouge.EBPObject;
 using Projet_File_Rouge.Object;
@@ -14,6 +13,7 @@ namespace Projet_File_Rouge.ViewModel
     public class DocumentViewModel : ViewModelBase
     {
         private SaleDocument document;
+        private DocumentList documentList;
         private readonly List<SaleDocumentLine> stackPanelContent;
 
         public DocumentViewModel(NavigationStore navigationStore, CacheStore cacheStore)
@@ -24,6 +24,7 @@ namespace Projet_File_Rouge.ViewModel
 
             // set up BDD objects
             document = RequestCenter.GetSaleDocument(cacheStore.GetInfoCache(InfoCacheStoreEnum.SaleDocumentDetail));
+            documentList = RequestCenter.GetDocumentListById(cacheStore.GetObjectCache(ObjectCacheStoreEnum.DocumentListDetail));
             stackPanelContent = linesEdition(RequestCenter.GetSaleLines(document.Id));
         }
 
@@ -40,6 +41,12 @@ namespace Projet_File_Rouge.ViewModel
                 line.DescriptionClear = line.DescriptionClear.Replace("\\n", "\n");
             }
             return Lines;
+        }
+
+        internal void DeleteFile()
+        {
+            RequestCenter.DeleteDocumentList(documentList.Id);
+            NavigateDocumentCenterCommand.Execute(null);
         }
 
         public SaleDocument Document

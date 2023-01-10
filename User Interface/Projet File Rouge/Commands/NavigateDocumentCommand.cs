@@ -20,9 +20,11 @@ namespace Projet_File_Rouge.Commands
         /// Get sale document number for cache
         /// </summary>
         /// <param name="saleDocumentNumber"></param>
-        public void SetSaleDocumentCacheInfo(string saleDocumentNumber)
+        public void SetSaleDocumentCacheInfo(string saleDocumentNumber, int DocumentListId)
         {
             cacheStore.SetInfoCache(InfoCacheStoreEnum.SaleDocumentDetail, saleDocumentNumber);
+            cacheStore.SetObjectCache(ObjectCacheStoreEnum.DocumentListDetail, DocumentListId);
+            navigationStore.NavBarViewModel = new NavBarViewModel(navigationStore, cacheStore);
         }
 
         public override void Execute(object parameter)

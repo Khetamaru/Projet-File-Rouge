@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Local_API_Server.Models;
 using Projet_File_Rouge.Object;
+using System.Diagnostics;
+using System;
+using System.IO;
 
 namespace Local_API_Server.Controllers
 {
@@ -20,7 +23,7 @@ namespace Local_API_Server.Controllers
 
         // GET: api/Version/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Version>> GetVersion(int id)
+        public async Task<ActionResult<Projet_File_Rouge.Object.Version>> GetVersion(int id)
         {
             var Version = await _context.Version.FindAsync(id);
             if (Version == null)
@@ -30,11 +33,11 @@ namespace Local_API_Server.Controllers
             return Version;
         }
 
-        // GET: api/Version/5
+        // GET: api/Version/last
         [HttpGet("last")]
-        public async Task<ActionResult<Version>> GetLastVersion()
+        public async Task<ActionResult<Projet_File_Rouge.Object.Version>> GetLastVersion()
         {
-            Version Version = (await _context.Version.Where(v => v.versionNumber == _context.Version.Max(ve => ve.versionNumber)).ToListAsync()).First();
+            Projet_File_Rouge.Object.Version Version = (await _context.Version.Where(v => v.versionNumber == _context.Version.Max(ve => ve.versionNumber)).ToListAsync()).First();
             if (Version == null)
             {
                 return NotFound();
@@ -45,7 +48,7 @@ namespace Local_API_Server.Controllers
         // POST: api/Version
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Version>> PostVersion(Version Version)
+        public async Task<ActionResult<Projet_File_Rouge.Object.Version>> PostVersion(Projet_File_Rouge.Object.Version Version)
         {
             _context.Version.Add(Version);
             await _context.SaveChangesAsync();
@@ -55,7 +58,7 @@ namespace Local_API_Server.Controllers
         // PUT: api/Version/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVersion(int id, Version Version)
+        public async Task<IActionResult> PutVersion(int id, Projet_File_Rouge.Object.Version Version)
         {
             if (id != Version.id)
             {

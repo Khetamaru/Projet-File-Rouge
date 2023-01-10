@@ -78,7 +78,8 @@ namespace Projet_File_Rouge.Object
             non_réparable_appel,
             non_réparable_rendu,
             abandon,
-            attente_fournisseur
+            attente_fournisseur,
+            payement_différé
         }
 
         public enum Action

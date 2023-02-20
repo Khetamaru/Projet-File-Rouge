@@ -1,0 +1,231 @@
+﻿<UserControl x:Class="Projet_File_Rouge.Views.ParamConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Projet_File_Rouge.Views" xmlns:viewmodel="clr-namespace:Projet_File_Rouge.ViewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:ParamConfigViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="720" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
+        <SolidColorBrush x:Key="GlobalBackgroundSecond" Color="#A5AFDD"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="TextColor" Color="#001858"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
+
+        <Style x:Key="ReturnButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+            <Setter Property="FontWeight" Value="DemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Content="Retour" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="12" Padding="5" MinWidth="200" FontSize="20" Command="{Binding LogOutCommand}" Style="{StaticResource ReturnButtonStyle}"/>
+
+        <TabControl Grid.Row="1" x:Name="newFileTabsForm" HorizontalAlignment="Stretch" Margin="12" Padding="5" FontSize="20" Background="Transparent">
+            <TabItem Header="API Serveur" Visibility="Visible">
+                <Border BorderBrush="{StaticResource GlobalBackground}" Background="Transparent" CornerRadius="8" BorderThickness="2">
+                    <Grid>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Opacity="0.5" Content="Exemple => http://192.168.1.79:"/>
+                                <TextBox Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding HttpUrl, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="URL HTTP SERVEUR" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                                    <Label.Style>
+                                        <Style TargetType="{x:Type Label}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HttpUrlVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                            </Grid>
+
+                            <Grid Grid.Row="1" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Opacity="0.5" Content="Exemple => 8086/api/"/>
+                                <TextBox Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding HttpPort, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="PORT HTTP SERVEUR" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                                    <Label.Style>
+                                        <Style TargetType="{x:Type Label}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding HttpPortVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                            </Grid>
+
+                            <Grid Grid.Row="2" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Opacity="0.5" Content="Localhost => ON/OFF (Test uniquement)"/>
+                                <CheckBox Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="Mode test" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" IsChecked="{Binding TestMode}"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </TabItem>
+
+            <TabItem Header="FTP Serveur" Visibility="Visible">
+                <Border BorderBrush="{StaticResource GlobalBackground}" Background="Transparent" CornerRadius="8" BorderThickness="2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Opacity="0.5" Content="Exemple => RGDEPANNAGE.synology.me"/>
+                            <TextBox Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding FtpName, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="FTP SERVEUR NAME" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                                <Label.Style>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FtpNameVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+
+                        <Grid Grid.Row="1" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Opacity="0.5" Content="Exemple => 1021"/>
+                            <TextBox Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding FtpPort, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="PORT FTP SERVEUR" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                                <Label.Style>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FtpPortVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+
+                        <Grid Grid.Row="2" VerticalAlignment="Center">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Opacity="0.5" Content="Exemple => dossier partage techs/Fil Rouge Fichiers FTP/"/>
+                            <TextBox Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding FtpFile, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="NOM DOSSIER FTP" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                                <Label.Style>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FtpFileVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Label.Style>
+                            </Label>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </TabItem>
+
+            <TabItem Header="Sauvegarde BDD" Visibility="Visible">
+                <Border BorderBrush="{StaticResource GlobalBackground}" Background="Transparent" CornerRadius="8" BorderThickness="2">
+                    <Grid>
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" VerticalAlignment="Center">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Opacity="0.5" Content="Exemple => dossier partage techs/Fil Rouge Sauvegarde BDD/"/>
+                                <TextBox Grid.Row="1" VerticalAlignment="Center" HorizontalContentAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="{Binding PathSaveBdd, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" Content="PATH SAVE BDD" Focusable="False" Opacity="0.5" IsHitTestVisible="False">
+                                    <Label.Style>
+                                        <Style TargetType="{x:Type Label}">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PathSaveBddVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Label.Style>
+                                </Label>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </TabItem>
+        </TabControl>
+
+        <Button Grid.Row="2" Content="Sauvegarder" HorizontalAlignment="Center" VerticalAlignment="Center" MinHeight="60" Margin="12" Padding="5" FontSize="20" Click="RedWireCreation"/>
+    </Grid>
+</UserControl>

@@ -60,7 +60,7 @@ namespace Projet_File_Rouge.Commands
 
             if (user.UserLevel == User.AccessLevel.Admin)
             {
-                Count += RequestCenter.GetPrividerWaitingNotifNumber();
+                Count += RequestCenter.GetPrividerWaitingNotifNumberAdmin();
                 Count += RequestCenter.GetRedWireNotifAdminNumber();
                 Count += RequestCenter.GetCommandListNotifNumber();
                 Count += RequestCenter.GetRedWirePurgeNumber();
@@ -70,6 +70,7 @@ namespace Projet_File_Rouge.Commands
             }
             else
             {
+                Count += RequestCenter.GetPrividerWaitingNotifNumber(userId);
                 Count += RequestCenter.GetRedWireNotifNumber(userId);
                 if ((int)user.UserLevel >= (int)User.AccessLevel.SuperUser) { Count += RequestCenter.GetCommandListNotifNumber(); }
             }

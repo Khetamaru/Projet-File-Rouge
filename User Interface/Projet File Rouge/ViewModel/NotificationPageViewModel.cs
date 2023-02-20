@@ -15,13 +15,15 @@ namespace Projet_File_Rouge.ViewModel
         private readonly List<string> stackPanelContent;
         private readonly string warningText;
 
+        private User user;
+
         public NotificationPageViewModel(NavigationStore navigationStore, CacheStore cacheStore)
         {
             // set up command
             NavigateMainMenuCommand = new NavigateMainMenuCommand(navigationStore, cacheStore);
 
             // set up BDD objects
-            User user = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
+            user = RequestCenter.GetUser(cacheStore.GetObjectCache(ObjectCacheStoreEnum.ActualUser));
 
             // set up view objects
             stackPanelContent = new List<string>();
@@ -118,6 +120,20 @@ namespace Projet_File_Rouge.ViewModel
                                           "\n");
                 }
             }
+
+            List<RedWire> redWirePrividerWaitingList = RequestCenter.GetPrividerWaitingNotif(user.Id);
+            foreach (RedWire redWire in redWirePrividerWaitingList)
+            {
+                stackPanelContent.Add("\n" +
+                                          "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +
+                                          "Nom du client : " + redWire.ClientName + "\n" +
+                                          "Dernière action sur le dossier : " + redWire.LastUpdateFormated + "\n" +
+                                          "Nombre de jours sans action : " + Math.Round((DateTime.Now - redWire.LastUpdate).TotalDays, 1) + "\n" +
+                                          "Etat actuel : " + redWire.ActualState.ToString() + "\n\n" +
+                                          "Le fournisseur n'a toujours pas répondu à la demande tech.\n" +
+                                          "Il doit être relancé ou le dossier doit être mis à jour." +
+                                          "\n");
+            }
         }
 
         /// <summary>
@@ -210,7 +226,7 @@ namespace Projet_File_Rouge.ViewModel
                                           "Le fournisseur a été contacté depuis plus de 2 jours sans réaction du réparateur." +
                                           "\n");
                     }
-                    else 
+                    else
                     {
                         stackPanelContent.Add("\n" +
                                               "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +
@@ -244,6 +260,19 @@ namespace Projet_File_Rouge.ViewModel
                                           "Le dossier doit être mis à jour ou cloturé." +
                                           "\n");
                 }
+            }
+
+            List<RedWire> redWirePrividerWaitingList = RequestCenter.GetPrividerWaitingNotifAdmin();
+            foreach (RedWire redWire in redWirePrividerWaitingList)
+            {
+                stackPanelContent.Add("\n" +
+                                          "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +
+                                          "Nom du client : " + redWire.ClientName + "\n" +
+                                          "Dernière action sur le dossier : " + redWire.LastUpdateFormated + "\n" +
+                                          "Nombre de jours sans action : " + Math.Round((DateTime.Now - redWire.LastUpdate).TotalDays, 1) + "\n" +
+                                          "Etat actuel : " + redWire.ActualState.ToString() + "\n\n" +
+                                          "Le fournisseur n'a toujours pas répondu à la demande tech. Il doit être relancé ou le dossier doit être mis à jour." +
+                                          "\n");
             }
         }
 

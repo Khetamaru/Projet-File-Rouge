@@ -133,6 +133,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" MinHeight="60" FontSize="20" Content="Documents FTP" Command="{Binding NavigateDocumentFTPCenterCommand}">
@@ -1206,6 +1207,62 @@
 
                                 <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="DelayedPayementYesButton"/>
                                 <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="DelayedPayementNoButton"/>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Popup>
+
+            <Button Grid.Column="18" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" MinHeight="60" FontSize="20" Content="Annulation Facturation" Click="OpenCancelBillPopUp">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColor}" Background="{StaticResource MainColor}" BorderThickness="2" Padding="5">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CancelBillButtonVisibility, UpdateSourceTrigger=PropertyChanged}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Popup IsOpen="{Binding CancelBillPopUpIsOpen, UpdateSourceTrigger=PropertyChanged}" StaysOpen="False" PlacementTarget="{Binding ElementName=TopGrid}" Placement="Center" AllowsTransparency="True">
+                <Border Background="{StaticResource GlobalBackgroundSecond}" BorderBrush="Transparent" BorderThickness="2" CornerRadius="20">
+                    <Grid>
+                        <Grid.Background>
+                            <ImageBrush ImageSource="../Img/popup_background.png" Opacity="0.2" Stretch="Uniform"/>
+                        </Grid.Background>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Button Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="12" Padding="5" FontSize="20" Content="Annuler" Click="CancelBillNoButton"/>
+
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Text="Annuler la facturation ?"/>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Oui" Click="CancelBillYesButton"/>
+                                <Button Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="12" Padding="5" FontSize="20" Content="Non" Click="CancelBillNoButton"/>
                             </Grid>
                         </Grid>
                     </Grid>

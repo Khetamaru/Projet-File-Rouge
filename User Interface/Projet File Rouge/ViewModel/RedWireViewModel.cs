@@ -31,6 +31,7 @@ namespace Projet_File_Rouge.ViewModel
         private bool priseEnChargeTransfertPopUpIsOpen;
         private bool finPopUpIsOpen;
         private bool finAppelPopUpIsOpen;
+        private bool cancelBillPopUpIsOpen;
         private bool finPayementPopUpIsOpen;
         private bool delayedPayementPopUpIsOpen;
         private bool nonReparablePopUpIsOpen;
@@ -117,6 +118,7 @@ namespace Projet_File_Rouge.ViewModel
             OnPropertyChanged(nameof(TransfertTechButtonVisibility));
             OnPropertyChanged(nameof(PriseEnChargeTransfertButtonVisibility));
             OnPropertyChanged(nameof(FinButtonVisibility));
+            OnPropertyChanged(nameof(CancelBillButtonVisibility));
             OnPropertyChanged(nameof(FinAppelButtonVisibility));
             OnPropertyChanged(nameof(FinPayementButtonVisibility));
             OnPropertyChanged(nameof(DelayedPayementButtonVisibility));
@@ -669,6 +671,35 @@ namespace Projet_File_Rouge.ViewModel
         }
 
         /// <summary>
+        /// Cancel final bill
+        /// </summary>
+        public bool CancelBillButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_facture_OK || !AccessAuthorization(); }
+        public bool CancelBillPopUpIsOpen
+        {
+            get => cancelBillPopUpIsOpen;
+            set
+            {
+                cancelBillPopUpIsOpen = value;
+                OnPropertyChanged(nameof(CancelBillPopUpIsOpen));
+            }
+        }
+        public void OpenCancelBillPopUp() => CancelBillPopUpIsOpen = true;
+        public void CloseCancelBillPopUp() => CancelBillPopUpIsOpen = false;
+        public void CancelBillYesButton()
+        {
+            RedWire.ActualState = RedWire.state.en_cours;
+            RedWireMaj();
+            AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Annulation de la facturation."));
+            AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Retour à \"Réparation en cours\"."));
+            UIUpdate();
+            CloseCancelBillPopUp();
+        }
+        public void CancelBillNoButton()
+        {
+            CloseCancelBillPopUp();
+        }
+
+        /// <summary>
         /// End Pay Button Logic
         /// </summary>
         public bool FinPayementButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_appel_OK || !(ActualUser.UserLevel >= User.AccessLevel.User); }
@@ -690,16 +721,17 @@ namespace Projet_File_Rouge.ViewModel
             if (FinPayementCheckBox)
             {
                 RedWire.ActualState = RedWire.state.fin;
-                AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Facture payée et matériel rendu"));
+                AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Facture payée et matériel rendu (" + ActualUser.Name + ")"));
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier cloturé"));
             }
             else
             {
                 RedWire.ActualState = RedWire.state.payement_différé;
-                AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Matériel rendu"));
+                AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Matériel rendu (" + ActualUser.Name + ")"));
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier en attente de règlement")); 
                 FinPayementCheckBox = true;
             }
+            RequestCenter.PostLog(new Log("Dossier rendu par " + ActualUser.Name, DateTime.Now, Log.LogTypeEnum.RedWire, ActualUser).Jsonify());
             RedWireMaj();
             UIUpdate();
             CloseFinPayementPopUp();
@@ -1041,7 +1073,7 @@ namespace Projet_File_Rouge.ViewModel
         public string AjoutDocumentField { get => ajoutDocumentField; set { ajoutDocumentField = value; OnPropertyChanged("AjoutDocumentField"); } }
         public void AjoutDocumentYesButton()
         {
-            (bool result, SaleDocument temp) = SaleDocument.FormatVerification(AjoutDocumentField, new string[] { "DE", "FA", "CM" });
+            (bool result, SaleDocument temp) = SaleDocument.FormatVerification(AjoutDocumentField, new string[] { "DE", "FA", "CM", "AV" });
             if (result)
             {
                 RedWireMaj();

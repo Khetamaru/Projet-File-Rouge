@@ -162,6 +162,7 @@ namespace Projet_File_Rouge.EBPObject
     {
         FA,
         CM,
-        DE
+        DE,
+        AV
     }
 }

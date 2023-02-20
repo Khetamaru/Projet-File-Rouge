@@ -12,6 +12,8 @@ namespace Projet_File_Rouge.ExternalInfoFile
     /// </summary>
     public static class LoginCacheFile
     {
+        private static string CompletePath() { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RG File Rouge_loginCache.json"); }
+
         /// <summary>
         /// Search if there is a username saved
         /// </summary>
@@ -22,10 +24,10 @@ namespace Projet_File_Rouge.ExternalInfoFile
 
             try
             {
-                string completePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RG File Rouge_loginCache");
+                string completePath = CompletePath();
 
                 StreamReader sr = new StreamReader(completePath);
-                content = sr.ReadLine();
+                content = sr.ReadToEnd();
                 sr.Close();
             }
             catch (Exception e)
@@ -48,7 +50,7 @@ namespace Projet_File_Rouge.ExternalInfoFile
         {
             try
             {
-                string completePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "RG File Rouge_loginCache");
+                string completePath = CompletePath();
 
                 StreamWriter sw = new StreamWriter(completePath);
                 sw.Write(content);

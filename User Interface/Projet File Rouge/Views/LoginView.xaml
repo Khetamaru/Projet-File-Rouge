@@ -11,11 +11,13 @@
 
     <UserControl.Resources>
         <SolidColorBrush x:Key="GlobalBackground" Color="LightGray"/>
-        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
         <SolidColorBrush x:Key="MainBackGround" Color="FloralWhite"/>
+        <SolidColorBrush x:Key="MainColor" Color="#6989b4"/>
+        <SolidColorBrush x:Key="MainColorTwo" Color="#6975b4"/>
         <SolidColorBrush x:Key="TextColor" Color="#001858"/>
-        
+
         <Image x:Key="LoginButton" Source="../Img/login_button.png"/>
+        <Image x:Key="ParameterLogo" Source="../Img/parameter_logo.png"/>
 
         <Style TargetType="{x:Type Button}">
             <Setter Property="Template">
@@ -54,6 +56,26 @@
                 <ColumnDefinition Width="30*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+
+            <Button Grid.Row="0" Grid.Column="1" Margin="12" Padding="5" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="30" MaxHeight="60" Content="{StaticResource ParameterLogo}" Command="{Binding NavigateParamConfigCommand}">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
+                        <Setter Property="FontWeight" Value="DemiBold"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="border" CornerRadius="20" BorderBrush="{StaticResource MainColorTwo}" Background="{StaticResource MainColorTwo}" BorderThickness="2" Padding="5">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
 
             <ComboBox x:Name="UserName" Text="Utilisateur" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Center" VerticalAlignment="Center" FontSize="20" ItemsSource="{Binding UserNameList}" SelectedItem="{Binding UserNameField}"/>
             <PasswordBox x:Name="Password" Grid.Row="2" Grid.Column="1" HorizontalContentAlignment="Center" VerticalAlignment="Center" FontSize="20" PasswordChanged="PasswordBox_PasswordChanged" KeyDown="KeyPressedEvent"/>

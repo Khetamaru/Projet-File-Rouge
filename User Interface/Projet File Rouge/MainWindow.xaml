@@ -584,6 +584,9 @@
                 <DataTemplate DataType="{x:Type viewmodels:DataSaveViewModel}">
                     <views:DataSaveView/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:ParamConfigViewModel}">
+                    <views:ParamConfigView/>
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
     </Grid>

@@ -20,11 +20,14 @@ namespace Red_Wire_API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    Console.WriteLine("Démarage du serveur.");
+                    Setup setup = SetupCacheFile.Start();
+
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                    webBuilder.UseSetting("http_port", "8086");
+                    webBuilder.UseSetting("http_port", setup.HTTP_PORT);
                     webBuilder.UseStartup<Startup>();
-                    //webBuilder.UseUrls("http://192.168.1.79:8086/");
-                    webBuilder.UseUrls("http://localhost:8086/");
+                    webBuilder.UseUrls(setup.HTTP_URL + setup.HTTP_PORT + "/");
+                    Console.WriteLine("Lancement du serveur sur : " + setup.HTTP_URL + setup.HTTP_PORT + "/");
                 });
     }
 }

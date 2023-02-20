@@ -60,7 +60,7 @@ namespace Projet_File_Rouge.ViewModel
                     DocumentFTP document = FTPCenter
                         .DataPacking(
                             name,
-                            @"dossier partage techs/Fil Rouge Sauvegarde BDD/",
+                            @"" + new Settings().pathSaveBdd,
                             (@"dump_bdd " + DateTime.Now).Replace(" ", "__").Replace("/", "_").Replace(":", "_"),
                             null);
 

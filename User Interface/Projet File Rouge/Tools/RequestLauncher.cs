@@ -1,5 +1,5 @@
-﻿using System;
-using System.Configuration;
+﻿using Projet_File_Rouge.Object;
+using System;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -26,8 +26,9 @@ namespace Projet_File_Rouge.Tools
 
         public RequestLauncher()
         {
-            http = ConfigurationManager.AppSettings["http"];
-            port = ConfigurationManager.AppSettings["port"];
+            Settings Settings = new Settings();
+            http = !Settings.testMode ? Settings.httpUrl : "http://localhost:";
+            port = Settings.httpPort;
             endPoint = string.Empty;
             httpMethod = HttpVerb.GET;
         }

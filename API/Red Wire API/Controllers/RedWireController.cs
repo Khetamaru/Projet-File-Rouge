@@ -296,13 +296,48 @@ namespace Local_API_Server.Controllers
             return result.Count();
         }
 
-        // GET: api/RedWire/notifAdminNumber
-        [HttpGet("notifPrividerWaitingNumber")]
-        public ActionResult<int> GetRedWireNotifPrividerWaitingNumber()
+        // GET: api/RedWire/notifPrividerWaitingNumberAdmin
+        [HttpGet("notifPrividerWaitingNumberAdmin")]
+        public ActionResult<int> GetRedWireNotifPrividerWaitingNumberAdmin()
         {
             IQueryable<RedWire> result = _context.RedWire;
-            result = FilterPrividerWaiting(result);
+            result = FilterPrividerWaitingAdmin(result);
             return result.Count();
+        }
+
+        // GET: api/RedWire/notifPrividerWaitingAdmin
+        [HttpGet("notifPrividerWaitingAdmin")]
+        public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWireNotifPrividerWaitingAdmin()
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+            result = FilterPrividerWaitingAdmin(result);
+            return await result
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .ToListAsync();
+        }
+
+        // GET: api/RedWire/notifPrividerWaitingNumber
+        [HttpGet("notifPrividerWaitingNumber/{userId}")]
+        public ActionResult<int> GetRedWireNotifPrividerWaitingNumber(int userId)
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+            result = FilterPrividerWaiting(result, userId);
+            return result.Count();
+        }
+
+        // GET: api/RedWire/notifPrividerWaiting
+        [HttpGet("notifPrividerWaiting/{userId}")]
+        public async Task<ActionResult<IEnumerable<RedWire>>> GetRedWireNotifPrividerWaiting(int userId)
+        {
+            IQueryable<RedWire> result = _context.RedWire;
+            result = FilterPrividerWaiting(result, userId);
+            return await result
+                .Include(c => c.recorder)
+                .Include(c => c.actualRepairMan)
+                .Include(c => c.transfertTarget)
+                .ToListAsync();
         }
 
         // GET: api/RedWire/purgeNumber/2022-05-01T00:00:00
@@ -419,10 +454,19 @@ namespace Local_API_Server.Controllers
             return result;
         }
 
-        public static IQueryable<RedWire> FilterPrividerWaiting(IQueryable<RedWire> result)
+        public static IQueryable<RedWire> FilterPrividerWaiting(IQueryable<RedWire> result, int userId)
         {
             result = result.Where(r => r.actualState == 14
-                                     && r.lastUpdate <= DateTime.Now.AddDays(-2));
+                                     && r.lastUpdate <= DateTime.Now.AddDays(-2)
+                                     && r.actualRepairMan.id == userId);
+
+            return result;
+        }
+
+        public static IQueryable<RedWire> FilterPrividerWaitingAdmin(IQueryable<RedWire> result)
+        {
+            result = result.Where(r => r.actualState == 14
+                                     && r.lastUpdate <= DateTime.Now.AddDays(-3));
 
             return result;
         }

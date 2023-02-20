@@ -1,7 +1,6 @@
 ﻿using FluentFTP;
 using Projet_File_Rouge.Object;
 using System;
-using System.Configuration;
 using System.Net;
 
 namespace Projet_File_Rouge.Tools
@@ -14,13 +13,13 @@ namespace Projet_File_Rouge.Tools
         {
             // Get the object used to communicate with the server.
             Client = new FtpClient();
-            Client.Host = ConfigurationManager.AppSettings["ftp_host"];
-            Client.Port = int.Parse(ConfigurationManager.AppSettings["ftp_port"]);
+            Settings Settings = new Settings();
+            Client.Host = Settings.ftpName;
+            Client.Port = int.Parse(Settings.ftpPort);
 
             Client.Credentials = new NetworkCredential(user, password);
-
             try { Client.Connect(); }
-            catch(Exception e) { }
+            catch (Exception) { }
         }
 
         internal DocumentFTP DataPacking(string actualPath, string documentName, RedWire redWire)
@@ -30,7 +29,7 @@ namespace Projet_File_Rouge.Tools
             string[] splitTab = actualPath.Split(".");
             string extentionType = splitTab[splitTab.Length - 1];
 
-            string newPath = ConfigurationManager.AppSettings["ftp_folder"];
+            string newPath = new Settings().ftpFile;
             newPath += name + "." + extentionType;
 
             return new DocumentFTP("\\\\RGDEPANNAGE\\" + newPath.Replace("/", "\\"), documentName, redWire);

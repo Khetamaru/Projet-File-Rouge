@@ -130,5 +130,9 @@ namespace Projet_File_Rouge.Views
         private void OpenDelayedPayementPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenDelayedPayementPopUp(); }
         private void DelayedPayementYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).DelayedPayementYesButton(); }
         private void DelayedPayementNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).DelayedPayementNoButton(); }
+
+        private void OpenCancelBillPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenCancelBillPopUp(); }
+        private void CancelBillYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).CancelBillYesButton(); }
+        private void CancelBillNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).CancelBillNoButton(); }
     }
 }

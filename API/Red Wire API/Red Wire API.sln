@@ -3,22 +3,44 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Red Wire API", "Red Wire API.csproj", "{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedWireAPI", "RedWireAPI.csproj", "{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EXE Builder", "..\EXE Builder\EXE Builder.vdproj", "{AA3C5176-8CB0-4F5D-B89F-B06E169D1F54}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "..\SetupTest\SetupTest.vdproj", "{C32FD24D-E295-439D-880C-BD3F6C09E7FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{130DE32A-58DB-44EC-B4EA-352B5A3E15BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
+		All|x64 = All|x64
+		All|x86 = All|x86
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AA3C5176-8CB0-4F5D-B89F-B06E169D1F54}.Debug|Any CPU.ActiveCfg = Debug
-		{AA3C5176-8CB0-4F5D-B89F-B06E169D1F54}.Release|Any CPU.ActiveCfg = Release
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.All|x64.ActiveCfg = Release|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.All|x64.Build.0 = Release|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.All|x86.ActiveCfg = Release|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.All|x86.Build.0 = Release|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Debug|x64.Build.0 = Debug|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Debug|x86.Build.0 = Debug|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Release|x64.ActiveCfg = Release|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Release|x64.Build.0 = Release|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Release|x86.ActiveCfg = Release|Any CPU
+		{2C523039-C47D-4C4D-BD40-40D4C9CB4F5C}.Release|x86.Build.0 = Release|Any CPU
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.All|x64.ActiveCfg = Release
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.All|x86.ActiveCfg = Release
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.Debug|x64.ActiveCfg = Debug
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.Debug|x64.Build.0 = Debug
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.Debug|x86.ActiveCfg = Debug
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.Debug|x86.Build.0 = Debug
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.Release|x64.ActiveCfg = Release
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.Release|x64.Build.0 = Release
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.Release|x86.ActiveCfg = Release
+		{C32FD24D-E295-439D-880C-BD3F6C09E7FA}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

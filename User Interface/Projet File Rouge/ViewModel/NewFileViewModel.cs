@@ -260,7 +260,7 @@ namespace Projet_File_Rouge.ViewModel
 
             if (OptionEBP != null)
             {
-                string[] strTab = { "FA", "DE" };
+                string[] strTab = { "FA", "DE", "AV" };
                 (bool result, SaleDocument temp) = SaleDocument.FormatVerification(OptionEBP, strTab);
                 if (!result)
                 {

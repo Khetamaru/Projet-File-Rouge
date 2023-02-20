@@ -39,7 +39,7 @@ namespace Projet_File_Rouge.ViewModel
             missingCallNumber = cacheStore.GetObjectCache(ObjectCacheStoreEnum.missingCallNumber);
 
             // patch note
-            string versionNumber = RequestCenter.GetVersion().VersionNumber;
+            string versionNumber = RequestCenter.GetVersion().Item1.VersionNumber;
             if (versionNumber != user.VersionSynced)
             {
                 ShowPatchNote(user.VersionSynced, versionNumber);

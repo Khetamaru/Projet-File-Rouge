@@ -10,6 +10,6 @@ namespace Local_API_Server.Models
         {
         }
 
-        public DbSet<Version> Version { get; set; }
+        public DbSet<Projet_File_Rouge.Object.Version> Version { get; set; }
     }
 }

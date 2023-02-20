@@ -48,3 +48,44 @@ API/Red Wire API/bin/Release/net6.0/
 User Interface/Projet File Rouge/bin/Debug/net6.0-windows10.0.17763.0/
 
 *.user
+
+API/CustomActions/bin/Debug/net472/CustomAction.config
+
+API/CustomActions/bin/Release/net472/CustomAction.config
+
+API/CustomActions/
+
+*.msi
+
+*.tmp
+
+*.exe
+
+API/Red Wire API Installer/
+
+API/Red Wire API/bin/Debug/net6.0-windows/
+
+API/Red Wire API/bin/Release/appsettings.Development.json
+
+API/Red Wire API/bin/Release/net6.0-windows/
+
+API/Red Wire API/bin/Release/RedWireAPI.deps.json
+
+API/Red Wire API/bin/Release/RedWireAPI.dll.config
+
+API/Red Wire API/bin/Release/RedWireAPI.runtimeconfig.json
+
+API/Red Wire API/bin/Release/web.config
+
+API/Red Wire API/packages/
+*.aip
+
+*.aiproj
+
+*.cab
+
+API/RedWireAPIMsiBuilder/RedWireAPIMsiBuilder-cache/
+
+API/Red Wire API/Properties/PublishProfiles/
+
+*.htm

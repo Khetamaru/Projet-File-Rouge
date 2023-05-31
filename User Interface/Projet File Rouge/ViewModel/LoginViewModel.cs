@@ -45,6 +45,7 @@ namespace Projet_File_Rouge.ViewModel
         {
             List<string> nameList = new List<string>();
             List<User> users = RequestCenter.GetActiveUsers();
+            if (users == null) { users = new List<User>(); }
             foreach(User user in users)
             {
                 nameList.Add(user.Name);

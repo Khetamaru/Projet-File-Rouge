@@ -12,7 +12,7 @@ namespace Projet_File_Rouge.Tools
         public static string Cyphing(string str)
         {
             Byte[] inputBytes = Encoding.UTF8.GetBytes(str);
-            Byte[] hashedBytes = new SHA256CryptoServiceProvider().ComputeHash(inputBytes);
+            Byte[] hashedBytes = SHA256.Create().ComputeHash(inputBytes);
 
             return BitConverter.ToString(hashedBytes);
         }

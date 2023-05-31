@@ -35,7 +35,7 @@ namespace Projet_File_Rouge.ViewModel
             // set up view objects
             FilterInit();
             stepList = new List<string>();
-            foreach (string stepName in Enum.GetNames(typeof(RedWire.state)))
+            foreach (string stepName in Enum.GetNames(typeof(RedWire.State)))
             {
                 stepList.Add(stepName);
             }

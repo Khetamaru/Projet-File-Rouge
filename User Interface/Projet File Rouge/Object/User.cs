@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Projet_File_Rouge.Object
 {
-    public class User : BDDObject
+    public class User : IBDDObject
     {
         [JsonProperty]
         private readonly int id;

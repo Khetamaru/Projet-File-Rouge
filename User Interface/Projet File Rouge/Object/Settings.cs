@@ -46,7 +46,7 @@ namespace Projet_File_Rouge.Object
             {
                 Settings settings;
 
-                using (StreamReader readStream = new StreamReader("settings.json"))
+                using (StreamReader readStream = new("settings.json"))
                 {
                     string json = readStream.ReadToEnd();
                     settings = JsonConvert.DeserializeObject<Settings>(json);
@@ -79,12 +79,10 @@ namespace Projet_File_Rouge.Object
 
         internal void WriteSettings()
         {
-            using (StreamWriter writeStream = new StreamWriter("settings.json"))
-            {
-                writeStream.WriteLine(Jsonify());
+            using StreamWriter writeStream = new("settings.json");
+            writeStream.WriteLine(Jsonify());
 
-                writeStream.Close();
-            }
+            writeStream.Close();
         }
 
         public string Jsonify()

@@ -140,7 +140,12 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Check Access Level
         /// </summary>
-        private bool AccessAuthorization() { return RedWire.ActualRepairMan != null && (ActualUser.Id == RedWire.ActualRepairMan.Id || ActualUser.UserLevel >= User.AccessLevel.SuperUser) ? true : false; }
+        private bool AccessAuthorization() { return RedWire.ActualRepairMan != null && AbsoluteAccessAuthorization() ? true : false; }
+
+        /// <summary>
+        /// Check Absolute Access Level
+        /// </summary>
+        private bool AbsoluteAccessAuthorization() { return (RedWire.ActualRepairMan != null && ActualUser.Id == RedWire.ActualRepairMan.Id) || ActualUser.UserLevel >= User.AccessLevel.Admin ? true : false; }
 
         public string DetailInfos { get => SaleDocument.DetailInfos(); }
 
@@ -153,14 +158,14 @@ namespace Projet_File_Rouge.ViewModel
                 OnPropertyChanged(nameof(TextInsert));
             }
         }
-        public bool InsertTextVisibility { get => RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !AccessAuthorization(); }
+        public bool InsertTextVisibility { get => RedWire.ActualState == RedWire.State.fin || RedWire.ActualState == RedWire.State.abandon || !AbsoluteAccessAuthorization(); }
         public void InsertText()
         {
             if (TextInsert != null && TextInsert.Trim() != string.Empty)
             {
                 if (TextInsert.Length < 218)
                 {
-                    if (ActualUser.Id == RedWire.ActualRepairMan.Id)
+                    if (RedWire.ActualRepairMan != null && ActualUser.Id == RedWire.ActualRepairMan.Id)
                     {
                         AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Message utilisateur : " + TextInsert));
                     }
@@ -210,7 +215,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// In Charge Button Logic
         /// </summary>
-        public bool PriseEnChargeButtonVisibility { get => RedWire.ActualState != RedWire.state.libre; }
+        public bool PriseEnChargeButtonVisibility { get => RedWire.ActualState != RedWire.State.libre; }
         public bool PriseEnChargePopUpIsOpen
         {
             get => priseEnChargePopUpIsOpen;
@@ -224,7 +229,7 @@ namespace Projet_File_Rouge.ViewModel
         public void ClosePriseEnChargePopUp() => PriseEnChargePopUpIsOpen = false;
         public void PriseEnChargeYesButton()
         {
-            RedWire.ActualState = RedWire.state.début_diag;
+            RedWire.ActualState = RedWire.State.début_diag;
             RedWire.ActualRepairMan = ActualUser;
             RedWire.RepairStartDate = DateTime.Now;
             RequestCenter.PostUserHistory(new UserHistory(DateTime.Now, ActualUser, RedWire).Jsonify());
@@ -241,7 +246,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// In Charge Sale Document Button Logic
         /// </summary>
-        public bool PECDevisButtonVisibility { get => RedWire.ActualState != RedWire.state.début_diag || !AccessAuthorization(); }
+        public bool PECDevisButtonVisibility { get => RedWire.ActualState != RedWire.State.début_diag || !AccessAuthorization(); }
         public bool PECDevisPopUpIsOpen
         {
             get => pECDevisPopUpIsOpen;
@@ -260,7 +265,7 @@ namespace Projet_File_Rouge.ViewModel
             (bool result, SaleDocument temp) = SaleDocument.FormatVerification(PECDevisField, new string[] { "DE" });
             if (result)
             {
-                RedWire.ActualState = RedWire.state.début_reponse_client;
+                RedWire.ActualState = RedWire.State.début_reponse_client;
                 RedWireMaj();
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Devis créé et envoyé : " + PECDevisField));
                 DocumentList document = new DocumentList(PECDevisField, RedWire);
@@ -276,7 +281,7 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void PECDevisSkipButton()
         {
-            RedWire.ActualState = RedWire.state.en_cours;
+            RedWire.ActualState = RedWire.State.en_cours;
             RedWireMaj();
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Pas de devis post diag créé"));
             UIUpdate();
@@ -286,7 +291,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// In Charge Sale Document Client Response Button Logic
         /// </summary>
-        public bool PECClientResponseButtonVisibility { get => RedWire.ActualState != RedWire.state.début_reponse_client || !AccessAuthorization(); }
+        public bool PECClientResponseButtonVisibility { get => RedWire.ActualState != RedWire.State.début_reponse_client || !AccessAuthorization(); }
         public bool PECClientResponsePopUpIsOpen
         {
             get => pECClientResponsePopUpIsOpen;
@@ -300,7 +305,7 @@ namespace Projet_File_Rouge.ViewModel
         public void ClosePECClientResponsePopUp() => PECClientResponsePopUpIsOpen = false;
         public void PECClientResponseYesButton()
         {
-            RedWire.ActualState = RedWire.state.en_cours;
+            RedWire.ActualState = RedWire.State.en_cours;
             RedWireMaj();
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Devis signé par le client."));
             UIUpdate();
@@ -308,17 +313,21 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void PECClientResponseNoButton()
         {
-            RedWire.ActualState = RedWire.state.début_diag;
+            RedWire.ActualState = RedWire.State.début_diag;
             RedWireMaj();
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Devis refusé par le client."));
             UIUpdate();
+            ClosePECClientResponsePopUp();
+        }
+        public void PECClientResponseCancelButton()
+        {
             ClosePECClientResponsePopUp();
         }
 
         /// <summary>
         /// Piece Command Button Logic
         /// </summary>
-        public bool CommandePieceButtonVisibility { get => (RedWire.ActualState != RedWire.state.en_cours && RedWire.ActualState != RedWire.state.attente_commande) || !AccessAuthorization(); }
+        public bool CommandePieceButtonVisibility { get => (RedWire.ActualState != RedWire.State.en_cours && RedWire.ActualState != RedWire.State.attente_commande) || !AccessAuthorization(); }
         public bool CommandePiecePopUpIsOpen
         {
             get => commandePiecePopUpIsOpen;
@@ -358,7 +367,7 @@ namespace Projet_File_Rouge.ViewModel
                 {
                     CommandList command = new CommandList(RedWire, new DateTime(), CommandePieceNameField, CommandePieceUrlField);
                     RequestCenter.PostCommand(command.Jsonify());
-                    RedWire.ActualState = RedWire.state.attente_commande;
+                    RedWire.ActualState = RedWire.State.attente_commande;
                     AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, command.Name + " : Commande envoyée au centre de commande."));
                     RedWireMaj();
                     UIUpdate();
@@ -378,7 +387,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Problem or Asking Button Logic
         /// </summary>
-        public bool ProblemeQuestionButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool ProblemeQuestionButtonVisibility { get => RedWire.ActualState != RedWire.State.en_cours || !AccessAuthorization(); }
         public bool ProblemeQuestionPopUpIsOpen
         {
             get => problemeQuestionPopUpIsOpen;
@@ -398,7 +407,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 if (ProblemeQuestionField.Length < 216)
                 {
-                    RedWire.ActualState = RedWire.state.attente_client;
+                    RedWire.ActualState = RedWire.State.attente_client;
                     AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Question(s) au client : " + ProblemeQuestionField));
                     RedWireMaj();
                     UIUpdate();
@@ -419,7 +428,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Client Response Button Logic
         /// </summary>
-        public bool ReponseClientButtonVisibility { get => RedWire.ActualState != RedWire.state.attente_client || !AccessAuthorization(); }
+        public bool ReponseClientButtonVisibility { get => RedWire.ActualState != RedWire.State.attente_client || !AccessAuthorization(); }
         public bool ReponseClientPopUpIsOpen
         {
             get => reponseClientPopUpIsOpen;
@@ -439,7 +448,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 if (ReponseClientField.Length < 220)
                 {
-                    RedWire.ActualState = RedWire.state.en_cours;
+                    RedWire.ActualState = RedWire.State.en_cours;
                     AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Réponse du client : " + ReponseClientField));
                     ReponseClientField = null;
                     RedWireMaj();
@@ -461,7 +470,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Tech Switch Button Logic
         /// </summary>
-        public bool TransfertTechButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool TransfertTechButtonVisibility { get => RedWire.ActualState != RedWire.State.en_cours || !AccessAuthorization(); }
         public bool TransfertTechPopUpIsOpen
         {
             get => transfertTechPopUpIsOpen;
@@ -481,7 +490,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 User user = RequestCenter.GetUserByName(TransfertTechField);
                 RedWire.TransfertTarget = user;
-                RedWire.ActualState = RedWire.state.transit;
+                RedWire.ActualState = RedWire.State.transit;
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Transfert du dossier initié de " + ActualUser.Name + " à " + TransfertTechField));
                 RedWireMaj();
                 TransfertTechField = null;
@@ -497,7 +506,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Tech Swicth In Charge Button Logic
         /// </summary>
-        public bool PriseEnChargeTransfertButtonVisibility { get => RedWire.ActualState != RedWire.state.transit || (RedWire.ActualRepairMan.Id != ActualUser.Id && RedWire.TransfertTarget.Id != ActualUser.Id); }
+        public bool PriseEnChargeTransfertButtonVisibility { get => RedWire.ActualState != RedWire.State.transit || (RedWire.ActualRepairMan.Id != ActualUser.Id && RedWire.TransfertTarget.Id != ActualUser.Id); }
         public bool PriseEnChargeTransfertPopUpIsOpen
         {
             get => priseEnChargeTransfertPopUpIsOpen;
@@ -511,7 +520,7 @@ namespace Projet_File_Rouge.ViewModel
         public void ClosePriseEnChargeTransfertPopUp() => PriseEnChargeTransfertPopUpIsOpen = false;
         public void PriseEnChargeTransfertYesButton()
         {
-            RedWire.ActualState = RedWire.state.en_cours;
+            RedWire.ActualState = RedWire.State.en_cours;
             if (ActualUser.Id == RedWire.ActualRepairMan.Id) { AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Transfert annulé.")); }
             else if (ActualUser.Id == RedWire.TransfertTarget.Id)
             {
@@ -531,7 +540,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// End Button Logic
         /// </summary>
-        public bool FinButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool FinButtonVisibility { get => RedWire.ActualState != RedWire.State.en_cours || !AccessAuthorization(); }
         public bool FinPopUpIsOpen
         {
             get => finPopUpIsOpen;
@@ -550,7 +559,7 @@ namespace Projet_File_Rouge.ViewModel
             (bool result, SaleDocument temp) = SaleDocument.FormatVerification(FinField, new string[] { "FA" });
             if (result)
             {
-                RedWire.ActualState = RedWire.state.fin_facture_OK;
+                RedWire.ActualState = RedWire.State.fin_facture_OK;
                 RedWire.RepairEndDate = DateTime.Now;
                 RedWireMaj();
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Facture finale faite : " + FinField));
@@ -567,7 +576,7 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void FinSkipButton()
         {
-            RedWire.ActualState = RedWire.state.fin_facture_OK;
+            RedWire.ActualState = RedWire.State.fin_facture_OK;
             RedWireMaj();
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Pas de facture finale préparé"));
             UIUpdate();
@@ -577,7 +586,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// End Client Call Button Logic
         /// </summary>
-        public bool FinAppelButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_facture_OK || !AccessAuthorization(); }
+        public bool FinAppelButtonVisibility { get => RedWire.ActualState != RedWire.State.fin_facture_OK || !AccessAuthorization(); }
         public bool FinAppelPopUpIsOpen
         {
             get => finAppelPopUpIsOpen;
@@ -599,7 +608,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 if (FinAppelField.Length < 216)
                 {
-                    RedWire.ActualState = RedWire.state.fin_appel_OK;
+                    RedWire.ActualState = RedWire.State.fin_appel_OK;
                     RedWireMaj();
                     if (FinAppelInfoField != null && FinAppelInfoField != string.Empty)
                     {
@@ -627,7 +636,7 @@ namespace Projet_File_Rouge.ViewModel
 
         public void FinAppelYesMailButton()
         {
-            RedWire.ActualState = RedWire.state.fin_appel_OK;
+            RedWire.ActualState = RedWire.State.fin_appel_OK;
             RedWireMaj();
             if (FinAppelInfoField != null && FinAppelInfoField != string.Empty)
             {
@@ -651,7 +660,7 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void FinAppelSkipButton()
         {
-            RedWire.ActualState = RedWire.state.fin_appel_OK;
+            RedWire.ActualState = RedWire.State.fin_appel_OK;
             RedWireMaj();
             if (FinAppelInfoField != null && FinAppelInfoField != string.Empty)
             {
@@ -673,7 +682,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Cancel final bill
         /// </summary>
-        public bool CancelBillButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_facture_OK || !AccessAuthorization(); }
+        public bool CancelBillButtonVisibility { get => RedWire.ActualState != RedWire.State.fin_facture_OK || !AccessAuthorization(); }
         public bool CancelBillPopUpIsOpen
         {
             get => cancelBillPopUpIsOpen;
@@ -687,7 +696,7 @@ namespace Projet_File_Rouge.ViewModel
         public void CloseCancelBillPopUp() => CancelBillPopUpIsOpen = false;
         public void CancelBillYesButton()
         {
-            RedWire.ActualState = RedWire.state.en_cours;
+            RedWire.ActualState = RedWire.State.en_cours;
             RedWireMaj();
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Annulation de la facturation."));
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Retour à \"Réparation en cours\"."));
@@ -702,7 +711,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// End Pay Button Logic
         /// </summary>
-        public bool FinPayementButtonVisibility { get => RedWire.ActualState != RedWire.state.fin_appel_OK || !(ActualUser.UserLevel >= User.AccessLevel.User); }
+        public bool FinPayementButtonVisibility { get => RedWire.ActualState != RedWire.State.fin_appel_OK || !(ActualUser.UserLevel >= User.AccessLevel.User); }
         public bool FinPayementPopUpIsOpen
         {
             get => finPayementPopUpIsOpen;
@@ -720,13 +729,13 @@ namespace Projet_File_Rouge.ViewModel
         {
             if (FinPayementCheckBox)
             {
-                RedWire.ActualState = RedWire.state.fin;
+                RedWire.ActualState = RedWire.State.fin;
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Facture payée et matériel rendu (" + ActualUser.Name + ")"));
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier cloturé"));
             }
             else
             {
-                RedWire.ActualState = RedWire.state.payement_différé;
+                RedWire.ActualState = RedWire.State.payement_différé;
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Matériel rendu (" + ActualUser.Name + ")"));
                 AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier en attente de règlement")); 
                 FinPayementCheckBox = true;
@@ -744,7 +753,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Delay Pay Button Logic
         /// </summary>
-        public bool DelayedPayementButtonVisibility { get => RedWire.ActualState != RedWire.state.payement_différé || !(ActualUser.UserLevel >= User.AccessLevel.User); }
+        public bool DelayedPayementButtonVisibility { get => RedWire.ActualState != RedWire.State.payement_différé || !(ActualUser.UserLevel >= User.AccessLevel.User); }
         public bool DelayedPayementPopUpIsOpen
         {
             get => delayedPayementPopUpIsOpen;
@@ -758,7 +767,7 @@ namespace Projet_File_Rouge.ViewModel
         public void CloseDelayedPayementPopUp() => DelayedPayementPopUpIsOpen = false;
         public void DelayedPayementYesButton()
         {
-            RedWire.ActualState = RedWire.state.fin;
+            RedWire.ActualState = RedWire.State.fin;
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Facture payée"));
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier cloturé"));
             RedWireMaj();
@@ -773,7 +782,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Unrepairable Button Logic
         /// </summary>
-        public bool NonReparableButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool NonReparableButtonVisibility { get => RedWire.ActualState != RedWire.State.en_cours || !AccessAuthorization(); }
         public bool NonReparablePopUpIsOpen
         {
             get => nonReparablePopUpIsOpen;
@@ -793,7 +802,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 if (NonReparableField.Length < 216)
                 {
-                    RedWire.ActualState = RedWire.state.non_réparable_appel;
+                    RedWire.ActualState = RedWire.State.non_réparable_appel;
                     RedWire.RepairEndDate = DateTime.Now;
                     RedWireMaj();
                     AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier non réparable : " + NonReparableField));
@@ -815,7 +824,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Unrepairable Call Button Logic
         /// </summary>
-        public bool NonReparableAppelButtonVisibility { get => RedWire.ActualState != RedWire.state.non_réparable_appel || !AccessAuthorization(); }
+        public bool NonReparableAppelButtonVisibility { get => RedWire.ActualState != RedWire.State.non_réparable_appel || !AccessAuthorization(); }
         public bool NonReparableAppelPopUpIsOpen
         {
             get => nonReparableAppelPopUpIsOpen;
@@ -837,7 +846,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 if (NonReparableAppelField.Length < 216)
                 {
-                    RedWire.ActualState = RedWire.state.non_réparable_rendu;
+                    RedWire.ActualState = RedWire.State.non_réparable_rendu;
                     RedWireMaj();
                     if (NonReparableAppelInfoField != null && NonReparableAppelInfoField != string.Empty)
                     {
@@ -868,7 +877,7 @@ namespace Projet_File_Rouge.ViewModel
 
         public void NonReparableAppelYesMailButton()
         {
-            RedWire.ActualState = RedWire.state.non_réparable_rendu;
+            RedWire.ActualState = RedWire.State.non_réparable_rendu;
             RedWireMaj();
             if (NonReparableAppelInfoField != null && NonReparableAppelInfoField != string.Empty)
             {
@@ -892,7 +901,7 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void NonReparableAppelSkipButton()
         {
-            RedWire.ActualState = RedWire.state.non_réparable_rendu;
+            RedWire.ActualState = RedWire.State.non_réparable_rendu;
             RedWireMaj();
             if (NonReparableAppelInfoField != null && NonReparableAppelInfoField != string.Empty)
             {
@@ -914,7 +923,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Unrepairable Give Back Button Logic
         /// </summary>
-        public bool NonReparableRenduButtonVisibility { get => RedWire.ActualState != RedWire.state.non_réparable_rendu || !(ActualUser.UserLevel >= User.AccessLevel.User); }
+        public bool NonReparableRenduButtonVisibility { get => RedWire.ActualState != RedWire.State.non_réparable_rendu || !(ActualUser.UserLevel >= User.AccessLevel.User); }
         public bool NonReparableRenduPopUpIsOpen
         {
             get => nonReparableRenduPopUpIsOpen;
@@ -928,7 +937,7 @@ namespace Projet_File_Rouge.ViewModel
         public void CloseNonReparableRenduPopUp() => NonReparableRenduPopUpIsOpen = false;
         public void NonReparableRenduYesButton()
         {
-            RedWire.ActualState = RedWire.state.fin;
+            RedWire.ActualState = RedWire.State.fin;
             RedWireMaj();
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Matériel rendu"));
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier cloturé"));
@@ -941,7 +950,7 @@ namespace Projet_File_Rouge.ViewModel
         }
         public void NonReparableRenduDestructionButton()
         {
-            RedWire.ActualState = RedWire.state.fin;
+            RedWire.ActualState = RedWire.State.fin;
             RedWireMaj();
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Matériel parti en destruction"));
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier cloturé"));
@@ -952,7 +961,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Reopen Button Logic
         /// </summary>
-        public bool ReopeningButtonVisibility { get => RedWire.ActualState != RedWire.state.fin || !(ActualUser.UserLevel >= User.AccessLevel.User); }
+        public bool ReopeningButtonVisibility { get => RedWire.ActualState != RedWire.State.fin || !(ActualUser.UserLevel >= User.AccessLevel.User); }
         public bool ReopeningPopUpIsOpen
         {
             get => reopeningPopUpIsOpen;
@@ -966,7 +975,8 @@ namespace Projet_File_Rouge.ViewModel
         public void CloseReopeningPopUp() => ReopeningPopUpIsOpen = false;
         public void ReopeningYesButton()
         {
-            RedWire.ActualState = RedWire.state.en_cours;
+            RedWire.ActualState = RedWire.State.en_cours;
+            RedWire.InChargeDate = DateTime.Now;
             RedWireMaj();
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier réouvert par " + ActualUser.Name));
             UIUpdate();
@@ -980,7 +990,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Admin Asign Button Logic
         /// </summary>
-        public bool AdminAsignButtonVisibility { get => RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !(ActualUser.UserLevel >= User.AccessLevel.Admin); }
+        public bool AdminAsignButtonVisibility { get => RedWire.ActualState == RedWire.State.fin || RedWire.ActualState == RedWire.State.abandon || !(ActualUser.UserLevel >= User.AccessLevel.Admin); }
         public bool AdminAsignPopUpIsOpen
         {
             get => adminAsignPopUpIsOpen;
@@ -1003,7 +1013,7 @@ namespace Projet_File_Rouge.ViewModel
                 if (RedWire.ActualRepairMan == null)
                 {
                     RedWire.ActualRepairMan = user;
-                    RedWire.ActualState = RedWire.state.début_diag;
+                    RedWire.ActualState = RedWire.State.début_diag;
                     RedWire.RepairStartDate = DateTime.Now;
                     AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, ActualUser.Name + " a assigné le dossier à " + AdminAsignField));
                 }
@@ -1027,7 +1037,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Give Up Button Logic
         /// </summary>
-        public bool GiveUpButtonVisibility { get => RedWire.ActualState == RedWire.state.libre || RedWire.ActualState == RedWire.state.fin || RedWire.ActualState == RedWire.state.abandon || !(ActualUser.UserLevel >= User.AccessLevel.User) || !(DateTime.Now.AddMonths(-6) > RedWire.RepairStartDate); }
+        public bool GiveUpButtonVisibility { get => RedWire.ActualState == RedWire.State.libre || RedWire.ActualState == RedWire.State.fin || RedWire.ActualState == RedWire.State.abandon || !(ActualUser.UserLevel >= User.AccessLevel.User) || !(DateTime.Now.AddMonths(-6) > RedWire.RepairStartDate); }
         public bool GiveUpPopUpIsOpen
         {
             get => giveUpPopUpIsOpen;
@@ -1041,7 +1051,7 @@ namespace Projet_File_Rouge.ViewModel
         public void CloseGiveUpPopUp() => GiveUpPopUpIsOpen = false;
         public void GiveUpYesButton()
         {
-            RedWire.ActualState = RedWire.state.abandon;
+            RedWire.ActualState = RedWire.State.abandon;
             RedWire.RepairEndDate = DateTime.Now;
             RequestCenter.PostLog(new Log("Dossier abandonné : " + RedWire.ClientName + " - " + RedWire.RepairStartDateFormated, DateTime.Now, Log.LogTypeEnum.RedWire, actualUser).Jsonify());
             AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Dossier et matériel abandonnés par le client."));
@@ -1057,7 +1067,14 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Add Sale Document Button Logic
         /// </summary>
-        public bool AjoutDocumentButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool AjoutDocumentButtonVisibility { get => (RedWire.ActualState != RedWire.State.début && 
+                                                            RedWire.ActualState != RedWire.State.début_diag &&
+                                                            RedWire.ActualState != RedWire.State.début_reponse_client &&
+                                                            RedWire.ActualState != RedWire.State.en_cours &&
+                                                            RedWire.ActualState != RedWire.State.attente_client &&
+                                                            RedWire.ActualState != RedWire.State.attente_commande &&
+                                                            RedWire.ActualState != RedWire.State.transit &&
+                                                            RedWire.ActualState != RedWire.State.attente_fournisseur) || !AccessAuthorization(); }
         public bool AjoutDocumentPopUpIsOpen
         {
             get => ajoutDocumentPopUpIsOpen;
@@ -1093,7 +1110,14 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// Add FTP Document Button Logic
         /// </summary>
-        public bool AddFTPButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool AddFTPButtonVisibility { get => RedWire.ActualState != RedWire.State.début &&
+                                                    RedWire.ActualState != RedWire.State.début_diag &&
+                                                    RedWire.ActualState != RedWire.State.début_reponse_client &&
+                                                    RedWire.ActualState != RedWire.State.en_cours &&
+                                                    RedWire.ActualState != RedWire.State.attente_client &&
+                                                    RedWire.ActualState != RedWire.State.attente_commande &&
+                                                    RedWire.ActualState != RedWire.State.transit &&
+                                                    RedWire.ActualState != RedWire.State.attente_fournisseur || !AccessAuthorization(); }
         public bool AddFTPPopUpIsOpen
         {
             get => addFTPPopUpIsOpen;
@@ -1152,7 +1176,7 @@ namespace Projet_File_Rouge.ViewModel
         private bool TryFTPLaunch(KeyValuePair<string, string> keyValuePair, out DocumentFTP documentFTP)
         {
             FTPCenter client = new FTPCenter(keyValuePair.Key, keyValuePair.Value);
-            documentFTP = client.DataPacking(AddFTPField, AddFTPNameField, RedWire);
+            documentFTP = FTPCenter.DataPacking(AddFTPField, AddFTPNameField, RedWire);
             return client.DataSending(AddFTPField, documentFTP);
         }
         public bool FTPPopUpIsOpen
@@ -1200,7 +1224,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// You need to do a call to provider
         /// </summary>
-        public bool ProviderCallButtonVisibility { get => RedWire.ActualState != RedWire.state.en_cours || !AccessAuthorization(); }
+        public bool ProviderCallButtonVisibility { get => RedWire.ActualState != RedWire.State.en_cours || !AccessAuthorization(); }
         public bool ProviderCallPopUpIsOpen
         {
             get => providerCallPopUpIsOpen;
@@ -1221,7 +1245,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 if (ProviderCallField.Length < 201)
                 {
-                    RedWire.ActualState = RedWire.state.attente_fournisseur;
+                    RedWire.ActualState = RedWire.State.attente_fournisseur;
                     RedWireMaj();
                     AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Contact avec le fournisseur effectué : " + ProviderCallField));
                     UIUpdate();
@@ -1241,7 +1265,7 @@ namespace Projet_File_Rouge.ViewModel
         /// <summary>
         /// End of call to provider
         /// </summary>
-        public bool EndProviderCallButtonVisibility { get => RedWire.ActualState != RedWire.state.attente_fournisseur || !AccessAuthorization(); }
+        public bool EndProviderCallButtonVisibility { get => RedWire.ActualState != RedWire.State.attente_fournisseur || !AccessAuthorization(); }
         public bool EndProviderCallPopUpIsOpen
         {
             get => endProviderCallPopUpIsOpen;
@@ -1262,7 +1286,7 @@ namespace Projet_File_Rouge.ViewModel
             {
                 if (EndProviderCallField.Length < 215)
                 {
-                    RedWire.ActualState = RedWire.state.en_cours;
+                    RedWire.ActualState = RedWire.State.en_cours;
                     RedWireMaj();
                     AddEvent(new Evenement(RedWire, Evenement.EventType.simpleText, "Réponse du fournisseur : " + EndProviderCallField));
                     UIUpdate();

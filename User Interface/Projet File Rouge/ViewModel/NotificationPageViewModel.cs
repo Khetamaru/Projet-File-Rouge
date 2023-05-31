@@ -75,7 +75,7 @@ namespace Projet_File_Rouge.ViewModel
             List<RedWire> redWireList = RequestCenter.GetRedWireNotif(user.Id);
             foreach (RedWire redWire in redWireList)
             {
-                if (redWire.ActualState == RedWire.state.transit)
+                if (redWire.ActualState == RedWire.State.transit)
                 {
                     stackPanelContent.Add("\n" +
                                           "Utilisateur actuel : " + redWire.ActualRepairMan.Name + "\n" +
@@ -97,7 +97,7 @@ namespace Projet_File_Rouge.ViewModel
                                           "Le dossier est présent depuis 6 mois. Voir si il doit aller en destruction." +
                                           "\n");
                 }
-                else if (redWire.ActualState == RedWire.state.attente_fournisseur)
+                else if (redWire.ActualState == RedWire.State.attente_fournisseur)
                 {
                     stackPanelContent.Add("\n" +
                                           "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +
@@ -191,7 +191,7 @@ namespace Projet_File_Rouge.ViewModel
             List<RedWire> redWireList = RequestCenter.GetRedWireNotifAdmin();
             foreach (RedWire redWire in redWireList)
             {
-                if (redWire.ActualState == RedWire.state.transit)
+                if (redWire.ActualState == RedWire.State.transit)
                 {
                     stackPanelContent.Add("\n" +
                                           "Utilisateur actuel : " + redWire.ActualRepairMan.Name + "\n" +
@@ -213,7 +213,7 @@ namespace Projet_File_Rouge.ViewModel
                                           "Le dossier est présent depuis 6 mois. Voir si il doit aller en destruction." +
                                           "\n");
                 }
-                else if (redWire.ActualState == RedWire.state.attente_fournisseur)
+                else if (redWire.ActualState == RedWire.State.attente_fournisseur)
                 {
                     if (redWire.ActualRepairMan.Id == user.Id)
                     {
@@ -238,7 +238,7 @@ namespace Projet_File_Rouge.ViewModel
                                               "\n");
                     }
                 }
-                else if (redWire.ActualState == RedWire.state.payement_différé)
+                else if (redWire.ActualState == RedWire.State.payement_différé)
                 {
                     stackPanelContent.Add("\n" +
                                           "Utilisateur : " + redWire.ActualRepairMan.Name + "\n" +

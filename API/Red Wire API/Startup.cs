@@ -36,8 +36,8 @@ namespace Red_Wire_API
             Console.WriteLine("Mise en place des liens (API <=> BDD).");
             Setup setup = SetupCacheFile.Start();
 
-            redWireConnectionString = new DataBaseString("localhost", "root", "root", true, "redwiredb");
-            ebpConnectionString = new DataBaseString(setup.IP_EBP, setup.USER_NAME, setup.PASSWORD, true, setup.BDD_NAME);
+            redWireConnectionString = new DataBaseString("localhost", setup.USER_NAME_LOCAL, setup.PASSWORD_LOCAL, true, setup.BDD_NAME_LOCAL);
+            ebpConnectionString = new DataBaseString(setup.IP_EBP, setup.USER_NAME_EBP, setup.PASSWORD_EBP, true, setup.BDD_NAME_EBP);
 
             services.AddDbContext<RedWireContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),

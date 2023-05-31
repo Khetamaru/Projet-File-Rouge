@@ -15,7 +15,6 @@ namespace Projet_File_Rouge.ViewModel
     {
         private List<DocumentFTP> documentsFTP;
         private User actualUser;
-        private RedWire actualRedWire;
 
         private int indexCache;
 

@@ -3,7 +3,7 @@ using System;
 
 namespace Projet_File_Rouge.Object
 {
-    public class CommandList : BDDObject
+    public class CommandList : IBDDObject
     {
         [JsonIgnore]
         [JsonProperty]

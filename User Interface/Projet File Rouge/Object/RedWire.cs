@@ -5,7 +5,7 @@ using Projet_File_Rouge.Tools;
 
 namespace Projet_File_Rouge.Object
 {
-    public class RedWire : BDDObject
+    public class RedWire : IBDDObject
     {
         [JsonIgnore]
         [JsonProperty]
@@ -14,7 +14,7 @@ namespace Projet_File_Rouge.Object
         [JsonProperty]
         private DateTime lastUpdate;
         [JsonProperty]
-        private readonly DateTime inChargeDate;
+        private DateTime inChargeDate;
         [JsonProperty]
         private DateTime repairStartDate;
         [JsonProperty]
@@ -33,7 +33,7 @@ namespace Projet_File_Rouge.Object
         private User transfertTarget;
 
         [JsonProperty]
-        private state actualState;
+        private State actualState;
 
         [JsonProperty]
         private Action actionType;
@@ -62,7 +62,7 @@ namespace Projet_File_Rouge.Object
         [JsonProperty]
         private readonly string equipmentState;
 
-        public enum state
+        public enum State
         {
             libre,
             début,
@@ -87,7 +87,8 @@ namespace Projet_File_Rouge.Object
             commande,
             diag,
             SAV,
-            presta
+            presta,
+            devis
         }
 
         public enum EquipmentType
@@ -124,10 +125,10 @@ namespace Projet_File_Rouge.Object
 
             inChargeDate = DateTime.Now;
             lastUpdate = DateTime.Now;
-            actualState = state.libre;
+            actualState = State.libre;
         }
 
-        public RedWire(int _id, DateTime _lastUpdate, DateTime _inChargeDate, DateTime _repairStartDate, DateTime _repairEndDate, string _client, string _clientName, User _recorder, User _actualRepairMan, User _transfertTarget, RedWire.state _actualState, Action actionType, EquipmentType _type, string _model, string _equipmentState, bool _warranty, bool _problemReproduced, bool _bag, bool _alimentation, bool _mouse, bool _battery, bool _other) 
+        public RedWire(int _id, DateTime _lastUpdate, DateTime _inChargeDate, DateTime _repairStartDate, DateTime _repairEndDate, string _client, string _clientName, User _recorder, User _actualRepairMan, User _transfertTarget, RedWire.State _actualState, Action actionType, EquipmentType _type, string _model, string _equipmentState, bool _warranty, bool _problemReproduced, bool _bag, bool _alimentation, bool _mouse, bool _battery, bool _other) 
             : this(_id, _recorder, _client, _clientName, actionType, _type, _model, _equipmentState, _warranty, _problemReproduced, _bag, _alimentation, _mouse, _battery, _other)
         {
             inChargeDate = _inChargeDate;
@@ -144,7 +145,7 @@ namespace Projet_File_Rouge.Object
         public int Id { get => id; }
         public DateTime LastUpdate { get => lastUpdate; set => lastUpdate = value; }
         public string LastUpdateFormated { get => LastUpdate.ToString("dd'/'MM'/'yy' 'HH':'mm"); }
-        public DateTime InChargeDate { get => inChargeDate; }
+        public DateTime InChargeDate { get => inChargeDate; set => inChargeDate = value; }
         public string InChargeDateFormated { get => InChargeDate.ToString("dd'/'MM'/'yy' 'HH':'mm"); }
         public DateTime RepairStartDate { get => repairStartDate; set => repairStartDate = value; }
         public string RepairStartDateFormated { get => RepairStartDate.ToString("dd'/'MM'/'yy' 'HH':'mm"); }
@@ -168,7 +169,7 @@ namespace Projet_File_Rouge.Object
         public string ClientName { get => clientName; }
         public User ActualRepairMan { get => actualRepairMan; set => actualRepairMan = value; }
         public User TransfertTarget { get => transfertTarget; set => transfertTarget = value; }
-        public state ActualState { get => actualState; set => actualState = value; }
+        public State ActualState { get => actualState; set => actualState = value; }
         public Action ActionType { get => actionType; set => actionType = value; }
         public EquipmentType Type { get => type; set => type = value; }
         public string Model { get => model; }

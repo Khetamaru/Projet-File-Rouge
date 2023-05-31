@@ -18,8 +18,8 @@ namespace Projet_File_Rouge.Object
         public string client { get; set; }
         public string clientName { get; set; }
         public User recorder { get; set; }
-        public User? actualRepairMan { get; set; }
-        public User? transfertTarget { get; set; }
+        public User actualRepairMan { get; set; }
+        public User transfertTarget { get; set; }
         public int actualState { get; set; }
 
         public int actionType { get; set; }
@@ -36,9 +36,9 @@ namespace Projet_File_Rouge.Object
 
         public void PostChild(DbContext dbContext)
         {
-            recorder.Post(dbContext);
+            if (recorder != null) recorder.Post(dbContext);
             if (actualRepairMan != null) actualRepairMan.Post(dbContext);
-            if (transfertTarget != null) { transfertTarget.Post(dbContext); }
+            if (transfertTarget != null) transfertTarget.Post(dbContext);
         }
 
         public void Post(DbContext dbContext)

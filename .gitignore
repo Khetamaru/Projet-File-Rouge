@@ -1,91 +1,32 @@
-
-User Interface/.vs/Projet File Rouge/FileContentIndex/
-
-User Interface/.vs/Projet File Rouge/v17/
-
-User Interface/Program Installer/Release/
-
-User Interface/Projet File Rouge/bin/Release/net6.0-windows10.0.17763.0/
-
-User Interface/Projet File Rouge/obj/Release/net6.0-windows10.0.17763.0/
-
+*.htm
 *.v2
-
 *.editorconfig
-
 *.cache
-
 *.BuildWithSkipAnalyzers
-
-User Interface/Projet File Rouge/obj/Debug/net6.0-windows10.0.17763.0/
-
-*.targets
-
-User Interface/Projet File Rouge/obj/
-
 *.dll
-
 *.sentinel
-
 *.pdb
-
-API/Red Wire API/obj/Debug/net6.0/
-
-API/Red Wire API/obj/
-
-*.vdproj
-
+*.targets
 *.vsidx
-
 *.v1
-
-API/Red Wire API/.vs/Red Wire API/v17/
-
-API/Red Wire API/bin/Debug/net6.0/
-
-API/Red Wire API/bin/Release/net6.0/
-
-User Interface/Projet File Rouge/bin/Debug/net6.0-windows10.0.17763.0/
-
 *.user
-
-API/CustomActions/bin/Debug/net472/CustomAction.config
-
-API/CustomActions/bin/Release/net472/CustomAction.config
-
-API/CustomActions/
-
 *.msi
-
 *.tmp
-
 *.exe
-
-API/Red Wire API Installer/
-
-API/Red Wire API/bin/Debug/net6.0-windows/
-
-API/Red Wire API/bin/Release/appsettings.Development.json
-
-API/Red Wire API/bin/Release/net6.0-windows/
-
-API/Red Wire API/bin/Release/RedWireAPI.deps.json
-
-API/Red Wire API/bin/Release/RedWireAPI.dll.config
-
-API/Red Wire API/bin/Release/RedWireAPI.runtimeconfig.json
-
-API/Red Wire API/bin/Release/web.config
-
-API/Red Wire API/packages/
 *.aip
-
 *.aiproj
-
 *.cab
 
-API/RedWireAPIMsiBuilder/RedWireAPIMsiBuilder-cache/
 
+
+User Interface/Projet File Rouge/bin/
+User Interface/Projet File Rouge/obj/
+User Interface/Program Installer/Release/
+User Interface/.vs/Projet File Rouge/v17/
+User Interface/.vs/Projet File Rouge/FileContentIndex/
+
+API/Red Wire API/.vs/Red Wire API/v17/
+API/Red Wire API/bin/
+API/Red Wire API/obj/
+API/Red Wire API/packages/
 API/Red Wire API/Properties/PublishProfiles/
-
-*.htm

@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System;
 using System.IO;
 using Newtonsoft.Json;
+using Red_Wire_API;
 
 namespace Local_API_Server.Controllers
 {
@@ -37,11 +38,13 @@ namespace Local_API_Server.Controllers
             string letter = path.Split(":")[0] + ":";
             string docPath = @"C:/dump_bdd.sql";
 
+            Setup setup = SetupCacheFile.Start();
+
             RunCommand(new string[]
             {
                 @"C:",
                 @"cd C:\Program Files\MySQL\MySQL Server 8.0\bin",
-                @"mysqldump -u root -proot redwiredb > " + docPath,
+                @"mysqldump -u " + setup.USER_NAME_LOCAL + " -p" + setup.PASSWORD_LOCAL + " " + setup.BDD_NAME_LOCAL + " > " + docPath,
                 @letter,
                 @"cd " + @path
             });

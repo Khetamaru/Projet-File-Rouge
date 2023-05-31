@@ -2,7 +2,10 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Projet_File_Rouge.Tools
 {
@@ -11,18 +14,11 @@ namespace Projet_File_Rouge.Tools
     /// </summary>
     class RequestLauncher
     {
-        public enum HttpVerb
-        {
-            GET,
-            POST,
-            PUT,
-            DELETE
-        }
 
         public string http { get; set; }
         public string port { get; set; }
         public string endPoint { get; set; }
-        public HttpVerb httpMethod { get; set; }
+        public HttpMethod httpMethod { get; set; }
 
         public RequestLauncher()
         {
@@ -30,7 +26,7 @@ namespace Projet_File_Rouge.Tools
             http = !Settings.testMode ? Settings.httpUrl : "http://localhost:";
             port = Settings.httpPort;
             endPoint = string.Empty;
-            httpMethod = HttpVerb.GET;
+            httpMethod = HttpMethod.Get;
         }
 
         /// <summary>
@@ -38,44 +34,45 @@ namespace Projet_File_Rouge.Tools
         /// </summary>
         /// <param name="json"></param>
         /// <returns></returns>
-        private (string, HttpStatusCode) MakeRequest(string json)
+        private (string, HttpStatusCode) MakeRequestAsync(string json)
         {
-            string strResponseValue = string.Empty;
-            HttpStatusCode statusCode = 0;
+            //Do not instantiate httpclient like that, use dependency injection instead
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(http + port + endPoint);
+            HttpResponseMessage response = null;
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http + port + endPoint);
-            request.KeepAlive = false;
-            request.ProtocolVersion = HttpVersion.Version10;
-            request.Method = httpMethod.ToString();
+            //Set the headers of the client
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            // turn our request string into a byte stream
-            byte[] postBytes = Encoding.UTF8.GetBytes(json);
+            HttpRequestMessage httpRequest = new HttpRequestMessage(httpMethod, http + port + endPoint);
+            httpRequest.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            request.ContentType = "application/json; charset=UTF-8";
-            request.Accept = "application/json";
-            request.ContentLength = postBytes.Length;
-            Stream requestStream = request.GetRequestStream();
-
-            // now send it
+            //A memory stream which is a temporary buffer that holds the payload of the request
             try
             {
-                requestStream.Write(postBytes, 0, postBytes.Length);
-                requestStream.Close();
-
-                // grab the response and print it out to the console along with the status code
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                statusCode = response.StatusCode;
-                using (StreamReader rdr = new StreamReader(response.GetResponseStream()))
+                using (var memoryStream = new MemoryStream())
                 {
-                    strResponseValue = rdr.ReadToEnd();
-                }
-            }
-            catch (Exception e)
-            {
-                // CatchError(e, json);
-            }
+                    //Write to the memory stream
+                    memoryStream.Write(Encoding.UTF8.GetBytes(json), 0, Encoding.UTF8.GetBytes(json).Length);
 
-            return (strResponseValue, statusCode);
+                    //A stream content that represent the actual request stream
+                    using (var stream = new StreamContent(memoryStream))
+                    {
+                        //Send the request
+                        response = httpClient.SendAsync(httpRequest).Result;
+
+                        //Ensure we got success response from the server
+                        response.EnsureSuccessStatusCode();
+                        //you can access the response like that
+                        //response.Content
+                    }
+                }
+                return (response.Content.ReadAsStringAsync().Result, response.StatusCode);
+            }
+            catch (Exception)
+            {
+                return ("", HttpStatusCode.GatewayTimeout);
+            }
         }
 
         /// <summary>
@@ -84,64 +81,70 @@ namespace Projet_File_Rouge.Tools
         /// <returns></returns>
         private (string, HttpStatusCode) MakeRequest()
         {
-            string result = string.Empty;
-            HttpStatusCode statusCode = 0;
+            //Do not instantiate httpclient like that, use dependency injection instead
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(http + port + endPoint);
+            HttpResponseMessage response = null;
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(http + port + endPoint);
-            request.KeepAlive = false;
-            request.ProtocolVersion = HttpVersion.Version10;
-            request.Method = httpMethod.ToString();
+            //Set the headers of the client
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            request.ContentType = "application/json; charset=UTF-8";
-            request.Accept = "application/json";
+            HttpRequestMessage httpRequest = new HttpRequestMessage(httpMethod, http + port + endPoint);
+            httpRequest.Content = new StringContent(String.Empty, Encoding.UTF8, "application/json");
 
-            // now send it
+            //A memory stream which is a temporary buffer that holds the payload of the request
             try
             {
-                // grab the response and print it out to the console along with the status code
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                statusCode = response.StatusCode;
-                using (StreamReader rdr = new StreamReader(response.GetResponseStream()))
+                using (var memoryStream = new MemoryStream())
                 {
-                    result = rdr.ReadToEnd();
-                }
-            }
-            catch (Exception e)
-            {
-                // CatchError(e);
-            }
+                    //A stream content that represent the actual request stream
+                    using (var stream = new StreamContent(memoryStream))
+                    {
+                        //Send the request
+                        response = httpClient.SendAsync(httpRequest).Result;
 
-            return (result, statusCode);
+                        //Ensure we got success response from the server
+                        response.EnsureSuccessStatusCode();
+                        //you can access the response like that
+                        //response.Content
+                    }
+                }
+                return (response.Content.ReadAsStringAsync().Result, response.StatusCode);
+            }
+            catch(Exception)
+            {
+                return ("", HttpStatusCode.GatewayTimeout);
+            }
         }
 
         public (string, HttpStatusCode) GetRequest(string requestString)
         {
             endPoint = requestString;
-            httpMethod = HttpVerb.GET;
+            httpMethod = HttpMethod.Get;
 
             return MakeRequest();
         }
 
-        public (string, HttpStatusCode) PostRequest(string requestString, string json)
+        public (string, HttpStatusCode) PostRequestAsync(string requestString, string json)
         {
             endPoint = requestString;
-            httpMethod = HttpVerb.POST;
+            httpMethod = HttpMethod.Post;
 
-            return MakeRequest(json);
+            return MakeRequestAsync(json);
         }
 
-        public (string, HttpStatusCode) PutRequest(string requestString, string json)
+        public (string, HttpStatusCode) PutRequestAsync(string requestString, string json)
         {
             endPoint = requestString;
-            httpMethod = HttpVerb.PUT;
+            httpMethod = HttpMethod.Put;
 
-            return MakeRequest(json);
+            return MakeRequestAsync(json);
         }
 
         public (string, HttpStatusCode) DeleteRequest(string requestString)
         {
             endPoint = requestString;
-            httpMethod = HttpVerb.DELETE;
+            httpMethod = HttpMethod.Delete;
 
             return MakeRequest();
         }

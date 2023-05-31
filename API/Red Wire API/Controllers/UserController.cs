@@ -25,7 +25,7 @@ namespace Local_API_Server.Controllers
             return await _context.User.OrderBy(u => u.accessLevel).ToListAsync();
         }
 
-        // GET: api/User
+        // GET: api/User/active
         [HttpGet("active")]
         public async Task<ActionResult<IEnumerable<User>>> GetActiveUser()
         {

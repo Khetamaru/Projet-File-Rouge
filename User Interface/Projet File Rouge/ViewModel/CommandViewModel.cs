@@ -63,7 +63,7 @@ namespace Projet_File_Rouge.ViewModel
             }
             if (RequestCenter.GetCommandListRedWireNumber(Command.RedWire.Id))
             {
-                Command.RedWire.ActualState = RedWire.state.en_cours;
+                Command.RedWire.ActualState = RedWire.State.en_cours;
                 RequestCenter.PutRedWire(Command.RedWire.Id, Command.RedWire.Jsonify());
             }
         }

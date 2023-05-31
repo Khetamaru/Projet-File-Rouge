@@ -30,6 +30,9 @@ namespace Red_Wire_API
         {
             Write(new Setup("http://192.168.1.79:",
                             "8086",
+                            "root",
+                            "root",
+                            "redwiredb",
                             "192.168.1.195",
                             "sa",
                             "",

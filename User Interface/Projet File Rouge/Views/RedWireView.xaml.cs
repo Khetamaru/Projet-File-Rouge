@@ -39,6 +39,7 @@ namespace Projet_File_Rouge.Views
         private void OpenPECClientResponsePopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenPECClientResponsePopUp(); }
         private void PECClientResponseYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).PECClientResponseYesButton(); }
         private void PECClientResponseNoButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).PECClientResponseNoButton(); }
+        private void PECClientResponseCancelButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).PECClientResponseCancelButton(); }
 
         private void OpenProblemeQuestionPopUp(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).OpenProblemeQuestionPopUp(); }
         private void ProblemeQuestionYesButton(object sender, RoutedEventArgs e) { (DataContext as RedWireViewModel).ProblemeQuestionYesButton(); }

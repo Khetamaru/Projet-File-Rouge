@@ -2,7 +2,7 @@
 
 namespace Projet_File_Rouge.Object
 {
-    public class DocumentFTP : BDDObject
+    public class DocumentFTP : IBDDObject
     {
         [JsonIgnore]
         [JsonProperty]

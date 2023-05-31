@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Projet_File_Rouge.Object
 {
-    public class DbSave : BDDObject
+    public class DbSave : IBDDObject
     {
         [JsonIgnore]
         [JsonProperty]

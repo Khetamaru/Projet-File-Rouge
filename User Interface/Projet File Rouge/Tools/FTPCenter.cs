@@ -7,13 +7,13 @@ namespace Projet_File_Rouge.Tools
 {
     internal class FTPCenter
     {
-        FtpClient Client;
+        readonly FtpClient Client;
 
         public FTPCenter(string user, string password)
         {
             // Get the object used to communicate with the server.
             Client = new FtpClient();
-            Settings Settings = new Settings();
+            Settings Settings = new();
             Client.Host = Settings.ftpName;
             Client.Port = int.Parse(Settings.ftpPort);
 
@@ -22,12 +22,12 @@ namespace Projet_File_Rouge.Tools
             catch (Exception) { }
         }
 
-        internal DocumentFTP DataPacking(string actualPath, string documentName, RedWire redWire)
+        internal static DocumentFTP DataPacking(string actualPath, string documentName, RedWire redWire)
         {
             Guid name = Guid.NewGuid();
 
             string[] splitTab = actualPath.Split(".");
-            string extentionType = splitTab[splitTab.Length - 1];
+            string extentionType = splitTab[^1];
 
             string newPath = new Settings().ftpFile;
             newPath += name + "." + extentionType;
@@ -35,10 +35,10 @@ namespace Projet_File_Rouge.Tools
             return new DocumentFTP("\\\\RGDEPANNAGE\\" + newPath.Replace("/", "\\"), documentName, redWire);
         }
 
-        internal DocumentFTP DataPacking(string actualPath, string newPath, string documentName, RedWire redWire)
+        internal static DocumentFTP DataPacking(string actualPath, string newPath, string documentName, RedWire redWire)
         {
             string[] splitTab = actualPath.Split(".");
-            string extentionType = splitTab[splitTab.Length - 1];
+            string extentionType = splitTab[^1];
 
             newPath += documentName + "." + extentionType;
 

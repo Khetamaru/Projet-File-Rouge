@@ -112,7 +112,7 @@ namespace Projet_File_Rouge.EBPObject
                 return (false, null);
             }
 
-            string prefix = strEBP.Substring(0, 2);
+            string prefix = strEBP[..2];
             string suffix = strEBP.Substring(2, 8);
 
             if (!SaleDocument.IsValidPrefix(prefix, strTab))

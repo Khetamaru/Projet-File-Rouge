@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Projet_File_Rouge.Object
 {
-    public class Version : BDDObject
+    public class Version : IBDDObject
     {
         [JsonProperty]
         private readonly int id;

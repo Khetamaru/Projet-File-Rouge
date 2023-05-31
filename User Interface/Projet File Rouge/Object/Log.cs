@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace Projet_File_Rouge.Object
 {
-    public class Log : BDDObject
+    public class Log : IBDDObject
     {
         [JsonIgnore]
         [JsonProperty]
         private readonly int id;
         [JsonProperty]
-        private string text;
+        private readonly string text;
         [JsonProperty]
-        private DateTime date;
+        private readonly DateTime date;
         [JsonProperty]
-        private LogTypeEnum type;
+        private readonly LogTypeEnum type;
         [JsonProperty]
         private readonly User user;
 

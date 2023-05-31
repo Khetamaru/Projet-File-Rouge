@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Projet_File_Rouge.Object
 {
-    public class Evenement : BDDObject
+    public class Evenement : IBDDObject
     {
         [JsonIgnore]
         [JsonProperty]

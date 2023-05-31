@@ -14,6 +14,7 @@ namespace Projet_File_Rouge.ViewModel
     {
         private SaleDocument document;
         private DocumentList documentList;
+        private RedWire redwire;
         private readonly List<SaleDocumentLine> stackPanelContent;
 
         public DocumentViewModel(NavigationStore navigationStore, CacheStore cacheStore)
@@ -25,6 +26,7 @@ namespace Projet_File_Rouge.ViewModel
             // set up BDD objects
             document = RequestCenter.GetSaleDocument(cacheStore.GetInfoCache(InfoCacheStoreEnum.SaleDocumentDetail));
             documentList = RequestCenter.GetDocumentListById(cacheStore.GetObjectCache(ObjectCacheStoreEnum.DocumentListDetail));
+            redwire = RequestCenter.GetRedWire(cacheStore.GetObjectCache(ObjectCacheStoreEnum.RedWireDetail));
             stackPanelContent = linesEdition(RequestCenter.GetSaleLines(document.Id));
         }
 
@@ -46,6 +48,7 @@ namespace Projet_File_Rouge.ViewModel
         internal void DeleteFile()
         {
             RequestCenter.DeleteDocumentList(documentList.Id);
+            RequestCenter.PostEvent(new Evenement(redwire, Evenement.EventType.simpleText, "Suppression du document : " + documentList.Document).Jsonify());
             NavigateDocumentCenterCommand.Execute(null);
         }
 

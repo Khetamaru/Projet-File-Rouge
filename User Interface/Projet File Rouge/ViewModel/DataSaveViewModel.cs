@@ -57,11 +57,10 @@ namespace Projet_File_Rouge.ViewModel
                     File.WriteAllLines(name, output);
 
                     FTPCenter FTPCenter = new FTPCenter(userFTP.Name, userFTP.Password);
-                    DocumentFTP document = FTPCenter
-                        .DataPacking(
+                    DocumentFTP document = Tools.FTPCenter.DataPacking(
                             name,
                             @"" + new Settings().pathSaveBdd,
-                            (@"dump_bdd " + DateTime.Now).Replace(" ", "__").Replace("/", "_").Replace(":", "_"),
+                            (@"dump_bdd " + DateTime.Now.ToString("yyyy'/'MM'/'dd' 'HH':'mm':'ss")).Replace(" ", "__").Replace("/", "_").Replace(":", "_"),
                             null);
 
                     if (FTPCenter.DataSending(name, document))

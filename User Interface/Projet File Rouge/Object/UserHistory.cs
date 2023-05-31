@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Projet_File_Rouge.Object
 {
-    public class UserHistory : BDDObject
+    public class UserHistory : IBDDObject
     {
         [JsonIgnore]
         [JsonProperty]

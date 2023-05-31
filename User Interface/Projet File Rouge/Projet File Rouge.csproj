@@ -8,7 +8,7 @@
     <StartupObject>Projet_File_Rouge.App</StartupObject>
     <ApplicationIcon>Img\logo_simple.ico</ApplicationIcon>
     <Version>$(VersionPrefix)</Version>
-	<VersionPrefix>3.1.0</VersionPrefix>
+	<VersionPrefix>4.2.1</VersionPrefix>
 	<ApplicationManifest>app.manifest</ApplicationManifest>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
   </PropertyGroup>

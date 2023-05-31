@@ -3,13 +3,13 @@ using System;
 
 namespace Projet_File_Rouge.Object
 {
-    public class MissingCall : BDDObject
+    public class MissingCall : IBDDObject
     {
         [JsonIgnore]
         [JsonProperty]
         private readonly int id;
-        private User author;
-        private User recipient;
+        private readonly User author;
+        private readonly User recipient;
         private string caller;
         private string message;
         private DateTime date;

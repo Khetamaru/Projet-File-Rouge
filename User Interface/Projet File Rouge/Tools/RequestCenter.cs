@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Projet_File_Rouge.EBPObject;
 using Projet_File_Rouge.Object;
@@ -103,7 +104,8 @@ namespace Projet_File_Rouge.Tools
         internal static int GetRedWireNumberPerso(DateTime date, int step, int userId, string clientName)
         {
             if (clientName == string.Empty) { clientName = "*"; }
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/total/Perso/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + step + "/" + userId + "/" + clientName);
+
+            (string result, _) = new RequestLauncher().GetRequest(BDDTabName.redWire.ToString() + "/total/Perso/" + date.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss") + "/" + step + "/" + userId + "/" + clientName);
             return result == "" ? 0 : Int32.Parse(result);
         }
         internal static int GetOldRedWireNumber(DateTime date, int userId, string clientName)
@@ -158,18 +160,18 @@ namespace Projet_File_Rouge.Tools
         }
         internal static RedWire PostRedWire(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.redWire.ToString(), json);
+            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.redWire.ToString(), json);
             HttpStatusCodeCheck(statusCode);
             return Unjsonify.RedWireUnjsoning(result);
         }
         internal static void PutRedWire(int id, string redWire)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PutRequest(BDDTabName.redWire.ToString() + "/" + id, redWire);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PutRequestAsync(BDDTabName.redWire.ToString() + "/" + id, redWire);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void DeleteRedWire(int id)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.redWire.ToString() + "/" + id);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.redWire.ToString() + "/" + id);
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -212,17 +214,17 @@ namespace Projet_File_Rouge.Tools
         }
         internal static void PostCommand(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.commandList.ToString(), json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.commandList.ToString(), json);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void PutCommand(int id, string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PutRequest(BDDTabName.commandList.ToString() + "/" + id, json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PutRequestAsync(BDDTabName.commandList.ToString() + "/" + id, json);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void DeleteCommandListByRedWire(int id)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.commandList.ToString() + "/redWire/" + id);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.commandList.ToString() + "/redWire/" + id);
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -259,17 +261,17 @@ namespace Projet_File_Rouge.Tools
         }
         internal static void PostMissingCall(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.missingCall.ToString(), json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.missingCall.ToString(), json);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void PutMissingCall(int id, string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PutRequest(BDDTabName.missingCall.ToString() + "/" + id, json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PutRequestAsync(BDDTabName.missingCall.ToString() + "/" + id, json);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void DeleteMissingCall(int id)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.missingCall.ToString() + "/" + id);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.missingCall.ToString() + "/" + id);
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -300,8 +302,8 @@ namespace Projet_File_Rouge.Tools
         }
         internal static bool SignInRequest(string name, string password)
         {
-            User user = new User(name, password, User.AccessLevel.Intern, "");
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.user.ToString() + "/SignIn", user.JsonifyLogIn());
+            User user = new(name, password, User.AccessLevel.Intern, "");
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.user.ToString() + "/SignIn", user.JsonifyLogIn());
             HttpStatusCodeCheck(statusCode);
 
             if (statusCode != HttpStatusCode.OK)
@@ -312,17 +314,17 @@ namespace Projet_File_Rouge.Tools
         }
         internal static void PostUser(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.user.ToString(), json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.user.ToString(), json);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void PutUser(int id, string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PutRequest(BDDTabName.user.ToString() + "/" + id, json); 
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PutRequestAsync(BDDTabName.user.ToString() + "/" + id, json); 
             HttpStatusCodeCheck(statusCode);
         }
         internal static void DeleteUserHistoryListByRedWire(int id)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.userHistoryList.ToString() + "/redWire/" + id);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.userHistoryList.ToString() + "/redWire/" + id);
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -347,17 +349,17 @@ namespace Projet_File_Rouge.Tools
         }
         internal static void PostDocument(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.documentList.ToString(), json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.documentList.ToString(), json);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void DeleteDocumentList(int id)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentList.ToString() + "/" + id);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentList.ToString() + "/" + id);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void DeleteDocumentListByRedWire(int id)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentList.ToString() + "/redWire/" + id); 
+            (_, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentList.ToString() + "/redWire/" + id); 
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -376,17 +378,17 @@ namespace Projet_File_Rouge.Tools
         }
         internal static void PostDocumentFTP(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.documentFTP.ToString(), json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.documentFTP.ToString(), json);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void DeleteDocumentFTP(int id)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentFTP.ToString() + "/" + id);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentFTP.ToString() + "/" + id);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void DeleteDocumentFTPByRedWire(int id)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentFTP.ToString() + "/redWire/" + id);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.documentFTP.ToString() + "/redWire/" + id);
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -405,7 +407,7 @@ namespace Projet_File_Rouge.Tools
         }
         internal static void PostLog(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.log.ToString(), json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.log.ToString(), json);
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -418,12 +420,12 @@ namespace Projet_File_Rouge.Tools
         }
         internal static void PostEvent(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.evenement.ToString(), json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.evenement.ToString(), json);
             HttpStatusCodeCheck(statusCode);
         }
         internal static void DeleteEvenementByRedWire(int id)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.evenement.ToString() + "/redWire/" + id);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().DeleteRequest(BDDTabName.evenement.ToString() + "/redWire/" + id);
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -436,7 +438,7 @@ namespace Projet_File_Rouge.Tools
         }
         internal static void PostVersion(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.version.ToString(), json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.version.ToString(), json);
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -449,7 +451,7 @@ namespace Projet_File_Rouge.Tools
         }
         internal static void PostUserHistory(string json)
         {
-            (string result, HttpStatusCode statusCode) = new RequestLauncher().PostRequest(BDDTabName.userHistoryList.ToString(), json);
+            (_, HttpStatusCode statusCode) = new RequestLauncher().PostRequestAsync(BDDTabName.userHistoryList.ToString(), json);
             HttpStatusCodeCheck(statusCode);
         }
 
@@ -465,7 +467,7 @@ namespace Projet_File_Rouge.Tools
             (string result, HttpStatusCode statusCode) = new RequestLauncher().GetRequest(BDDTabName.dbSave.ToString() + "/save");
             HttpStatusCodeCheck(statusCode);
 
-            if (statusCode == HttpStatusCode.OK)
+            if (statusCode == HttpStatusCode.OK && result != "\"[]\"")
             {
                 result = result.Replace(",\\\"", ",\"").Replace("\\\",", "\",");
                 result = result.Remove(0, 1);

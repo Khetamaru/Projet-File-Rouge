@@ -26,7 +26,7 @@ namespace Projet_File_Rouge.ExternalInfoFile
             {
                 string completePath = CompletePath();
 
-                StreamReader sr = new StreamReader(completePath);
+                StreamReader sr = new(completePath);
                 content = sr.ReadToEnd();
                 sr.Close();
             }
@@ -52,7 +52,7 @@ namespace Projet_File_Rouge.ExternalInfoFile
             {
                 string completePath = CompletePath();
 
-                StreamWriter sw = new StreamWriter(completePath);
+                StreamWriter sw = new(completePath);
                 sw.Write(content);
                 sw.Close();
             }

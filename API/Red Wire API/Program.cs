@@ -21,10 +21,10 @@ namespace Red_Wire_API
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    Console.WriteLine("Démarage du serveur.");
+                    Console.WriteLine("Dï¿½marage du serveur.");
                     Setup setup = SetupCacheFile.Start();
 
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls13;
                     webBuilder.UseSetting("http_port", setup.HTTP_PORT);
                     webBuilder.UseStartup<Startup>();
                     webBuilder.UseUrls(setup.HTTP_URL + setup.HTTP_PORT + "/");

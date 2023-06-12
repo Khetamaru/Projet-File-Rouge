@@ -23,10 +23,12 @@ namespace Red_Wire_API
         [JsonProperty]
         internal string PASSWORD_EBP;
         [JsonProperty]
+        internal bool PERSIST_SECURITY_INFO;
+        [JsonProperty]
         internal string BDD_NAME_EBP;
 
         [JsonConstructor]
-        public Setup(string _HTTP_URL, string _HTTP_PORT, string _USER_NAME_LOCAL, string _PASSWORD_LOCAL, string _BDD_NAME_LOCAL, string _IP_EBP, string _USER_NAME_EBP, string _PASSWORD_EBP, string _BDD_NAME_EBP)
+        public Setup(string _HTTP_URL, string _HTTP_PORT, string _USER_NAME_LOCAL, string _PASSWORD_LOCAL, string _BDD_NAME_LOCAL, string _IP_EBP, string _USER_NAME_EBP, string _PASSWORD_EBP, bool _PERSIST_SECURITY_INFO, string _BDD_NAME_EBP)
         {
             HTTP_URL = _HTTP_URL;
             HTTP_PORT = _HTTP_PORT;
@@ -38,6 +40,7 @@ namespace Red_Wire_API
             IP_EBP = _IP_EBP;
             USER_NAME_EBP = _USER_NAME_EBP;
             PASSWORD_EBP = _PASSWORD_EBP;
+            PERSIST_SECURITY_INFO = _PERSIST_SECURITY_INFO;
             BDD_NAME_EBP = _BDD_NAME_EBP;
         }
 

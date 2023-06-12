@@ -37,79 +37,79 @@ namespace Red_Wire_API
             Setup setup = SetupCacheFile.Start();
 
             redWireConnectionString = new DataBaseString("localhost", setup.USER_NAME_LOCAL, setup.PASSWORD_LOCAL, true, setup.BDD_NAME_LOCAL);
-            ebpConnectionString = new DataBaseString(setup.IP_EBP, setup.USER_NAME_EBP, setup.PASSWORD_EBP, true, setup.BDD_NAME_EBP);
+            ebpConnectionString = new DataBaseString(setup.IP_EBP, setup.USER_NAME_EBP, setup.PASSWORD_EBP, setup.PERSIST_SECURITY_INFO, setup.BDD_NAME_EBP);
 
             services.AddDbContext<RedWireContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"RedWire\" créé.");
+            Console.WriteLine("Lien vers la table \"RedWire\" crï¿½ï¿½.");
 
             services.AddDbContext<DocumentListContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"DocumentList\" créé.");
+            Console.WriteLine("Lien vers la table \"DocumentList\" crï¿½ï¿½.");
 
             services.AddDbContext<EvenementContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"Evenement\" créé.");
+            Console.WriteLine("Lien vers la table \"Evenement\" crï¿½ï¿½.");
 
             services.AddDbContext<UserContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"User\" créé.");
+            Console.WriteLine("Lien vers la table \"User\" crï¿½ï¿½.");
 
             services.AddDbContext<UserHistoryListContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"UserHistoryList\" créé.");
+            Console.WriteLine("Lien vers la table \"UserHistoryList\" crï¿½ï¿½.");
 
             services.AddDbContext<CommandListContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"CommandList\" créé.");
+            Console.WriteLine("Lien vers la table \"CommandList\" crï¿½ï¿½.");
 
             services.AddDbContext<LogContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"Log\" créé.");
+            Console.WriteLine("Lien vers la table \"Log\" crï¿½ï¿½.");
 
             services.AddDbContext<VersionContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"Version\" créé.");
+            Console.WriteLine("Lien vers la table \"Version\" crï¿½ï¿½.");
 
             services.AddDbContext<MissingCallContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"MissingCall\" créé.");
+            Console.WriteLine("Lien vers la table \"MissingCall\" crï¿½ï¿½.");
 
             services.AddDbContext<DocumentFTPContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"DocumentFTP\" créé.");
+            Console.WriteLine("Lien vers la table \"DocumentFTP\" crï¿½ï¿½.");
 
             services.AddDbContext<DbSaveContext>(opt =>
                 opt.UseMySql(redWireConnectionString.GetConnectionString(),
                 ServerVersion.AutoDetect(redWireConnectionString.GetConnectionString())));
-            Console.WriteLine("Lien vers la table \"DbSave\" créé.");
+            Console.WriteLine("Lien vers la table \"DbSave\" crï¿½ï¿½.");
 
             services.AddDbContext<SaleDocumentContext>(opt =>
                 opt.UseSqlServer(ebpConnectionString.GetConnectionString() + ";Encrypt=true;TrustServerCertificate=true;", 
                 providerOptions => providerOptions.EnableRetryOnFailure()));
-            Console.WriteLine("Lien vers la table EBP \"SaleDocument\" créé.");
+            Console.WriteLine("Lien vers la table EBP \"SaleDocument\" crï¿½ï¿½.");
 
             services.AddDbContext<SaleDocumentLineContext>(opt =>
                 opt.UseSqlServer(ebpConnectionString.GetConnectionString() + ";Encrypt=true;TrustServerCertificate=true;", 
                 providerOptions => providerOptions.EnableRetryOnFailure()));
-            Console.WriteLine("Lien vers la table EBP \"SaleDocumentLine\" créé.");
+            Console.WriteLine("Lien vers la table EBP \"SaleDocumentLine\" crï¿½ï¿½.");
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = redWireConnectionString.databaseName, Version = databaseVersion });
             });
-            Console.WriteLine("Réussite de la mise en place globale.");
+            Console.WriteLine("Rï¿½ussite de la mise en place globale.");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

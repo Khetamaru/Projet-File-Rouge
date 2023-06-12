@@ -36,6 +36,7 @@ namespace Red_Wire_API
                             "192.168.1.195",
                             "sa",
                             "",
+                            true,
                             "DO53_0895452f-b7c1-4c00-a316-c6a6d0ea4bf4"));
 
             Console.WriteLine("En abscence d'un fichier de configuration existant, un fichier par défaut a été créé.");
